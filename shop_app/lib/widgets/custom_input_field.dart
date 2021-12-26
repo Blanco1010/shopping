@@ -28,26 +28,36 @@ class CustomInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        autofocus: false,
-        initialValue: '',
-        textCapitalization: TextCapitalization.words,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        onChanged: (value) => formValues![formProperty] = value,
-        validator: (value) {
-          if (value == null) return 'Este campo es requerido';
-          return value.length < 3 ? 'Mínimo de 3 letras' : null;
-        },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-          border: InputBorder.none,
-          hintText: hintText,
-          labelText: labelText,
-          helperText: helperText,
-          // prefixIcon: Icon( Icons.verified_user_outlined ),
-          suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
-          prefixIcon: icon == null ? null : Icon(icon),
-        ));
+      cursorColor: const Color.fromARGB(255, 65, 65, 65),
+      maxLines: 1,
+      autofocus: false,
+      initialValue: '',
+      textCapitalization: TextCapitalization.words,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onChanged: (value) => formValues![formProperty] = value,
+      validator: (value) {
+        if (value == null) return 'Este campo es requerido';
+        return value.length < 3 ? 'Mínimo de 3 letras' : null;
+      },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        labelStyle: const TextStyle(color: Color.fromARGB(255, 65, 65, 65)),
+
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+        border: InputBorder.none,
+        hintText: hintText,
+        labelText: labelText,
+        helperText: helperText,
+        // prefixIcon: Icon( Icons.verified_user_outlined ),
+        suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
+        prefixIcon: icon == null
+            ? null
+            : Icon(
+                icon,
+                color: const Color.fromARGB(255, 65, 65, 65),
+              ),
+      ),
+    );
   }
 }
