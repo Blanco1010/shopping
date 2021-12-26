@@ -29,8 +29,6 @@ class _LoginIconState extends State<_LoginIcon>
     with SingleTickerProviderStateMixin {
   AnimationController? controller;
   Animation<double>? transition;
-  Animation<double>? transitionUp;
-  Animation<double>? transitionDown;
 
   @override
   void initState() {

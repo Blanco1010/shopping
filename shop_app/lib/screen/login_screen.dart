@@ -10,16 +10,14 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('Login'),
-        //   centerTitle: true,
-        //   elevation: 0,
-        // ),
-        body: LoginBackground(
-          child: _LoginForm(),
-        ),
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text('Login'),
+      //   centerTitle: true,
+      //   elevation: 0,
+      // ),
+      body: LoginBackground(
+        child: _LoginForm(),
       ),
     );
   }
@@ -53,108 +51,29 @@ class _LoginFormState extends State<_LoginForm> {
             delay: const Duration(seconds: 2),
             duration: const Duration(seconds: 1),
             from: 200,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
-              decoration: BoxDecoration(
-                color: MyColors.primaryOpactyColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const CustomInputField(
-                icon: Icons.email,
-                labelText: 'Correo eletrónico',
-                formProperty: 'email',
-                keyboardType: TextInputType.emailAddress,
-              ),
-            ),
+            child: _textFieldEmail(size),
           ),
           SizedBox(height: size.height * 0.02),
           FadeInLeft(
             delay: const Duration(seconds: 2),
             duration: const Duration(seconds: 1),
             from: 200,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
-              padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
-              decoration: BoxDecoration(
-                color: MyColors.primaryOpactyColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const CustomInputField(
-                icon: Icons.lock,
-                labelText: 'Contraseña',
-                formProperty: 'password',
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-              ),
-            ),
+            child: _textFieldPassword(size),
           ),
           SizedBox(height: size.height * 0.02),
           FadeIn(
             delay: const Duration(seconds: 3),
             duration: const Duration(seconds: 1),
-            child: const _ButtonLogin(),
+            child: _buttonLogin(size),
           ),
           SizedBox(height: size.height * 0.04),
-          _ButtonDontHaveAccount(
-            size: size,
-            loginController: _loginController,
-          )
+          _buttonDontHaveAccount(size)
         ],
       ),
     );
   }
-}
 
-class _ButtonDontHaveAccount extends StatelessWidget {
-  const _ButtonDontHaveAccount({
-    Key? key,
-    required this.size,
-    required this.loginController,
-  }) : super(key: key);
-
-  final Size size;
-  final LoginController loginController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        FadeInLeft(
-            delay: const Duration(seconds: 3),
-            duration: const Duration(seconds: 1),
-            from: 200,
-            child: const Text('¿No tienes cuenta?')),
-        SizedBox(width: size.width * 0.03),
-        GestureDetector(
-          onTap: () => loginController.goToRegisterPage(),
-          child: FadeInRight(
-            delay: const Duration(seconds: 3),
-            duration: const Duration(seconds: 1),
-            from: 200,
-            child: Text(
-              'Registrarse',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: MyColors.colorPrimary,
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class _ButtonLogin extends StatelessWidget {
-  const _ButtonLogin({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  _buttonLogin(Size size) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       width: double.infinity,
@@ -172,6 +91,70 @@ class _ButtonLogin extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  _buttonDontHaveAccount(Size size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FadeInLeft(
+            delay: const Duration(seconds: 3),
+            duration: const Duration(seconds: 1),
+            from: 200,
+            child: const Text('¿No tienes cuenta?')),
+        SizedBox(width: size.width * 0.03),
+        GestureDetector(
+          onTap: () => _loginController.goToRegisterPage(),
+          child: FadeInRight(
+            delay: const Duration(seconds: 3),
+            duration: const Duration(seconds: 1),
+            from: 200,
+            child: Text(
+              'Registrarse',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: MyColors.colorPrimary,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  _textFieldPassword(Size size) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      decoration: BoxDecoration(
+        color: MyColors.primaryOpactyColor,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: const CustomInputField(
+        icon: Icons.lock,
+        labelText: 'Contraseña',
+        formProperty: 'password',
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: true,
+      ),
+    );
+  }
+
+  _textFieldEmail(Size size) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      decoration: BoxDecoration(
+        color: MyColors.primaryOpactyColor,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: const CustomInputField(
+        icon: Icons.email,
+        labelText: 'Correo eletrónico',
+        formProperty: 'email',
+        keyboardType: TextInputType.emailAddress,
       ),
     );
   }
