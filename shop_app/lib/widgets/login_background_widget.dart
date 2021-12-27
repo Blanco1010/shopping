@@ -1,31 +1,14 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-class LoginBackground extends StatelessWidget {
-  final Widget child;
-  const LoginBackground({Key? key, required this.child}) : super(key: key);
+class LoginBackground extends StatefulWidget {
+  const LoginBackground({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: Column(
-        children: [
-          _LoginIcon(),
-          child,
-        ],
-      ),
-    );
-  }
+  State<LoginBackground> createState() => _LoginBackgroundState();
 }
 
-class _LoginIcon extends StatefulWidget {
-  @override
-  State<_LoginIcon> createState() => _LoginIconState();
-}
-
-class _LoginIconState extends State<_LoginIcon>
+class _LoginBackgroundState extends State<LoginBackground>
     with SingleTickerProviderStateMixin {
   AnimationController? controller;
   Animation<double>? transition;
@@ -67,7 +50,7 @@ class _LoginIconState extends State<_LoginIcon>
       builder: (context, child) {
         return Container(
           margin: EdgeInsets.only(
-            top: size.height * 0.1,
+            top: size.height * 0.05,
             bottom: size.height * 0.1,
           ),
           child: Stack(

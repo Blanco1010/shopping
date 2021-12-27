@@ -11,13 +11,18 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Login'),
-      //   centerTitle: true,
-      //   elevation: 0,
-      // ),
-      body: LoginBackground(
-        child: _LoginForm(),
+      body: SizedBox(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Column(
+            children: [
+              const LoginBackground(),
+              _LoginForm(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -51,34 +56,34 @@ class _LoginFormState extends State<_LoginForm> {
             delay: const Duration(seconds: 2),
             duration: const Duration(seconds: 1),
             from: 200,
-            child: _textFieldEmail(size),
+            child: _textFieldEmail(size, _loginController.passwordController),
           ),
           SizedBox(height: size.height * 0.02),
           FadeInLeft(
             delay: const Duration(seconds: 2),
             duration: const Duration(seconds: 1),
             from: 200,
-            child: _textFieldPassword(size),
+            child: _textFieldPassword(size, _loginController.emailController),
           ),
           SizedBox(height: size.height * 0.02),
           FadeIn(
             delay: const Duration(seconds: 3),
             duration: const Duration(seconds: 1),
-            child: _buttonLogin(size),
+            child: _buttonLogin(size, _loginController),
           ),
-          SizedBox(height: size.height * 0.04),
+          SizedBox(height: size.height * 0.05),
           _buttonDontHaveAccount(size)
         ],
       ),
     );
   }
 
-  _buttonLogin(Size size) {
+  _buttonLogin(Size size, LoginController loginController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => loginController.login(),
         child: const Text('Ingresar', style: TextStyle(fontSize: 25)),
         style: ElevatedButton.styleFrom(
           primary: MyColors.colorPrimary,
@@ -124,7 +129,7 @@ class _LoginFormState extends State<_LoginForm> {
     );
   }
 
-  _textFieldPassword(Size size) {
+  _textFieldPassword(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -132,17 +137,18 @@ class _LoginFormState extends State<_LoginForm> {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.lock,
         labelText: 'Contraseña',
         formProperty: 'password',
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
+        textController: textController,
       ),
     );
   }
 
-  _textFieldEmail(Size size) {
+  _textFieldEmail(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -150,11 +156,12 @@ class _LoginFormState extends State<_LoginForm> {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.email,
         labelText: 'Correo eletrónico',
         formProperty: 'email',
         keyboardType: TextInputType.emailAddress,
+        textController: textController,
       ),
     );
   }

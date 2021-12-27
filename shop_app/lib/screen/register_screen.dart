@@ -1,52 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:shop_app/controllers/register_controller.dart';
 
 import '../Theme/theme.dart';
 import '../widgets/widgets.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final registerCo = RegisterController();
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      registerCo.init(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: size.height * 0.08,
-            left: size.width * 0.08,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: MyColors.colorPrimary,
+      body: SizedBox(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Stack(
+            children: [
+              Positioned(
+                top: size.height * 0.08,
+                left: size.width * 0.08,
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    color: MyColors.colorPrimary,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: size.height * 0.05),
+                    _imageUser(size),
+                    SizedBox(height: size.height * 0.04),
+                    _textFieldEmail(size, registerCo.emailController),
+                    SizedBox(height: size.height * 0.01),
+                    _textFieldFirstName(size, registerCo.firstNameController),
+                    SizedBox(height: size.height * 0.01),
+                    _textFieldLastName(size, registerCo.lastNameController),
+                    SizedBox(height: size.height * 0.01),
+                    _textFieldNumberPhone(
+                        size, registerCo.phoneNumberController),
+                    SizedBox(height: size.height * 0.01),
+                    _textFieldPassword(size, registerCo.passwordController),
+                    SizedBox(height: size.height * 0.01),
+                    _textFieldConfirmPassword(size, registerCo.confirmPassword),
+                    SizedBox(height: size.height * 0.02),
+                    _buttonRegister(size, registerCo),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _imageUser(size),
-                SizedBox(height: size.height * 0.04),
-                _textFieldEmail(size),
-                SizedBox(height: size.height * 0.02),
-                _textFieldFirstName(size),
-                SizedBox(height: size.height * 0.02),
-                _textFieldLastName(size),
-                SizedBox(height: size.height * 0.02),
-                _textFieldNumberPhone(size),
-                SizedBox(height: size.height * 0.02),
-                _textFieldPassword(size),
-                SizedBox(height: size.height * 0.02),
-                _textFieldConfirmPassword(size),
-                SizedBox(height: size.height * 0.02),
-                _buttonRegister(size),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -63,7 +88,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _textFieldPassword(Size size) {
+  _textFieldPassword(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -71,8 +96,9 @@ class RegisterScreen extends StatelessWidget {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.lock,
+        textController: textController,
         labelText: 'Contraseña',
         formProperty: 'password',
         keyboardType: TextInputType.visiblePassword,
@@ -81,7 +107,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _textFieldConfirmPassword(Size size) {
+  _textFieldConfirmPassword(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -89,8 +115,9 @@ class RegisterScreen extends StatelessWidget {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.lock,
+        textController: textController,
         labelText: 'Confirmar contraseña',
         formProperty: 'password',
         keyboardType: TextInputType.visiblePassword,
@@ -99,7 +126,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _textFieldEmail(Size size) {
+  _textFieldEmail(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -107,8 +134,9 @@ class RegisterScreen extends StatelessWidget {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.email,
+        textController: textController,
         labelText: 'Correo eletrónico',
         formProperty: 'email',
         keyboardType: TextInputType.emailAddress,
@@ -116,7 +144,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _textFieldFirstName(Size size) {
+  _textFieldFirstName(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -124,8 +152,9 @@ class RegisterScreen extends StatelessWidget {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.person_pin_circle_rounded,
+        textController: textController,
         labelText: 'Nombre',
         formProperty: 'firstname',
         keyboardType: TextInputType.name,
@@ -133,7 +162,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _textFieldLastName(Size size) {
+  _textFieldLastName(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -141,8 +170,9 @@ class RegisterScreen extends StatelessWidget {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.person_pin_circle_outlined,
+        textController: textController,
         labelText: 'Apellido',
         formProperty: 'lastname',
         keyboardType: TextInputType.name,
@@ -150,7 +180,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _textFieldNumberPhone(Size size) {
+  _textFieldNumberPhone(Size size, TextEditingController textController) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -158,8 +188,9 @@ class RegisterScreen extends StatelessWidget {
         color: MyColors.primaryOpactyColor,
         borderRadius: BorderRadius.circular(30),
       ),
-      child: const CustomInputField(
+      child: CustomInputField(
         icon: Icons.phone,
+        textController: textController,
         labelText: 'Telefono ',
         formProperty: 'lastname',
         keyboardType: TextInputType.number,
@@ -167,12 +198,12 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _buttonRegister(Size size) {
+  _buttonRegister(Size size, RegisterController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => controller.register(),
         child: const Text('Registrarse', style: TextStyle(fontSize: 25)),
         style: ElevatedButton.styleFrom(
           primary: MyColors.colorPrimary,

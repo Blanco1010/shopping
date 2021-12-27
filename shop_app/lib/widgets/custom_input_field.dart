@@ -8,6 +8,7 @@ class CustomInputField extends StatelessWidget {
   final IconData? suffixIcon;
   final TextInputType? keyboardType;
   final bool obscureText;
+  final TextEditingController? textController;
 
   final String formProperty;
   final Map<String, String>? formValues;
@@ -23,6 +24,7 @@ class CustomInputField extends StatelessWidget {
     this.obscureText = false,
     required this.formProperty,
     this.formValues,
+    this.textController,
   }) : super(key: key);
 
   @override
@@ -31,11 +33,12 @@ class CustomInputField extends StatelessWidget {
       cursorColor: const Color.fromARGB(255, 65, 65, 65),
       maxLines: 1,
       autofocus: false,
-      initialValue: '',
+      // initialValue: '',
       textCapitalization: TextCapitalization.words,
       keyboardType: keyboardType,
       obscureText: obscureText,
-      onChanged: (value) => formValues![formProperty] = value,
+      controller: textController,
+      // onChanged: (value) => formValues![formProperty] = value,
       validator: (value) {
         if (value == null) return 'Este campo es requerido';
         return value.length < 3 ? 'Mínimo de 3 letras' : null;
