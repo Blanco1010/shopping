@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/models/response_model.dart';
+import 'package:shop_app/models/user.dart';
+import 'package:shop_app/provider/user_provider.dart';
 
 class RegisterController {
   BuildContext? context;
@@ -9,15 +12,18 @@ class RegisterController {
   TextEditingController passwordController = TextEditingController(text: '');
   TextEditingController confirmPassword = TextEditingController(text: '');
 
+  UsersProvider userProvider = UsersProvider();
+
   Future? init(BuildContext context) {
     this.context = context;
+    userProvider.init(context);
   }
 
   void goToRegisterPage() {
     Navigator.pushNamed(context!, '/register');
   }
 
-  void register() {
+  void register() async {
     String email = emailController.text.trim();
     String firstName = firstNameController.text.trim();
     String lastName = lastNameController.text.trim();
@@ -25,11 +31,23 @@ class RegisterController {
     String password = passwordController.text.trim();
     String coPassword = confirmPassword.text.trim();
 
-    print(email);
-    print(firstName);
-    print(lastName);
-    print(phoneNumber);
-    print(password);
-    print(coPassword);
+    User user = User(
+      email: email,
+      name: firstName,
+      lastname: lastName,
+      password: password,
+      phone: phoneNumber,
+    );
+
+    ResponseApi responseApi = await userProvider.create(user);
+
+    print('RESPUESTA: ${responseApi.toJson()}');
+
+    // print(email);
+    // print(firstName);
+    // print(lastName);
+    // print(phoneNumber);
+    // print(password);
+    // print(coPassword);
   }
 }
