@@ -32,11 +32,10 @@ class UsersProvider {
       ResponseApi responseApi = ResponseApi.fromJson(data);
       return responseApi;
     } catch (error) {
-      print('Error: $error');
       return ResponseApi(
         success: false,
         message: 'error al crear usuario',
-        error: error.toString(),
+        error: 'El usuario ya existe',
       );
     }
   }

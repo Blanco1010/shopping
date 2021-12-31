@@ -138,6 +138,10 @@ class _LoginFormState extends State<_LoginForm> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          if (value == null) return 'Este campo es requerido';
+          return value.length < 3 ? 'Mínimo de 3 letras' : null;
+        },
         icon: Icons.lock,
         labelText: 'Contraseña',
         formProperty: 'password',
@@ -157,6 +161,10 @@ class _LoginFormState extends State<_LoginForm> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          if (value == null) return 'Este campo es requerido';
+          return value.length < 3 ? 'Mínimo de 3 letras' : null;
+        },
         icon: Icons.email,
         labelText: 'Correo eletrónico',
         formProperty: 'email',

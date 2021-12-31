@@ -4,6 +4,7 @@ import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/user_provider.dart';
 
 class RegisterController {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   BuildContext? context;
   TextEditingController emailController = TextEditingController(text: '');
   TextEditingController firstNameController = TextEditingController(text: '');
@@ -24,24 +25,25 @@ class RegisterController {
   }
 
   void register() async {
-    String email = emailController.text.trim();
-    String firstName = firstNameController.text.trim();
-    String lastName = lastNameController.text.trim();
-    String phoneNumber = phoneNumberController.text.trim();
-    String password = passwordController.text.trim();
-    String coPassword = confirmPassword.text.trim();
+    if (formKey.currentState!.validate()) {
+      String email = emailController.text.trim();
+      String firstName = firstNameController.text.trim();
+      String lastName = lastNameController.text.trim();
+      String phoneNumber = phoneNumberController.text.trim();
+      String password = passwordController.text.trim();
 
-    User user = User(
-      email: email,
-      name: firstName,
-      lastname: lastName,
-      password: password,
-      phone: phoneNumber,
-    );
+      User user = User(
+        email: email,
+        name: firstName,
+        lastname: lastName,
+        password: password,
+        phone: phoneNumber,
+      );
 
-    ResponseApi responseApi = await userProvider.create(user);
-
-    print('RESPUESTA: ${responseApi.toJson()}');
+      ResponseApi responseApi = await userProvider.create(user);
+      print('RESPUESTA: ${responseApi.toJson()}');
+    }
+    ;
 
     // print(email);
     // print(firstName);

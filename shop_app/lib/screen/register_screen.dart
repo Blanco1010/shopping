@@ -46,27 +46,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(
                 width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: size.height * 0.05),
-                    _imageUser(size),
-                    SizedBox(height: size.height * 0.04),
-                    _textFieldEmail(size, registerCo.emailController),
-                    SizedBox(height: size.height * 0.01),
-                    _textFieldFirstName(size, registerCo.firstNameController),
-                    SizedBox(height: size.height * 0.01),
-                    _textFieldLastName(size, registerCo.lastNameController),
-                    SizedBox(height: size.height * 0.01),
-                    _textFieldNumberPhone(
-                        size, registerCo.phoneNumberController),
-                    SizedBox(height: size.height * 0.01),
-                    _textFieldPassword(size, registerCo.passwordController),
-                    SizedBox(height: size.height * 0.01),
-                    _textFieldConfirmPassword(size, registerCo.confirmPassword),
-                    SizedBox(height: size.height * 0.02),
-                    _buttonRegister(size, registerCo),
-                  ],
+                child: Form(
+                  key: registerCo.formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: size.height * 0.05),
+                      _imageUser(size),
+                      SizedBox(height: size.height * 0.04),
+                      _textFieldEmail(size, registerCo.emailController),
+                      SizedBox(height: size.height * 0.01),
+                      _textFieldFirstName(size, registerCo.firstNameController),
+                      SizedBox(height: size.height * 0.01),
+                      _textFieldLastName(size, registerCo.lastNameController),
+                      SizedBox(height: size.height * 0.01),
+                      _textFieldNumberPhone(
+                          size, registerCo.phoneNumberController),
+                      SizedBox(height: size.height * 0.01),
+                      _textFieldPassword(size, registerCo.passwordController),
+                      SizedBox(height: size.height * 0.01),
+                      _textFieldConfirmPassword(
+                        size,
+                        registerCo.confirmPassword,
+                        registerCo.passwordController,
+                      ),
+                      SizedBox(height: size.height * 0.02),
+                      _buttonRegister(size, registerCo),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -97,6 +104,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          if (value.toString().length <= 8) {
+            return 'Mínimo ocho caracteres';
+          }
+        },
         icon: Icons.lock,
         textController: textController,
         labelText: 'Contraseña',
@@ -107,7 +119,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  _textFieldConfirmPassword(Size size, TextEditingController textController) {
+  _textFieldConfirmPassword(
+    Size size,
+    TextEditingController textController,
+    TextEditingController textController2,
+  ) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       padding: EdgeInsets.symmetric(vertical: size.height * 0.01),
@@ -116,6 +132,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          if (textController2.value != textController.value) {
+            return 'Las contraseñas no coinciden';
+          }
+        },
         icon: Icons.lock,
         textController: textController,
         labelText: 'Confirmar contraseña',
@@ -135,6 +156,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+          if (exp.hasMatch(value.toString()) != true) {
+            return 'Tienes que darnos un email válido';
+          }
+        },
         icon: Icons.email,
         textController: textController,
         labelText: 'Correo eletrónico',
@@ -153,6 +181,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          if (value.toString().isEmpty == true) {
+            return 'Debes llenar el campo';
+          }
+        },
         icon: Icons.person_pin_circle_rounded,
         textController: textController,
         labelText: 'Nombre',
@@ -171,6 +204,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: (value) {
+          if (value.toString().isEmpty == true) {
+            return 'Debes llenar el campo';
+          }
+        },
         icon: Icons.person_pin_circle_outlined,
         textController: textController,
         labelText: 'Apellido',
@@ -189,6 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        validator: null,
         icon: Icons.phone,
         textController: textController,
         labelText: 'Telefono ',
