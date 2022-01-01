@@ -3,13 +3,13 @@ import 'dart:convert';
 class ResponseApi {
   bool success;
   String message;
-  String error;
-  String? data;
+  dynamic error;
+  dynamic data;
 
   ResponseApi({
     required this.success,
     required this.message,
-    required this.error,
+    this.error,
     this.data,
   });
 
@@ -19,23 +19,18 @@ class ResponseApi {
   String toJson() => json.encode(toMap());
 
   factory ResponseApi.fromMap(Map<String, dynamic> json) {
-    try {
-      data:
-      json['data'];
-    } catch (error) {
-      print(error);
-    }
-
     return ResponseApi(
       success: json["success"],
       message: json["message"],
       error: json["error"],
+      data: json["data"],
     );
   }
 
   Map<String, dynamic> toMap() => {
         "success": success,
         "message": message,
-        "error": error,
+        "error": error ?? 'null',
+        "data": data ?? 'null',
       };
 }

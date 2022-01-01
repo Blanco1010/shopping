@@ -50,20 +50,22 @@ class _LoginFormState extends State<_LoginForm> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Form(
+      key: _loginController.formKey,
       child: Column(
         children: [
           FadeInRight(
             delay: const Duration(seconds: 2),
             duration: const Duration(seconds: 1),
             from: 200,
-            child: _textFieldEmail(size, _loginController.passwordController),
+            child: _textFieldEmail(size, _loginController.emailController),
           ),
           SizedBox(height: size.height * 0.02),
           FadeInLeft(
             delay: const Duration(seconds: 2),
             duration: const Duration(seconds: 1),
             from: 200,
-            child: _textFieldPassword(size, _loginController.emailController),
+            child:
+                _textFieldPassword(size, _loginController.passwordController),
           ),
           SizedBox(height: size.height * 0.02),
           FadeIn(
@@ -139,8 +141,9 @@ class _LoginFormState extends State<_LoginForm> {
       ),
       child: CustomInputField(
         validator: (value) {
-          if (value == null) return 'Este campo es requerido';
-          return value.length < 3 ? 'Mínimo de 3 letras' : null;
+          if (value.toString().length <= 8) {
+            return 'Mínimo ocho caracteres';
+          }
         },
         icon: Icons.lock,
         labelText: 'Contraseña',
@@ -162,8 +165,11 @@ class _LoginFormState extends State<_LoginForm> {
       ),
       child: CustomInputField(
         validator: (value) {
-          if (value == null) return 'Este campo es requerido';
-          return value.length < 3 ? 'Mínimo de 3 letras' : null;
+          RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+          if (exp.hasMatch(value.toString()) != true) {
+            return 'Tienes que darnos un email válido';
+          }
         },
         icon: Icons.email,
         labelText: 'Correo eletrónico',

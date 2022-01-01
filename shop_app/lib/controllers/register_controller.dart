@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/user_provider.dart';
+import 'package:shop_app/widgets/snackbar.dart';
 
 class RegisterController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -42,8 +43,11 @@ class RegisterController {
 
       ResponseApi responseApi = await userProvider.create(user);
       print('RESPUESTA: ${responseApi.toJson()}');
+      print(responseApi.toJson());
+      if (responseApi.success == false) {
+        Snackbar.show(context, responseApi.message);
+      }
     }
-    ;
 
     // print(email);
     // print(firstName);
@@ -51,5 +55,9 @@ class RegisterController {
     // print(phoneNumber);
     // print(password);
     // print(coPassword);
+  }
+
+  void back() {
+    Navigator.pop(context!);
   }
 }

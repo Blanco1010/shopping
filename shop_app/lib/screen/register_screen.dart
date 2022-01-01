@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 top: size.height * 0.08,
                 left: size.width * 0.08,
                 child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () => registerCo.back,
                   child: Icon(
                     Icons.arrow_back_ios,
                     color: MyColors.colorPrimary,

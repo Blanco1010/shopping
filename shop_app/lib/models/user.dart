@@ -7,7 +7,7 @@ class User {
   String lastname;
   String phone;
   dynamic image;
-  String password;
+  String? password;
   dynamic isAvailabe;
   dynamic sessionToken;
   DateTime? createdAt;
@@ -20,7 +20,7 @@ class User {
     required this.lastname,
     required this.phone,
     this.image,
-    required this.password,
+    this.password,
     this.isAvailabe,
     this.sessionToken,
     this.createdAt,
@@ -38,11 +38,11 @@ class User {
         lastname: json["lastname"],
         phone: json["phone"],
         image: json["image"],
-        password: json["password"],
+        password: json["password"] ?? 'null',
         isAvailabe: json["is_availabe"],
         sessionToken: json["session_token"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updateAt: DateTime.parse(json["update_at"]),
+        createdAt: (json["created_at"]),
+        updateAt: (json["update_at"]),
       );
 
   Map<String, dynamic> toMap() => {

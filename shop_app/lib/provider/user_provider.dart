@@ -14,7 +14,7 @@ class UsersProvider {
 
   late BuildContext context;
 
-  Future? init(BuildContext context) {
+  Future init(BuildContext context) async {
     this.context = context;
   }
 
@@ -29,13 +29,48 @@ class UsersProvider {
 
       final data = json.decode(res.body);
 
-      ResponseApi responseApi = ResponseApi.fromJson(data);
+      ResponseApi responseApi = ResponseApi.fromMap(data);
+
+      // ResponseApi responseApi = ResponseApi(
+      //   success: data['success'],
+      //   message: data['message'],
+      //   data: data['data'],
+      // );
       return responseApi;
     } catch (error) {
       return ResponseApi(
         success: false,
         message: 'error al crear usuario',
         error: 'El usuario ya existe',
+      );
+    }
+  }
+
+  Future<ResponseApi> login(String email, String password) async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/login');
+      final bodyParams = json.encode({'email': email, 'password': password});
+
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      final res = await http.post(url, headers: headers, body: bodyParams);
+
+      final data = json.decode(res.body);
+
+      ResponseApi responseApi = ResponseApi.fromMap(data);
+
+      // ResponseApi responseApi = ResponseApi(
+      //   success: data['success'],
+      //   message: data['message'],
+      //   data: data['data']['session_token'],
+      // );
+
+      return responseApi;
+    } catch (error) {
+      return ResponseApi(
+        success: false,
+        message: error.toString(),
+        error: '',
       );
     }
   }
