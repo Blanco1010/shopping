@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/login_controller.dart';
+import 'package:shop_app/controllers/login/login_controller.dart';
 import 'package:shop_app/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {

@@ -54,13 +54,13 @@ class _RolesScreenState extends State<RolesScreen> {
           onTap: () => _con.goToPage(rol.route),
           child: Container(
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: const BorderRadius.all(Radius.circular(25.0)),
               border: Border.all(color: MyColors.colorPrimary),
             ),
             height: 150,
             width: 150,
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
+              borderRadius: const BorderRadius.all(Radius.circular(25.0)),
               child: FadeInImage(
                 image: NetworkImage(rol.image),
                 placeholder: const AssetImage('assets/gif/jar-loading.gif'),

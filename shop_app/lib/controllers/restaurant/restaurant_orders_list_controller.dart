@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 
-class ClientProductsListController {
+class RestaurantOrdersListController {
   late BuildContext context;
   SecureStogare secureStogare = SecureStogare();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();

@@ -6,7 +6,7 @@ import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/user_provider.dart';
 
-import '../widgets/widgets.dart';
+import '../../widgets/widgets.dart';
 
 class LoginController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();

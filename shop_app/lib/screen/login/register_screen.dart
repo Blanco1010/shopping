@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:shop_app/controllers/register_controller.dart';
+import 'package:shop_app/controllers/login/register_controller.dart';
 
 import '../../Theme/theme.dart';
 import '../../widgets/widgets.dart';
