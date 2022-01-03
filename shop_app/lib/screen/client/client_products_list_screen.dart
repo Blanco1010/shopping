@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/client_product_list_controller.dart';
+import 'package:shop_app/controllers/client/client_product_list_controller.dart';
 
 class ClientProductsListScreen extends StatefulWidget {
   const ClientProductsListScreen({Key? key}) : super(key: key);
@@ -12,13 +12,13 @@ class ClientProductsListScreen extends StatefulWidget {
 }
 
 class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
-  final ClientProductsListController _co = ClientProductsListController();
+  final ClientProductsListController _con = ClientProductsListController();
   @override
   void initState() {
     super.initState();
 
     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      _co.init(context);
+      _con.init(context, refresh);
     });
   }
 
@@ -26,10 +26,10 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      key: _co.key,
+      key: _con.key,
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => _co.openDrawer(),
+          onTap: () => _con.openDrawer(),
           child: const Icon(Icons.menu),
         ),
       ),
@@ -53,16 +53,18 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/img/no-image.png'),
+                  backgroundImage: _con.user?.image == null
+                      ? const AssetImage('assets/img/no-image.png')
+                      : NetworkImage(_con.user!.image) as ImageProvider,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Text(
-                  'Nombre del usuario',
-                  style: TextStyle(
+                  '${_con.user?.name ?? ''} ${_con.user?.lastname ?? ''}',
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -70,8 +72,8 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                   maxLines: 1,
                 ),
                 Text(
-                  'Email',
-                  style: TextStyle(
+                  _con.user?.email ?? '',
+                  style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -80,8 +82,8 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                   maxLines: 1,
                 ),
                 Text(
-                  'Telefono',
-                  style: TextStyle(
+                  _con.user?.phone ?? '',
+                  style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -102,17 +104,24 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
             title: Text('Mis pedidos'),
             trailing: Icon(Icons.shopping_bag_outlined),
           ),
-          const ListTile(
-            title: Text('Seleccionar rol'),
-            trailing: Icon(Icons.person_outline),
-          ),
+          _con.user != null && _con.user!.roles!.length > 1
+              ? ListTile(
+                  title: const Text('Seleccionar rol'),
+                  trailing: const Icon(Icons.person_outline),
+                  onTap: _con.goToRoles,
+                )
+              : Container(),
           ListTile(
-            onTap: _co.logout,
+            onTap: _con.logout,
             title: const Text('Cerrar sesion'),
             trailing: const Icon(Icons.power_settings_new_outlined),
           ),
         ],
       ),
     );
+  }
+
+  void refresh() {
+    setState(() {});
   }
 }

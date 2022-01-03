@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/user.dart';
 
-class DeliveryOrdersListController {
+class ClientProductsListController {
   late BuildContext context;
   final SecureStogare _secureStogare = SecureStogare();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();

@@ -19,7 +19,7 @@ class _RestaurantOrdersListScreenState
   void initState() {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      _con.init(context);
+      _con.init(context, refresh);
     });
   }
 
@@ -56,16 +56,18 @@ class _RestaurantOrdersListScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/img/no-image.png'),
+                  backgroundImage: _con.user?.image == null
+                      ? const AssetImage('assets/img/no-image.png')
+                      : NetworkImage(_con.user!.image) as ImageProvider,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Text(
-                  'Nombre del usuario',
-                  style: TextStyle(
+                  '${_con.user?.name ?? ''} ${_con.user?.lastname ?? ''}',
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -73,8 +75,8 @@ class _RestaurantOrdersListScreenState
                   maxLines: 1,
                 ),
                 Text(
-                  'Email',
-                  style: TextStyle(
+                  _con.user?.email ?? '',
+                  style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -83,8 +85,8 @@ class _RestaurantOrdersListScreenState
                   maxLines: 1,
                 ),
                 Text(
-                  'Telefono',
-                  style: TextStyle(
+                  _con.user?.phone ?? '',
+                  style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -95,10 +97,13 @@ class _RestaurantOrdersListScreenState
               ],
             ),
           ),
-          const ListTile(
-            title: Text('Seleccionar rol'),
-            trailing: Icon(Icons.person_outline),
-          ),
+          _con.user != null && _con.user!.roles!.length > 1
+              ? ListTile(
+                  title: const Text('Seleccionar rol'),
+                  trailing: const Icon(Icons.person_outline),
+                  onTap: _con.goToRoles,
+                )
+              : Container(),
           ListTile(
             onTap: _con.logout,
             title: const Text('Cerrar sesion'),
@@ -107,5 +112,9 @@ class _RestaurantOrdersListScreenState
         ],
       ),
     );
+  }
+
+  void refresh() {
+    setState(() {});
   }
 }

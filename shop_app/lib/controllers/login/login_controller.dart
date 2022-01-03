@@ -28,7 +28,6 @@ class LoginController {
 
     if (userJson != 'null') {
       User? user = User.fromMap(jsonDecode(userJson));
-      print('USUARIO LOGIN: ${user.toJson()}');
 
       if (user.sessionToken != null) {
         if (user.roles!.length > 1) {
@@ -63,8 +62,6 @@ class LoginController {
         User user = User.fromMap(responseApi.data);
 
         secureStogare.save('user', user.toJson());
-
-        print('USUARIO LOGIN: ${user.toJson()}');
 
         if (user.roles!.length > 1) {
           Navigator.pushNamedAndRemoveUntil(
