@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/controllers/register_controller.dart';
 
-import '../Theme/theme.dart';
-import '../widgets/widgets.dart';
+import '../../Theme/theme.dart';
+import '../../widgets/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

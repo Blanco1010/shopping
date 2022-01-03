@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/response_model.dart';
@@ -25,14 +27,23 @@ class LoginController {
     String userJson = await secureStogare.read('user');
 
     if (userJson != 'null') {
-      User? user = User.fromJson(userJson);
+      User? user = User.fromMap(jsonDecode(userJson));
+      print('USUARIO LOGIN: ${user.toJson()}');
 
       if (user.sessionToken != null) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/client/products',
-          (route) => false,
-        );
+        if (user.roles!.length > 1) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/roles',
+            (route) => false,
+          );
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            user.roles![0].route,
+            (route) => false,
+          );
+        }
       }
     }
   }
@@ -50,12 +61,24 @@ class LoginController {
 
       if (responseApi.success) {
         User user = User.fromMap(responseApi.data);
+
         secureStogare.save('user', user.toJson());
-        Navigator.pushNamedAndRemoveUntil(
-          context!,
-          '/client/products',
-          (route) => false,
-        );
+
+        print('USUARIO LOGIN: ${user.toJson()}');
+
+        if (user.roles!.length > 1) {
+          Navigator.pushNamedAndRemoveUntil(
+            context!,
+            '/roles',
+            (route) => false,
+          );
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+            context!,
+            user.roles![0].route,
+            (route) => false,
+          );
+        }
       } else {
         Snackbar.show(context, responseApi.message);
       }
