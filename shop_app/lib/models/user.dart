@@ -4,7 +4,7 @@ import 'package:shop_app/models/rol.dart';
 
 class User {
   String? id;
-  String email;
+  String? email;
   String name;
   String lastname;
   String phone;
@@ -18,7 +18,7 @@ class User {
 
   User(
       {this.id,
-      required this.email,
+      this.email,
       required this.name,
       required this.lastname,
       required this.phone,

@@ -20,6 +20,22 @@ class UsersProvider {
     this.context = context;
   }
 
+  Future<User?>? getById(String id) async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/findById/$id');
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      final res = await http.get(url, headers: headers);
+      final data = json.decode(res.body);
+
+      User user = User.fromMap(data);
+      return user;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
   Future<Stream?>? createWithImage(User user, File? image) async {
     try {
       final Uri url = Uri.http(_url, '$_api/create');
@@ -36,7 +52,34 @@ class UsersProvider {
         );
       }
 
-      request.fields['user'] = json.encode(user);
+      request.fields['user'] = user.toJson();
+
+      final response = await request.send();
+
+      return response.stream.transform(utf8.decoder);
+    } catch (error) {
+      print('ERROR:  $error');
+      return null;
+    }
+  }
+
+  Future<Stream?>? update(User user, File? image) async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/update');
+      final request = http.MultipartRequest('PUT', url);
+
+      if (image != null) {
+        request.files.add(
+          http.MultipartFile(
+            'image',
+            http.ByteStream(image.openRead().cast()),
+            await image.length(),
+            filename: basename(image.path),
+          ),
+        );
+      }
+
+      request.fields['user'] = user.toJson();
 
       final response = await request.send();
 

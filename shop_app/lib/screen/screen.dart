@@ -8,3 +8,5 @@ export 'package:shop_app/screen/delivery/delivery_orders_list_screen.dart';
 export 'package:shop_app/screen/restaurant/restaurant_orders_list_screen.dart';
 
 export 'package:shop_app/screen/roles/roles_screen.dart';
+
+export 'package:shop_app/screen/client/client_update_screen.dart';

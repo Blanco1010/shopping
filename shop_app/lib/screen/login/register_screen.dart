@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 top: size.height * 0.08,
                 left: size.width * 0.08,
                 child: GestureDetector(
-                  onTap: () => registerCo.back,
+                  onTap: () => registerCo.back(),
                   child: Icon(
                     Icons.arrow_back_ios,
                     color: MyColors.colorPrimary,
@@ -243,7 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => controller.register(),
+        onPressed: registerCo.isLoading == false ? controller.register : null,
         child: const Text('Registrarse', style: TextStyle(fontSize: 25)),
         style: ElevatedButton.styleFrom(
           primary: MyColors.colorPrimary,

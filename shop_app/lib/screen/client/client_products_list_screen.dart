@@ -94,11 +94,12 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
               ],
             ),
           ),
-          const ListTile(
-            title: Text('Editar perfil'),
-            trailing: Icon(
+          ListTile(
+            title: const Text('Editar perfil'),
+            trailing: const Icon(
               Icons.edit_outlined,
             ),
+            onTap: _con.goToUpdate,
           ),
           const ListTile(
             title: Text('Mis pedidos'),

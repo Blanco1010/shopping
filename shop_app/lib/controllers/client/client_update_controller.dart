@@ -2,62 +2,67 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/user_provider.dart';
 import 'package:shop_app/widgets/widgets.dart';
 
-class RegisterController {
+class ClientUpdateController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   BuildContext? context;
 
   UsersProvider userProvider = UsersProvider();
 
   final ImagePicker _picker = ImagePicker();
+
   late Function refresh;
 
   File? imageFile;
 
   bool isLoading = false;
 
-  TextEditingController emailController = TextEditingController(text: '');
+  final SecureStogare _secureStogare = SecureStogare();
+
+  User? user;
+
   TextEditingController firstNameController = TextEditingController(text: '');
   TextEditingController lastNameController = TextEditingController(text: '');
   TextEditingController phoneNumberController = TextEditingController(text: '');
-  TextEditingController passwordController = TextEditingController(text: '');
-  TextEditingController confirmPassword = TextEditingController(text: '');
 
-  Future? init(BuildContext context, Function refresh) {
+  Future? init(BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
+    user = User.fromJson(await _secureStogare.read('user'));
     userProvider.init(context);
+    firstNameController.text = user!.name;
+    lastNameController.text = user!.lastname;
+    phoneNumberController.text = user!.phone;
+    refresh();
   }
 
   void goToRegisterPage() {
     Navigator.pushNamed(context!, '/register');
   }
 
-  void register() async {
+  void update() async {
     if (formKey.currentState!.validate()) {
-      String email = emailController.text.trim();
       String firstName = firstNameController.text.trim();
       String lastName = lastNameController.text.trim();
       String phoneNumber = phoneNumberController.text.trim();
-      String password = passwordController.text.trim();
 
-      User user = User(
-        email: email,
+      User myUser = User(
+        id: user!.id,
         name: firstName,
         lastname: lastName,
-        password: password,
         phone: phoneNumber,
       );
 
       isLoading = true;
       _showLoadingIndicator(context!);
-      Stream? stream = await userProvider.createWithImage(user, imageFile);
+      Stream? stream = await userProvider.update(myUser, imageFile);
       stream?.listen(
-        (res) {
+        (res) async {
           Navigator.pop(context!);
 
           // ResponseApi responseApi = await userProvider.create(user);
@@ -66,9 +71,13 @@ class RegisterController {
           print('RESPUESTA: ${responseApi.toJson()}');
 
           if (responseApi.success == true) {
+            user = await userProvider.getById(myUser.id!); //Get data user
+            _secureStogare.save('user', user!.toJson());
+
             Future.delayed(const Duration(seconds: 2), () {
               isLoading = false;
-              Navigator.pushReplacementNamed(context!, '/login');
+              Navigator.pushNamedAndRemoveUntil(
+                  context!, '/client/products/list', (route) => false);
             });
             Snackbar.show(context, responseApi.message);
           } else {
