@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/user_provider.dart';
@@ -16,8 +20,15 @@ class RegisterController {
 
   UsersProvider userProvider = UsersProvider();
 
-  Future? init(BuildContext context) {
+  final ImagePicker _picker = ImagePicker();
+
+  late Function refresh;
+
+  File? imageFile;
+
+  Future? init(BuildContext context, Function refresh) {
     this.context = context;
+    this.refresh = refresh;
     userProvider.init(context);
   }
 
@@ -41,25 +52,93 @@ class RegisterController {
         phone: phoneNumber,
       );
 
-      ResponseApi responseApi = await userProvider.create(user);
-      print('RESPUESTA: ${responseApi.toJson()}');
-      print(responseApi.toJson());
-      if (responseApi.success == true) {
-        Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushReplacementNamed(context!, '/login');
-        });
-        Snackbar.show(context, responseApi.message);
-      } else {
-        Snackbar.show(context, responseApi.message);
-      }
-    }
+      Stream? stream = await userProvider.createWithImage(user, imageFile);
+      stream?.listen(
+        (res) {
+          // ResponseApi responseApi = await userProvider.create(user);
+          ResponseApi responseApi = ResponseApi.fromJson(res);
 
-    // print(email);
-    // print(firstName);
-    // print(lastName);
-    // print(phoneNumber);
-    // print(password);
-    // print(coPassword);
+          print('RESPUESTA: ${responseApi.toJson()}');
+
+          if (responseApi.success == true) {
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pushReplacementNamed(context!, '/login');
+            });
+            Snackbar.show(context, responseApi.message);
+          } else {
+            Snackbar.show(context, responseApi.message);
+          }
+        },
+      );
+    }
+  }
+
+  Future selectImage(ImageSource imageSource) async {
+    final XFile? image = await _picker.pickImage(source: imageSource);
+
+    if (image != null) {
+      imageFile = File(image.path);
+      refresh();
+    }
+    Navigator.pop(context!);
+  }
+
+  void showAlertDialog() {
+    Widget galleyButton = MaterialButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        selectImage(ImageSource.gallery);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 3),
+        ),
+        height: 100,
+        width: 100,
+        child: Icon(
+          Icons.image,
+          size: MediaQuery.of(context!).size.height * 0.1,
+        ),
+      ),
+    );
+
+    Widget cameraButton = MaterialButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        selectImage(ImageSource.camera);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 3),
+        ),
+        height: 100,
+        width: 100,
+        child: Icon(
+          Icons.camera_alt_outlined,
+          size: MediaQuery.of(context!).size.height * 0.1,
+        ),
+      ),
+    );
+
+    Widget alertDialog = AlertDialog(
+      alignment: Alignment.center,
+      content: SizedBox(
+        height: 150,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            cameraButton,
+            galleyButton,
+          ],
+        ),
+      ),
+    );
+
+    showDialog(
+        context: context!,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 
   void back() {

@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-      registerCo.init(context);
+      registerCo.init(context, refresh);
     });
   }
 
@@ -83,15 +83,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  _imageUser(Size size) {
-    return CircleAvatar(
-      backgroundColor: MyColors.colorPrimary,
-      child: Icon(
-        Icons.account_circle,
-        size: size.width * 0.2,
-        color: Colors.white,
+  Widget _imageUser(Size size) {
+    return GestureDetector(
+      onTap: registerCo.showAlertDialog,
+      child: CircleAvatar(
+        backgroundColor: MyColors.colorPrimary,
+        backgroundImage: registerCo.imageFile == null
+            ? const AssetImage('assets/img/user.png') as ImageProvider
+            : FileImage(registerCo.imageFile!),
+        radius: size.width * 0.15,
       ),
-      radius: size.width * 0.15,
     );
   }
 
@@ -257,5 +258,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void refresh() {
+    setState(() {});
   }
 }

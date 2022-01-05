@@ -37,6 +37,7 @@ dependencies:
   animate_do: ^2.0.0
   http: ^0.13.4
   flutter_secure_storage: ^5.0.2
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
     - assets/img/icon1.png
     - assets/img/icon2.png
     - assets/img/no-image.png
+    - assets/img/user.png
     - assets/gif/jar-loading.gif
   #   - images/a_dot_ham.jpeg
 
