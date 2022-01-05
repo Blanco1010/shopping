@@ -58,6 +58,10 @@ class ClientUpdateController {
         phone: phoneNumber,
       );
 
+      if (imageFile == null) {
+        myUser.image = user?.image;
+      }
+
       isLoading = true;
       _showLoadingIndicator(context!);
       Stream? stream = await userProvider.update(myUser, imageFile);
