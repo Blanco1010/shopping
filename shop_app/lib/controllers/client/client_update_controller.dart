@@ -34,7 +34,7 @@ class ClientUpdateController {
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _secureStogare.read('user'));
-    userProvider.init(context);
+    userProvider.init(context, token: user?.sessionToken);
     firstNameController.text = user!.name;
     lastNameController.text = user!.lastname;
     phoneNumberController.text = user!.phone;
@@ -69,10 +69,7 @@ class ClientUpdateController {
         (res) async {
           Navigator.pop(context!);
 
-          // ResponseApi responseApi = await userProvider.create(user);
           ResponseApi responseApi = ResponseApi.fromJson(res);
-
-          print('RESPUESTA: ${responseApi.toJson()}');
 
           if (responseApi.success == true) {
             user = await userProvider.getById(myUser.id!); //Get data user

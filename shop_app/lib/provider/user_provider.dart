@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shop_app/api/environment.dart';
+import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/response_model.dart';
 
 import 'package:http/http.dart' as http;
@@ -15,17 +16,28 @@ class UsersProvider {
   final String _api = '/api/users';
 
   late BuildContext context;
+  String? token;
 
-  Future init(BuildContext context) async {
+  Future init(BuildContext context, {String? token}) async {
     this.context = context;
+    this.token = token;
   }
 
   Future<User?>? getById(String id) async {
     try {
       final Uri url = Uri.http(_url, '$_api/findById/$id');
-      Map<String, String> headers = {'Content-Type': 'application/json'};
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token!
+      };
 
       final res = await http.get(url, headers: headers);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context);
+      }
+
       final data = json.decode(res.body);
 
       User user = User.fromMap(data);
@@ -68,6 +80,8 @@ class UsersProvider {
       final Uri url = Uri.http(_url, '$_api/update');
       final request = http.MultipartRequest('PUT', url);
 
+      request.headers['Authorization'] = token!;
+
       if (image != null) {
         request.files.add(
           http.MultipartFile(
@@ -82,6 +96,10 @@ class UsersProvider {
       request.fields['user'] = user.toJson();
 
       final response = await request.send();
+
+      if (response.statusCode == 401) {
+        SecureStogare().logout(context);
+      }
 
       return response.stream.transform(utf8.decoder);
     } catch (error) {
