@@ -18,7 +18,7 @@ class RestaurantOrdersListController {
   }
 
   void logout() {
-    secureStogare.logout(context);
+    secureStogare.logout(context, user!.id!);
   }
 
   void openDrawer() {

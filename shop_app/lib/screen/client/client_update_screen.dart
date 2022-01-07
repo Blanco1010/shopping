@@ -60,7 +60,7 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        child: _buttonRegister(size, _con),
+        child: _buttonUpdate(size, _con),
         padding: EdgeInsets.only(bottom: size.height * 0.02),
       ),
     );
@@ -146,7 +146,7 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
     );
   }
 
-  _buttonRegister(Size size, ClientUpdateController controller) {
+  _buttonUpdate(Size size, ClientUpdateController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: size.width * 0.15),
       width: double.infinity,

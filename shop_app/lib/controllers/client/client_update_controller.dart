@@ -34,10 +34,10 @@ class ClientUpdateController {
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _secureStogare.read('user'));
-    userProvider.init(context, token: user?.sessionToken);
     firstNameController.text = user!.name;
     lastNameController.text = user!.lastname;
     phoneNumberController.text = user!.phone;
+    userProvider.init(context, token: user!.sessionToken);
     refresh();
   }
 

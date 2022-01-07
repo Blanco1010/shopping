@@ -17,10 +17,12 @@ class UsersProvider {
 
   late BuildContext context;
   String? token;
+  String? id;
 
-  Future init(BuildContext context, {String? token}) async {
+  Future init(BuildContext context, {String? token, String? id}) async {
     this.context = context;
     this.token = token;
+    this.id = id;
   }
 
   Future<User?>? getById(String id) async {
@@ -35,7 +37,7 @@ class UsersProvider {
 
       //NO AUTORIZADO
       if (res.statusCode == 401) {
-        SecureStogare().logout(context);
+        SecureStogare().logout(context, id);
       }
 
       final data = json.decode(res.body);
@@ -98,7 +100,7 @@ class UsersProvider {
       final response = await request.send();
 
       if (response.statusCode == 401) {
-        SecureStogare().logout(context);
+        SecureStogare().logout(context, id!);
       }
 
       return response.stream.transform(utf8.decoder);
@@ -121,11 +123,6 @@ class UsersProvider {
 
       ResponseApi responseApi = ResponseApi.fromMap(data);
 
-      // ResponseApi responseApi = ResponseApi(
-      //   success: data['success'],
-      //   message: data['message'],
-      //   data: data['data'],
-      // );
       return responseApi;
     } catch (error) {
       return ResponseApi(
@@ -149,18 +146,34 @@ class UsersProvider {
 
       ResponseApi responseApi = ResponseApi.fromMap(data);
 
-      // ResponseApi responseApi = ResponseApi(
-      //   success: data['success'],
-      //   message: data['message'],
-      //   data: data['data']['session_token'],
-      // );
-
       return responseApi;
     } catch (error) {
       return ResponseApi(
         success: false,
         message: error.toString(),
         error: '',
+      );
+    }
+  }
+
+  Future<ResponseApi> logout(String idUser) async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/logout');
+      final bodyParams = json.encode({'id': idUser});
+
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+
+      final res = await http.post(url, headers: headers, body: bodyParams);
+
+      final data = json.decode(res.body);
+
+      ResponseApi responseApi = ResponseApi.fromMap(data);
+
+      return responseApi;
+    } catch (error) {
+      return ResponseApi(
+        success: false,
+        message: 'Hubo un error al cerrar la sesion',
       );
     }
   }

@@ -16,7 +16,7 @@ class DeliveryOrdersListController {
   }
 
   void logout() {
-    _secureStogare.logout(context);
+    _secureStogare.logout(context, user!.id!);
   }
 
   void openDrawer() {
