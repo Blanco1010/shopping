@@ -163,6 +163,28 @@ class Routes {
         },
       );
     }
+
+    if (settings.name == '/restaurant/categories/create') {
+      return PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return const RestaurantCategoriesCreateScreen();
+        },
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curvedAnimation =
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+
+          return FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+              child: child,
+            ),
+          );
+        },
+      );
+    }
     return PageRouteBuilder(
       pageBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation) {

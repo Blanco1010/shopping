@@ -63,8 +63,6 @@ class RegisterController {
           // ResponseApi responseApi = await userProvider.create(user);
           ResponseApi responseApi = ResponseApi.fromJson(res);
 
-          print('RESPUESTA: ${responseApi.toJson()}');
-
           if (responseApi.success == true) {
             Future.delayed(const Duration(seconds: 2), () {
               isLoading = false;

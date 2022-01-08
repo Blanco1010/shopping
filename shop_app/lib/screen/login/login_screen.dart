@@ -140,6 +140,7 @@ class _LoginFormState extends State<_LoginForm> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (value.toString().length <= 8) {
             return 'Mínimo ocho caracteres';
@@ -147,7 +148,6 @@ class _LoginFormState extends State<_LoginForm> {
         },
         icon: Icons.lock,
         labelText: 'Contraseña',
-        formProperty: 'password',
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
         textController: textController,
@@ -164,6 +164,7 @@ class _LoginFormState extends State<_LoginForm> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
@@ -173,7 +174,6 @@ class _LoginFormState extends State<_LoginForm> {
         },
         icon: Icons.email,
         labelText: 'Correo eletrónico',
-        formProperty: 'email',
         keyboardType: TextInputType.emailAddress,
         textController: textController,
       ),

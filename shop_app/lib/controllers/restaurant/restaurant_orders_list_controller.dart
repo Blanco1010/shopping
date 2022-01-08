@@ -28,4 +28,12 @@ class RestaurantOrdersListController {
   void goToRoles() {
     Navigator.pushNamedAndRemoveUntil(context, '/roles', (route) => false);
   }
+
+  void goToCategoryCreate() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/restaurant/categories/create',
+      (route) => false,
+    );
+  }
 }

@@ -105,6 +105,11 @@ class _RestaurantOrdersListScreenState
                 )
               : Container(),
           ListTile(
+            onTap: _con.goToCategoryCreate,
+            title: const Text('Crear categoria'),
+            trailing: const Icon(Icons.list_alt),
+          ),
+          ListTile(
             onTap: _con.logout,
             title: const Text('Cerrar sesion'),
             trailing: const Icon(Icons.power_settings_new_outlined),

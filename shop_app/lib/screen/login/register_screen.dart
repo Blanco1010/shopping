@@ -105,6 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (value.toString().length <= 8) {
             return 'Mínimo ocho caracteres';
@@ -113,7 +114,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         icon: Icons.lock,
         textController: textController,
         labelText: 'Contraseña',
-        formProperty: 'password',
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
       ),
@@ -133,6 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (textController2.value != textController.value) {
             return 'Las contraseñas no coinciden';
@@ -141,7 +142,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         icon: Icons.lock,
         textController: textController,
         labelText: 'Confirmar contraseña',
-        formProperty: 'password',
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
       ),
@@ -157,6 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
@@ -167,7 +168,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         icon: Icons.email,
         textController: textController,
         labelText: 'Correo eletrónico',
-        formProperty: 'email',
         keyboardType: TextInputType.emailAddress,
       ),
     );
@@ -182,6 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
@@ -190,7 +191,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         icon: Icons.person_pin_circle_rounded,
         textController: textController,
         labelText: 'Nombre',
-        formProperty: 'firstname',
         keyboardType: TextInputType.name,
       ),
     );
@@ -205,6 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
@@ -213,7 +214,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         icon: Icons.person_pin_circle_outlined,
         textController: textController,
         labelText: 'Apellido',
-        formProperty: 'lastname',
         keyboardType: TextInputType.name,
       ),
     );
@@ -228,11 +228,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: null,
         icon: Icons.phone,
         textController: textController,
         labelText: 'Telefono ',
-        formProperty: 'lastname',
         keyboardType: TextInputType.number,
       ),
     );

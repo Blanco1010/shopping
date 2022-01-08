@@ -90,6 +90,7 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
@@ -98,7 +99,6 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
         icon: Icons.person_pin_circle_rounded,
         textController: textController,
         labelText: 'Nombre',
-        formProperty: 'firstname',
         keyboardType: TextInputType.name,
       ),
     );
@@ -113,6 +113,7 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
@@ -121,7 +122,6 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
         icon: Icons.person_pin_circle_outlined,
         textController: textController,
         labelText: 'Apellido',
-        formProperty: 'lastname',
         keyboardType: TextInputType.name,
       ),
     );
@@ -136,11 +136,11 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        expand: false,
         validator: null,
         icon: Icons.phone,
         textController: textController,
         labelText: 'Telefono ',
-        formProperty: 'lastname',
         keyboardType: TextInputType.number,
       ),
     );
