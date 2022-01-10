@@ -51,4 +51,12 @@ class RestaurantCategoriesCreateController {
       }
     }
   }
+
+  void goToRoles() {
+    Navigator.pushNamedAndRemoveUntil(
+      context!,
+      '/roles',
+      (route) => false,
+    );
+  }
 }

@@ -20,6 +20,44 @@ class CategoryProvider {
     this.token = token;
   }
 
+  getAll() async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/getAll');
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      };
+
+      final res = await http.get(url, headers: headers);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id);
+      }
+
+      final data = json.decode(res.body);
+
+      List<Category> list = [];
+
+      if (data != null) {
+        for (var element in data) {
+          // Category category = Category.fromJson(element as String);
+          Category category = Category(
+            name: element['name'],
+            description: element['description'],
+            id: element['id'],
+          );
+          list.add(category);
+        }
+      }
+      return list;
+    } catch (error) {
+      print('Error al obtener las categorías: $error');
+      return [];
+    }
+  }
+
   Future<ResponseApi> create(Category category) async {
     try {
       final Uri url = Uri.http(_url, '$_api/create');
@@ -32,7 +70,7 @@ class CategoryProvider {
 
       final res = await http.post(url, headers: headers, body: bodyParams);
 
-//NO AUTORIZADO
+      //NO AUTORIZADO
       if (res.statusCode == 401) {
         SecureStogare().logout(context, id);
       }

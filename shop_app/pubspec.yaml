@@ -38,6 +38,7 @@ dependencies:
   http: ^0.13.4
   flutter_secure_storage: ^5.0.2
   image_picker: ^0.8.4+4
+
  
 
 dev_dependencies:
@@ -68,6 +69,7 @@ flutter:
     - assets/img/icon2.png
     - assets/img/no-image.png
     - assets/img/user.png
+    - assets/img/add-image.png
     - assets/gif/jar-loading.gif
   #   - images/a_dot_ham.jpeg
 

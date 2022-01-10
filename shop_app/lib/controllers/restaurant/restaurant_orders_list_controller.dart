@@ -36,4 +36,12 @@ class RestaurantOrdersListController {
       (route) => false,
     );
   }
+
+  void goToProductCreate() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/restaurant/product/create',
+      (route) => false,
+    );
+  }
 }

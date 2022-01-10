@@ -30,7 +30,14 @@ class _RestaurantCategoriesCreateScreenState
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: const Text('Nueva Categoria'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Nueva Categoria'),
+        centerTitle: true,
+        leading: GestureDetector(
+          onTap: () => _con.goToRoles(),
+          child: const Icon(Icons.arrow_back_ios_new),
+        ),
+      ),
       body: SizedBox(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

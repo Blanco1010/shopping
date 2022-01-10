@@ -110,6 +110,11 @@ class _RestaurantOrdersListScreenState
             trailing: const Icon(Icons.list_alt),
           ),
           ListTile(
+            onTap: _con.goToProductCreate,
+            title: const Text('Crear producto'),
+            trailing: const Icon(Icons.local_pizza),
+          ),
+          ListTile(
             onTap: _con.logout,
             title: const Text('Cerrar sesion'),
             trailing: const Icon(Icons.power_settings_new_outlined),
