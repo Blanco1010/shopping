@@ -18,6 +18,7 @@ class CategoryProvider {
   Future init(BuildContext context, String token, String id) async {
     this.context = context;
     this.token = token;
+    this.id = id;
   }
 
   getAll() async {
