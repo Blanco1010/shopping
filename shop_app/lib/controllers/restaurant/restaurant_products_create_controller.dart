@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,8 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/category.dart';
 import 'package:shop_app/models/product.dart';
+import 'package:shop_app/models/response_model.dart';
 
 import 'package:shop_app/provider/category_provider.dart';
+import 'package:shop_app/provider/product_provider.dart';
 
 import '../../models/user.dart';
 import '../../widgets/widgets.dart';
@@ -22,9 +25,10 @@ class RestaurantProductsCreateController {
 
   TextEditingController titleController = TextEditingController(text: '');
   TextEditingController descriptionController = TextEditingController(text: '');
-  TextEditingController priceController = TextEditingController(text: '0.00');
+  TextEditingController priceController = TextEditingController(text: '0');
 
   final CategoryProvider _categoryProvider = CategoryProvider();
+  final ProductsProvider _productsProvider = ProductsProvider();
 
   List<Category> categories = [];
   String? idCategory; //TO SAVE CATEGORY ID SELECT
@@ -38,6 +42,7 @@ class RestaurantProductsCreateController {
     this.refresh = refresh;
     User user = User.fromJson(await SecureStogare().read('user'));
     _categoryProvider.init(context, user.sessionToken, user.id!);
+    _productsProvider.init(context, user.sessionToken, user.id!);
     getCategories();
   }
 
@@ -51,18 +56,37 @@ class RestaurantProductsCreateController {
     if (formKey.currentState!.validate()) {
       String title = titleController.text.trim();
       String description = descriptionController.text.trim();
-      String price = priceController.text.trim();
+
+      int price = int.parse(priceController.text.trim());
 
       if (imageFile1 != null && imageFile2 != null && imageFile3 != null) {
         if (idCategory != null) {
           Product product = Product(
-              name: title,
-              description: description,
-              price: double.parse(price),
-              idCategory: int.parse(idCategory!),
-              quantity: 10);
+            name: title,
+            description: description,
+            price: price,
+            idCategory: int.parse(idCategory!),
+            quantity: 10,
+          );
 
-          print(product.toJson());
+          List<File> images = [];
+
+          images.add(imageFile1!);
+          images.add(imageFile2!);
+          images.add(imageFile3!);
+          isLoading = true;
+
+          _showLoadingIndicator(context!);
+          Stream? stream = await _productsProvider.create(product, images);
+          stream?.listen((res) {
+            Navigator.pop(context!);
+            ResponseApi responseApi = ResponseApi.fromJson(res);
+            Snackbar.show(context, responseApi.message);
+
+            if (responseApi.success) {
+              resetValues();
+            }
+          });
         } else {
           Snackbar.show(context, 'Selecciona la categoría del producto');
           return;
@@ -71,15 +95,26 @@ class RestaurantProductsCreateController {
         Snackbar.show(context, 'Selecciona las tres imagenes');
         return;
       }
-
-      print(title);
-      print(description);
-      print(price);
     }
   }
 
+  void resetValues() {
+    titleController.text = '';
+    descriptionController.text = '';
+    priceController.text = '0';
+    imageFile1 = null;
+    imageFile2 = null;
+    imageFile3 = null;
+    idCategory = null;
+    refresh();
+  }
+
   Future selectImage(ImageSource imageSource, int numberFile) async {
-    final XFile? image = await _picker.pickImage(source: imageSource);
+    final XFile? image = await _picker.pickImage(
+      source: imageSource,
+      maxWidth: 150,
+      maxHeight: 200,
+    );
 
     if (numberFile == 1) {
       if (image != null) {
@@ -170,4 +205,23 @@ class RestaurantProductsCreateController {
       (route) => false,
     );
   }
+}
+
+Future<dynamic> _showLoadingIndicator(BuildContext context) {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return WillPopScope(
+        onWillPop: () async => false,
+        child: const AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+          ),
+          backgroundColor: Colors.black,
+          content: LoadingIndicator(text: 'Guardando'),
+        ),
+      );
+    },
+  );
 }

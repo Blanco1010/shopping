@@ -65,13 +65,13 @@ class RegisterController {
 
           if (responseApi.success == true) {
             Future.delayed(const Duration(seconds: 2), () {
-              isLoading = false;
               Navigator.pushReplacementNamed(context!, '/login');
             });
             Snackbar.show(context, responseApi.message);
           } else {
             Snackbar.show(context, responseApi.message);
           }
+          isLoading = false;
         },
       );
     }

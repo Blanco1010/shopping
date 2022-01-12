@@ -152,7 +152,7 @@ _textFieldPrice(Size size, TextEditingController textController) {
           return 'Debes llenar el campo';
         }
 
-        if (RegExp(r'^[0-9]+([.][0-9]+)?$').hasMatch(value!) == false) {
+        if (RegExp(r'^[0-9]+([0-9]+)?$').hasMatch(value!) == false) {
           return 'Debes introducir solo los números';
         }
       },

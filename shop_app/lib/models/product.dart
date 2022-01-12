@@ -7,7 +7,7 @@ class Product {
   String? imagen1;
   String? imagen2;
   String? imagen3;
-  double price;
+  int price;
   int idCategory;
   int quantity;
 
@@ -31,11 +31,11 @@ class Product {
         id: json["id"],
         name: json["name"],
         description: json["description"],
-        imagen1: json["imagen1"],
-        imagen2: json["imagen2"],
-        imagen3: json["imagen3"],
-        price: json["price"].toDouble(),
-        idCategory: json["idCategory"],
+        imagen1: json["image1"],
+        imagen2: json["image2"],
+        imagen3: json["image3"],
+        price: json["price"],
+        idCategory: json["id_category"],
         quantity: json["quantity"],
       );
 
@@ -43,11 +43,11 @@ class Product {
         "id": id,
         "name": name,
         "description": description,
-        "imagen1": imagen1,
-        "imagen2": imagen2,
-        "imagen3": imagen3,
+        "image1": imagen1,
+        "image2": imagen2,
+        "image3": imagen3,
         "price": price,
-        "idCategory": idCategory,
+        "id_category": idCategory,
         "quantity": quantity,
       };
 }
