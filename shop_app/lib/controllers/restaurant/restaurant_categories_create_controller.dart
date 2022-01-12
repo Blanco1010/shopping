@@ -36,9 +36,6 @@ class RestaurantCategoriesCreateController {
       String title = titleController.text.trim();
       String description = descriptionController.text.trim();
 
-      print(title);
-      print(description);
-
       Category categoty = Category(name: title, description: description);
       ResponseApi responseApi = await _categoryProvider.create(categoty);
 

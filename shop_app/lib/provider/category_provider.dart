@@ -53,7 +53,6 @@ class CategoryProvider {
       }
       return list;
     } catch (error) {
-      print('Error al obtener las categorías: $error');
       return [];
     }
   }

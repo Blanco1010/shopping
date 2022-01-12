@@ -45,7 +45,6 @@ class UsersProvider {
       User user = User.fromMap(data);
       return user;
     } catch (error) {
-      print(error);
       return null;
     }
   }
@@ -72,7 +71,6 @@ class UsersProvider {
 
       return response.stream.transform(utf8.decoder);
     } catch (error) {
-      print('ERROR:  $error');
       return null;
     }
   }
@@ -105,7 +103,6 @@ class UsersProvider {
 
       return response.stream.transform(utf8.decoder);
     } catch (error) {
-      print('ERROR:  $error');
       return null;
     }
   }

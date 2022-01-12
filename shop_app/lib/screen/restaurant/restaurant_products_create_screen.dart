@@ -251,7 +251,6 @@ _dropDownCategories(
                 items: _dropDownItems(con.categories),
                 value: con.idCategory,
                 onChanged: (option) {
-                  print('Categoría seleccionada: $option');
                   con.idCategory = option;
                   refresh();
                 },

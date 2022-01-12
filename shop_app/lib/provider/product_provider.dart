@@ -22,7 +22,6 @@ class ProductsProvider {
   }
 
   Future<Stream?>? create(Product product, List<File>? images) async {
-    print(product.toJson());
     try {
       final Uri url = Uri.http(_url, '$_api/create');
       final request = http.MultipartRequest('POST', url);
@@ -46,7 +45,6 @@ class ProductsProvider {
 
       return response.stream.transform(utf8.decoder);
     } catch (error) {
-      print('ERROR:  $error');
       return null;
     }
   }
