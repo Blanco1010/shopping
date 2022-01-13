@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/controllers/client/client_product_list_controller.dart';
-import 'package:shop_app/models/category.dart';
 
 class ClientProductsListScreen extends StatefulWidget {
   const ClientProductsListScreen({Key? key}) : super(key: key);
@@ -67,13 +66,96 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
           ),
         ),
         drawer: _drawer(),
-        body: TabBarView(
-          physics: const BouncingScrollPhysics(),
-          children: _con.categorys.map((e) {
-            return Center(
-              child: Text(e.name),
-            );
-          }).toList(),
+        body: _con.categorys.isNotEmpty
+            ? TabBarView(
+                physics: const BouncingScrollPhysics(),
+                children: _con.categorys.map((e) {
+                  return GridView.count(
+                    physics: const BouncingScrollPhysics(),
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
+                    children: List.generate(
+                      10,
+                      (index) {
+                        return _cardShopping();
+                      },
+                    ),
+                  );
+                }).toList())
+            : const Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
+
+  Widget _cardShopping() {
+    return SizedBox(
+      child: Card(
+        // color: Colors.red,
+        elevation: 3.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: 0,
+              child: Container(
+                child: const Icon(Icons.add, color: Colors.white),
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: MyColors.colorPrimary,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    bottomLeft: Radius.circular(15),
+                  ),
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  height: 150,
+                  width: MediaQuery.of(context).size.width * .40,
+                  child: const FadeInImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/img/no-image.png'),
+                    placeholder: AssetImage('assets/gif/jar-loading.gif'),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  height: 40,
+                  child: const Text(
+                    'Nombre del producto',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const Text(
+                    '\$ 0',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -102,12 +184,22 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: _con.user?.image == null
-                      ? const AssetImage('assets/img/no-image.png')
-                      : NetworkImage(_con.user!.image) as ImageProvider,
+                SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: _con.user?.image == null
+                      ? const FadeInImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/img/no-image.png'),
+                          placeholder: AssetImage('assets/gif/jar-loading.gif'),
+                        )
+                      : FadeInImage.assetNetwork(
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (context, url, error) =>
+                              const Icon(Icons.error),
+                          image: (_con.user!.image),
+                          placeholder: ('assets/gif/jar-loading.gif'),
+                        ),
                 ),
                 const SizedBox(height: 15),
                 Text(
@@ -202,7 +294,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
 
   Widget _textFielfSearch() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
         decoration: InputDecoration(
             hintText: 'Buscar',

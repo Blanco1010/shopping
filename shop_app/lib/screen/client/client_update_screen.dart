@@ -69,15 +69,44 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
   Widget _imageUser(Size size) {
     return GestureDetector(
       onTap: _con.showAlertDialog,
-      child: CircleAvatar(
-        backgroundColor: MyColors.colorPrimary,
-        backgroundImage: _con.user?.image != null
-            ? NetworkImage(_con.user!.image)
-            : _con.user?.image == null && _con.imageFile == null
-                ? const AssetImage('assets/img/user.png')
-                : FileImage(_con.imageFile!) as ImageProvider,
-        radius: size.width * 0.15,
+      child: Container(
+        height: 150,
+        width: 150,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: MyColors.colorPrimary,
+            width: 10,
+          ),
+        ),
+        child: _con.imageFile != null
+            ? FadeInImage(
+                fit: BoxFit.fill,
+                image: FileImage(_con.imageFile!),
+                placeholder: const AssetImage('assets/gif/jar-loading.gif'),
+              )
+            : _con.user?.image != null
+                ? FadeInImage.assetNetwork(
+                    fit: BoxFit.fill,
+                    imageErrorBuilder: (context, url, error) =>
+                        const Icon(Icons.error),
+                    image: (_con.user!.image),
+                    placeholder: ('assets/gif/jar-loading.gif'),
+                  )
+                : const FadeInImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/img/user.png'),
+                    placeholder: AssetImage('assets/gif/jar-loading.gif'),
+                  ),
       ),
+      // child: CircleAvatar(
+      //   backgroundColor: MyColors.colorPrimary,
+      //   backgroundImage: _con.user?.image != null
+      //       ? NetworkImage(_con.user!.image)
+      //       : _con.user?.image == null && _con.imageFile == null
+      //           ? const AssetImage('assets/img/user.png')
+      //           : FileImage(_con.imageFile!) as ImageProvider,
+      //   radius: size.width * 0.15,
+      // ),
     );
   }
 

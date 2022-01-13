@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: size.height * 0.05),
+                      SizedBox(height: size.height * 0.08),
                       _imageUser(size),
                       SizedBox(height: size.height * 0.04),
                       _textFieldEmail(size, registerCo.emailController),
@@ -86,13 +86,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _imageUser(Size size) {
     return GestureDetector(
       onTap: registerCo.showAlertDialog,
-      child: CircleAvatar(
-        backgroundColor: MyColors.colorPrimary,
-        backgroundImage: registerCo.imageFile == null
-            ? const AssetImage('assets/img/user.png') as ImageProvider
-            : FileImage(registerCo.imageFile!),
-        radius: size.width * 0.15,
+      child: Container(
+        height: 150,
+        width: 150,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: MyColors.colorPrimary,
+            width: 10,
+          ),
+        ),
+        child: registerCo.imageFile == null
+            ? const FadeInImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/img/user.png'),
+                placeholder: AssetImage('assets/gif/jar-loading.gif'),
+              )
+            : FadeInImage(
+                fit: BoxFit.cover,
+                image: FileImage(registerCo.imageFile!),
+                placeholder: const AssetImage('assets/gif/jar-loading.gif'),
+              ),
       ),
+      // child: CircleAvatar(
+      //   backgroundColor: MyColors.colorPrimary,
+      //   backgroundImage: registerCo.imageFile == null
+      //       ? const AssetImage('assets/img/user.png') as ImageProvider
+      //       : FileImage(registerCo.imageFile!),
+      //   radius: size.width * 0.15,
+      // ),
     );
   }
 

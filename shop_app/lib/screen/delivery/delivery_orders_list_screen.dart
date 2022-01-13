@@ -57,13 +57,28 @@ class _DeliveryOrdersListScreenState extends State<DeliveryOrdersListScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: _con.user?.image == null
-                      ? const AssetImage('assets/img/no-image.png')
-                      : NetworkImage(_con.user!.image) as ImageProvider,
+                SizedBox(
+                  height: 65,
+                  width: 120,
+                  child: _con.user?.image == null
+                      ? const FadeInImage(
+                          image: AssetImage('assets/img/no-image.png'),
+                          placeholder: AssetImage('assets/gif/jar-loading.gif'),
+                        )
+                      : FadeInImage.assetNetwork(
+                          imageErrorBuilder: (context, url, error) =>
+                              const Icon(Icons.error),
+                          image: (_con.user!.image),
+                          placeholder: ('assets/gif/jar-loading.gif'),
+                        ),
                 ),
+                // CircleAvatar(
+                //   radius: 30,
+                //   backgroundColor: Colors.transparent,
+                //   backgroundImage: _con.user?.image == null
+                //       ? const AssetImage('assets/img/no-image.png')
+                //       : NetworkImage(_con.user!.image) as ImageProvider,
+                // ),
                 const SizedBox(height: 15),
                 Text(
                   '${_con.user?.name ?? ''} ${_con.user?.lastname ?? ''}',
