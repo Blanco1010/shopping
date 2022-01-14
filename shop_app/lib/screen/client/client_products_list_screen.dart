@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/controllers/client/client_product_list_controller.dart';
+import 'package:shop_app/models/product.dart';
+import 'package:shop_app/widgets/no_data_widget.dart';
+
+import '../../models/category.dart';
 
 class ClientProductsListScreen extends StatefulWidget {
   const ClientProductsListScreen({Key? key}) : super(key: key);
@@ -69,36 +73,97 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
         body: _con.categorys.isNotEmpty
             ? TabBarView(
                 physics: const BouncingScrollPhysics(),
-                children: _con.categorys.map((e) {
-                  return GridView.count(
-                    physics: const BouncingScrollPhysics(),
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
-                    children: List.generate(
-                      10,
-                      (index) {
-                        return _cardShopping();
-                      },
-                    ),
+                children: _con.categorys.map((Category e) {
+                  return FutureBuilder(
+                    future: _con.getProducts(e.id!),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<List<Product>> snapshot,
+                    ) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.isNotEmpty) {
+                          return GridView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.7,
+                            ),
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: (_, index) {
+                              return _cardShopping(snapshot.data![index]);
+                            },
+                          );
+                        } else {
+                          return NoDataWidget(text: 'No hay productos');
+                        }
+                      } else {
+                        return NoDataWidget(text: 'No hay productos');
+                      }
+                    },
                   );
-                }).toList())
+                }).toList(),
+              )
             : const Center(child: CircularProgressIndicator()),
       ),
     );
   }
 
-  Widget _cardShopping() {
-    return SizedBox(
+  Widget _cardShopping(Product product) {
+    return GestureDetector(
+      onTap: _con.openBottomSheet,
       child: Card(
-        // color: Colors.red,
         elevation: 3.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
         child: Stack(
           children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  height: 170,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  child: FadeInImage(
+                    fit: BoxFit.fill,
+                    image: product.imagen1 != null
+                        ? NetworkImage(product.imagen1!) as ImageProvider
+                        : const AssetImage('assets/img/no-image.png'),
+                    placeholder: const AssetImage('assets/gif/jar-loading.gif'),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  height: 40,
+                  child: Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    '\$ ${product.price}',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Positioned(
               right: 0,
               child: Container(
@@ -114,47 +179,6 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * .40,
-                  child: const FadeInImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/img/no-image.png'),
-                    placeholder: AssetImage('assets/gif/jar-loading.gif'),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  height: 40,
-                  child: const Text(
-                    'Nombre del producto',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: const Text(
-                    '\$ 0',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),

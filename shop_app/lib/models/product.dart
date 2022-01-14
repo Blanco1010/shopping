@@ -9,7 +9,7 @@ class Product {
   String? imagen3;
   int price;
   int idCategory;
-  int quantity;
+  int? quantity;
 
   Product({
     this.id,
@@ -20,7 +20,7 @@ class Product {
     this.imagen3,
     required this.price,
     required this.idCategory,
-    required this.quantity,
+    this.quantity,
   });
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));

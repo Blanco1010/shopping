@@ -21,7 +21,7 @@ class CategoryProvider {
     this.id = id;
   }
 
-  getAll() async {
+  Future<List<Category>> getAll() async {
     try {
       final Uri url = Uri.http(_url, '$_api/getAll');
 
