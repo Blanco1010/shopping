@@ -113,7 +113,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
 
   Widget _cardShopping(Product product) {
     return GestureDetector(
-      onTap: _con.openBottomSheet,
+      onTap: () => _con.goToProductDetail(product),
       child: Card(
         elevation: 3.0,
         shape: RoundedRectangleBorder(

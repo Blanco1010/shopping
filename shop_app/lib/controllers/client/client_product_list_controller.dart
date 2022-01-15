@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/category.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/category_provider.dart';
 import 'package:shop_app/provider/product_provider.dart';
-import 'package:shop_app/screen/client/client_product_detail_screen.dart';
+
+import '../../screen/client/client_product_detail_screen.dart';
 
 class ClientProductsListController {
   late BuildContext context;
@@ -44,10 +44,14 @@ class ClientProductsListController {
     refresh();
   }
 
-  void openBottomSheet() {
-    showMaterialModalBottomSheet(
-      context: context,
-      builder: (context) => const ClientProductDetailScreen(),
+  void goToProductDetail(Product product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClientProductDetailScreen(
+          product: product,
+        ),
+      ),
     );
   }
 

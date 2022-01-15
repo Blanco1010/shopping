@@ -111,8 +111,8 @@ class RestaurantProductsCreateController {
   Future selectImage(ImageSource imageSource, int numberFile) async {
     final XFile? image = await _picker.pickImage(
       source: imageSource,
-      maxWidth: 150,
-      maxHeight: 200,
+      // maxWidth: 150,
+      // maxHeight: 200,
     );
 
     if (numberFile == 1) {
