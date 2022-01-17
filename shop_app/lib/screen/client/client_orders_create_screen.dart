@@ -59,7 +59,7 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
     return Container(
       margin: const EdgeInsets.all(20),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => _con.goToAddress(),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),

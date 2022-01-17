@@ -9,3 +9,6 @@ export 'package:shop_app/screen/restaurant/restaurant_categories_create_screen.d
 export 'package:shop_app/screen/restaurant/restaurant_products_create_screen.dart';
 export 'package:shop_app/screen/client/client_product_detail_screen.dart';
 export 'package:shop_app/screen/client/client_orders_create_screen.dart';
+export 'package:shop_app/screen/client/client_address_create_screen.dart';
+export 'package:shop_app/screen/client/client_address_list_screen.dart';
+export 'package:shop_app/screen/client/client_address_map_screen.dart';

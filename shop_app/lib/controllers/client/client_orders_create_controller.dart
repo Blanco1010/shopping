@@ -50,6 +50,10 @@ class ClientOrderCreateController {
     }
   }
 
+  void goToAddress() {
+    Navigator.pushNamed(context, '/client/address/list');
+  }
+
   void deleteItem(Product product) {
     selectProducts.removeWhere((p) => p.id == product.id);
     _secureStogare.save('order', json.encode(selectProducts));
