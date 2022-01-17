@@ -287,31 +287,34 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
   }
 
   Widget _shoppingBag() {
-    return Container(
-      margin: EdgeInsets.only(
-        right: MediaQuery.of(context).size.width * 0.04,
-        top: MediaQuery.of(context).size.height * 0.02,
-      ),
-      child: Stack(
-        children: [
-          const Icon(
-            Icons.shopping_bag,
-            color: Colors.black,
-          ),
-          Positioned(
-            right: 0,
-            child: Container(
-              height: 10,
-              width: 10,
-              decoration: const BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
+    return GestureDetector(
+      onTap: () => _con.goToOrderCreateScreen(),
+      child: Container(
+        margin: EdgeInsets.only(
+          right: MediaQuery.of(context).size.width * 0.04,
+          top: MediaQuery.of(context).size.height * 0.02,
+        ),
+        child: Stack(
+          children: [
+            const Icon(
+              Icons.shopping_bag,
+              color: Colors.black,
+            ),
+            Positioned(
+              right: 0,
+              child: Container(
+                height: 10,
+                width: 10,
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30),
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

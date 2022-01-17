@@ -8,3 +8,4 @@ export 'package:shop_app/screen/client/client_update_screen.dart';
 export 'package:shop_app/screen/restaurant/restaurant_categories_create_screen.dart';
 export 'package:shop_app/screen/restaurant/restaurant_products_create_screen.dart';
 export 'package:shop_app/screen/client/client_product_detail_screen.dart';
+export 'package:shop_app/screen/client/client_orders_create_screen.dart';

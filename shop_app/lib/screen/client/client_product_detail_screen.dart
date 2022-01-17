@@ -117,7 +117,10 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
     return Container(
       margin: const EdgeInsets.all(20),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          _clientProductDetailController.addToBag();
+          Navigator.pop(context);
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -161,7 +164,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
         children: [
           GestureDetector(
             onTap: () {
-              print('add');
+              _clientProductDetailController.addItem();
             },
             child: Icon(
               Icons.add_circle_outline,
@@ -171,9 +174,9 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 5),
-            child: const Text(
-              '1',
-              style: TextStyle(
+            child: Text(
+              '${_clientProductDetailController.counter}',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey,
@@ -182,7 +185,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
           ),
           GestureDetector(
             onTap: () {
-              print('remove');
+              _clientProductDetailController.removeItem();
             },
             child: Icon(
               Icons.remove_circle_outline,
@@ -194,7 +197,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
           Container(
             margin: const EdgeInsets.only(right: 20),
             child: Text(
-              '\$${_clientProductDetailController.product.price}',
+              '\$${_clientProductDetailController.price}',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

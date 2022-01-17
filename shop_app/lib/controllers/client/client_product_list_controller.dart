@@ -67,6 +67,10 @@ class ClientProductsListController {
     Navigator.pushNamed(context, '/client/update');
   }
 
+  void goToOrderCreateScreen() {
+    Navigator.pushNamed(context, '/client/order/create');
+  }
+
   void goToRoles() {
     Navigator.pushNamedAndRemoveUntil(context, '/roles', (route) => false);
   }
