@@ -38,6 +38,10 @@ dependencies:
   http: ^0.13.4
   flutter_secure_storage: ^5.0.2
   image_picker: ^0.8.4+4
+  google_maps_flutter: ^2.1.1
+  geolocator: ^8.0.3
+  location: ^4.3.0
+  
 
 
  
