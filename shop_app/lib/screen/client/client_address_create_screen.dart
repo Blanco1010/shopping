@@ -45,7 +45,7 @@ class _ClientAddressCreateScreenState extends State<ClientAddressCreateScreen> {
                 SizedBox(height: size.height * 0.01),
                 _textFieldNeighborhood(size, _con.neighborhoodController),
                 SizedBox(height: size.height * 0.01),
-                _textFieldRefPoint(size, _con.referencePointController),
+                _textFieldRefPoint(size, _con.refPointController),
               ],
             ),
           ),

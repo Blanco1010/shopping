@@ -38,9 +38,14 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
               children: _con.selectProducts.map((Product product) {
                 return _cardProduct(product);
               }).toList())
-          : NoDataWidget(text: 'Ningún producto agregado'),
+          : Container(
+              alignment: Alignment.center,
+              child: NoDataWidget(
+                text: 'Ningún producto agregado',
+              ),
+            ),
       bottomNavigationBar: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.20,
+          height: MediaQuery.of(context).size.height * 0.25,
           child: Column(
             children: [
               Divider(

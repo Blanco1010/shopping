@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +11,9 @@ class ClientAddressMapController {
   late Function refresh;
 
   Position? _position;
+
+  String? addressName;
+  LatLng? addressLatLng;
 
   CameraPosition initialPosition = const CameraPosition(
     target: LatLng(4.801833, -75.739738),
@@ -22,6 +26,33 @@ class ClientAddressMapController {
     this.refresh = refresh;
     this.context = context;
     checkGPS();
+  }
+
+  void selectRefPoint() {
+    Map<String, dynamic> data = {
+      'address': addressName,
+      'lat': addressLatLng?.latitude,
+      'lng': addressLatLng?.longitude,
+    };
+    Navigator.pop(context, data);
+  }
+
+  Future<void> setLocationDraggableInfo() async {
+    double lat = initialPosition.target.latitude;
+    double lng = initialPosition.target.longitude;
+
+    List<Placemark> address = await placemarkFromCoordinates(lat, lng);
+
+    String? direction = address[0].thoroughfare;
+    String? street = address[0].subThoroughfare;
+    String? city = address[0].locality;
+    String? department = address[0].administrativeArea;
+    String? country = address[0].country;
+
+    addressName = '$direction # $street, $city, $department';
+    addressLatLng = LatLng(lat, lng);
+
+    refresh();
   }
 
   void onMapCreated(GoogleMapController controller) {
