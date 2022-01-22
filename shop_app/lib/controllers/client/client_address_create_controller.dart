@@ -6,7 +6,6 @@ import 'package:shop_app/provider/address_provider.dart';
 import 'package:shop_app/screen/client/client_address_map_screen.dart';
 
 import '../../models/user.dart';
-import '../../widgets/snackbar.dart';
 
 class ClientAddressCreateController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -54,9 +53,13 @@ class ClientAddressCreateController {
       ResponseApi responseApi = await _addressProvider.create(addressUser);
 
       if (responseApi.success) {
-        Snackbar.show(context, responseApi.message);
+        // Snackbar.show(context, responseApi.message);
+
+        addressUser.id = responseApi.data;
+        _secureStogare.save('address', addressUser.toJson());
+
+        Navigator.pop(context, true);
       }
-      Navigator.pop(context);
     }
   }
 

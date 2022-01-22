@@ -97,10 +97,10 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                             },
                           );
                         } else {
-                          return NoDataWidget(text: 'No hay productos');
+                          return const NoDataWidget(text: 'No hay productos');
                         }
                       } else {
-                        return NoDataWidget(text: 'No hay productos');
+                        return const NoDataWidget(text: 'No hay productos');
                       }
                     },
                   );

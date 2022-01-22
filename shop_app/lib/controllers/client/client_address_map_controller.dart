@@ -47,7 +47,7 @@ class ClientAddressMapController {
     String? street = address[0].subThoroughfare;
     String? city = address[0].locality;
     String? department = address[0].administrativeArea;
-    String? country = address[0].country;
+    // String? country = address[0].country;
 
     addressName = '$direction # $street, $city, $department';
     addressLatLng = LatLng(lat, lng);
@@ -80,7 +80,8 @@ class ClientAddressMapController {
       _position = await Geolocator.getLastKnownPosition();
       animateCameraToPosition(_position!.latitude, _position!.longitude);
     } catch (error) {
-      print(error);
+      // print(error);
+
     }
   }
 

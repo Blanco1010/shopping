@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
+import 'package:shop_app/models/address.dart';
 import 'package:shop_app/widgets/no_data_widget.dart';
 import '../../controllers/client/client_address_list_controller.dart';
 
@@ -35,12 +36,99 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
       ),
       body: Column(children: [
         _textSelectAddress(),
-        Container(
-            margin: const EdgeInsets.symmetric(vertical: 50),
-            child: NoDataWidget(text: 'Agregar una nueva dirección')),
-        _buttonNewAddress(),
+        Expanded(child: _listAddress()),
       ]),
       bottomNavigationBar: _buttonAccept(),
+    );
+  }
+
+  Widget _noAddress() {
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          child: const NoDataWidget(text: 'Agregar una nueva dirección'),
+        ),
+        _buttonNewAddress(),
+      ],
+    );
+  }
+
+  Widget _listAddress() {
+    return FutureBuilder(
+      future: _con.getAddress(),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<Address>> snapshot,
+      ) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.isNotEmpty) {
+            return ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: snapshot.data?.length ?? 0,
+              itemBuilder: (_, index) {
+                return _radioSelectorAddress(
+                  snapshot.data![index],
+                  index,
+                );
+              },
+            );
+          } else {
+            return _noAddress();
+          }
+        } else {
+          return _noAddress();
+        }
+      },
+    );
+  }
+
+  Widget _radioSelectorAddress(Address address, int index) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        children: [
+          Radio(
+            value: index,
+            groupValue: _con.radioValue,
+            onChanged: (value) {
+              _con.handleRadoiValueChange(index);
+            },
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                address.address,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                address.neightborhood,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              print(_con.address[index].id);
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: Icon(
+                Icons.delete,
+                color: MyColors.colorPrimary,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

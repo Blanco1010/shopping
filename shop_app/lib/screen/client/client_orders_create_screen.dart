@@ -40,7 +40,7 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
               }).toList())
           : Container(
               alignment: Alignment.center,
-              child: NoDataWidget(
+              child: const NoDataWidget(
                 text: 'Ningún producto agregado',
               ),
             ),

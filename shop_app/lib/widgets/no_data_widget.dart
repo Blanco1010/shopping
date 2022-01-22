@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NoDataWidget extends StatelessWidget {
-  String text;
+  final String text;
 
-  NoDataWidget({Key? key, required this.text}) : super(key: key);
+  const NoDataWidget({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

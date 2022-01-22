@@ -33,23 +33,27 @@ class _ClientAddressCreateScreenState extends State<ClientAddressCreateScreen> {
         title: const Text('Nueva dirección'),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          _textCompleteData(),
-          Form(
-            key: _con.formKey,
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.08),
-                _textFieldAddress(size, _con.addressController),
-                SizedBox(height: size.height * 0.01),
-                _textFieldNeighborhood(size, _con.neighborhoodController),
-                SizedBox(height: size.height * 0.01),
-                _textFieldRefPoint(size, _con.refPointController),
-              ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Column(
+          children: [
+            _textCompleteData(),
+            Form(
+              key: _con.formKey,
+              child: Column(
+                children: [
+                  SizedBox(height: size.height * 0.08),
+                  _textFieldAddress(size, _con.addressController),
+                  SizedBox(height: size.height * 0.01),
+                  _textFieldNeighborhood(size, _con.neighborhoodController),
+                  SizedBox(height: size.height * 0.01),
+                  _textFieldRefPoint(size, _con.refPointController),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: _buttonAccept(),
     );

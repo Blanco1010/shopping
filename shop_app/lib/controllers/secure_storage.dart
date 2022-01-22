@@ -5,7 +5,7 @@ import 'package:shop_app/provider/user_provider.dart';
 class SecureStogare {
   void save(String key, value) async {
     const storage = FlutterSecureStorage();
-    await storage.write(key: key, value: value);
+    await storage.write(key: key, value: value.toString());
   }
 
   Future<String> read(String key) async {

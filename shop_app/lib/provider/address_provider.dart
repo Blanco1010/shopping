@@ -21,42 +21,46 @@ class AddressProvider {
     this.id = id;
   }
 
-  // Future<List<Category>> getAll() async {
-  //   try {
-  //     final Uri url = Uri.http(_url, '$_api/getAll');
+  Future<List<Address>> getByUser() async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/findByUser/$id');
 
-  //     Map<String, String> headers = {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': token,
-  //     };
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      };
 
-  //     final res = await http.get(url, headers: headers);
+      final res = await http.get(url, headers: headers);
 
-  //     //NO AUTORIZADO
-  //     if (res.statusCode == 401) {
-  //       SecureStogare().logout(context, id);
-  //     }
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id);
+      }
 
-  //     final data = json.decode(res.body);
+      final data = json.decode(res.body);
 
-  //     List<Category> list = [];
+      List<Address> list = [];
 
-  //     if (data != null) {
-  //       for (var element in data) {
-  //         // Category category = Category.fromJson(element as String);
-  //         Category category = Category(
-  //           name: element['name'],
-  //           description: element['description'],
-  //           id: element['id'],
-  //         );
-  //         list.add(category);
-  //       }
-  //     }
-  //     return list;
-  //   } catch (error) {
-  //     return [];
-  //   }
-  // }
+      if (data != null) {
+        for (var element in data) {
+          // Category category = Category.fromJson(element as String);
+          Address category = Address(
+            id: element['id'],
+            idUser: element['id_user'],
+            address: element['address'],
+            lat: double.parse(element['lat']),
+            lng: double.parse(element['lng']),
+            neightborhood: element['neightborhood'],
+          );
+          list.add(category);
+        }
+      }
+
+      return list;
+    } catch (error) {
+      return [];
+    }
+  }
 
   Future<ResponseApi> create(Address address) async {
     try {
