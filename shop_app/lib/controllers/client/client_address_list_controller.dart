@@ -3,8 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/address.dart';
+import 'package:shop_app/models/order.dart';
+import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/provider/address_provider.dart';
+import 'package:shop_app/provider/order_provider.dart';
 
+import '../../models/product.dart';
 import '../../models/user.dart';
 
 class ClientAddressListController {
@@ -13,8 +17,10 @@ class ClientAddressListController {
   List<Address> address = [];
   final AddressProvider _addressProvider = AddressProvider();
   User? user;
-
+  List<Product> selectProducts = [];
   int radioValue = 0;
+
+  final OrderProvider _orderProvider = OrderProvider();
 
   final SecureStogare _secureStogare = SecureStogare();
 
@@ -23,7 +29,33 @@ class ClientAddressListController {
     this.context = context;
     user = User.fromJson(await SecureStogare().read('user'));
     _addressProvider.init(context, user!.sessionToken!, user!.id!);
+    _orderProvider.init(context, user!.sessionToken!, user!.id!);
     refresh();
+  }
+
+  void createOrder() async {
+    Address a = Address.fromJson(await _secureStogare.read('address'));
+
+    for (var item
+        in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
+      selectProducts.add(Product.fromJson(item));
+    }
+
+    Order order = Order(
+      idAddress: a.id!,
+      idClient: user!.id!,
+      lat: a.lat,
+      lng: a.lng,
+      products: selectProducts,
+      status: '',
+      timestamp: null,
+    );
+
+    ResponseApi response = await _orderProvider.create(order);
+
+    selectProducts.clear();
+
+    print(response.message);
   }
 
   void handleRadoiValueChange(int value) {
@@ -34,17 +66,13 @@ class ClientAddressListController {
 
   Future<List<Address>> getAddress() async {
     address = await _addressProvider.getByUser();
-
     Address a = Address.fromJson(await _secureStogare.read('address'));
-
     int index = address.indexWhere((element) => element.id == a.id);
 
     if (index != -1) {
       radioValue = index;
     }
-
     print(index);
-
     return address;
   }
 

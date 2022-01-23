@@ -167,7 +167,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
             borderRadius: BorderRadius.circular(25.0),
           ),
         ),
-        onPressed: () {},
+        onPressed: _con.createOrder,
         child: const Text(
           'ACEPTAR',
           style: TextStyle(
