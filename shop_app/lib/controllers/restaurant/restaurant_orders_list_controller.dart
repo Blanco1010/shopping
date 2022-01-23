@@ -9,6 +9,8 @@ class RestaurantOrdersListController {
 
   User? user;
 
+  List<String> categories = ['PAGADO', 'DESPACHADO', 'EN CAMINO', 'ENTREGADO'];
+
   final SecureStogare _secureStogare = SecureStogare();
 
   Future init(BuildContext context, Function refresh) async {
