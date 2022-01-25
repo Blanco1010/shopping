@@ -39,13 +39,13 @@ class User {
         email: json["email"],
         name: json["name"],
         lastname: json["lastname"],
-        phone: json["phone"],
+        phone: json["phone"] ?? '0',
         image: json["image"],
         password: json["password"] ?? 'null',
         isAvailabe: json["is_availabe"],
         sessionToken: json["session_token"],
-        createdAt: (json["created_at"]),
-        updateAt: (json["update_at"]),
+        createdAt: json["created_at"],
+        updateAt: json["update_at"],
         roles: json['roles'] == null
             ? []
             : List<Rol>.from(

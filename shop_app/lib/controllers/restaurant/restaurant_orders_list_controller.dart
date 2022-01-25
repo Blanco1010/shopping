@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
+import 'package:shop_app/models/order.dart';
 import 'package:shop_app/models/user.dart';
+import 'package:shop_app/provider/order_provider.dart';
 
 class RestaurantOrdersListController {
   late BuildContext context;
@@ -9,14 +11,20 @@ class RestaurantOrdersListController {
 
   User? user;
 
-  List<String> categories = ['PAGADO', 'DESPACHADO', 'EN CAMINO', 'ENTREGADO'];
+  List<String> status = ['PAGADO', 'DESPACHADO', 'EN CAMINO', 'ENTREGADO'];
+  final OrderProvider _orderProvider = OrderProvider();
 
   final SecureStogare _secureStogare = SecureStogare();
 
   Future init(BuildContext context, Function refresh) async {
     this.context = context;
     user = User.fromJson(await _secureStogare.read('user'));
+    _orderProvider.init(context, user!.sessionToken, user!.id!);
     refresh();
+  }
+
+  Future<List<Order>> getOrders(String status) async {
+    return await _orderProvider.getByStatus(status);
   }
 
   void logout() {

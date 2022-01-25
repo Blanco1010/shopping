@@ -4,6 +4,8 @@ import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/controllers/restaurant/restaurant_orders_list_controller.dart';
 import 'package:shop_app/models/order.dart';
 
+import '../../widgets/no_data_widget.dart';
+
 class RestaurantOrdersListScreen extends StatefulWidget {
   const RestaurantOrdersListScreen({Key? key}) : super(key: key);
 
@@ -19,15 +21,14 @@ class _RestaurantOrdersListScreenState
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      _con.init(context, refresh);
-    });
+    _con.init(context, refresh);
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {});
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _con.categories.length,
+      length: _con.status.length,
       child: Scaffold(
         drawerEnableOpenDragGesture: false,
         key: _con.key,
@@ -54,50 +55,44 @@ class _RestaurantOrdersListScreenState
               unselectedLabelColor: Colors.grey[400],
               isScrollable: true,
               tabs: List.generate(
-                _con.categories.length,
+                _con.status.length,
                 (index) => Tab(
-                  child: Text(_con.categories[index]),
+                  child: Text(_con.status[index]),
                 ),
               ),
             ),
           ),
         ),
         drawer: _drawer(),
-        body: _con.categories.isNotEmpty
+        body: _con.status.isNotEmpty
             ? TabBarView(
                 physics: const BouncingScrollPhysics(),
-                children: _con.categories.map((String e) {
-                  return _cardOder(null);
-                  // return FutureBuilder(
-                  //   future: _con.getProducts(e.id!),
-                  //   builder: (
-                  //     BuildContext context,
-                  //     AsyncSnapshot<List<Product>> snapshot,
-                  //   ) {
-                  //     if (snapshot.hasData) {
-                  //       if (snapshot.data!.isNotEmpty) {
-                  //         return GridView.builder(
-                  //           physics: const BouncingScrollPhysics(),
-                  //           keyboardDismissBehavior:
-                  //               ScrollViewKeyboardDismissBehavior.onDrag,
-                  //           gridDelegate:
-                  //               const SliverGridDelegateWithFixedCrossAxisCount(
-                  //             crossAxisCount: 2,
-                  //             childAspectRatio: 0.7,
-                  //           ),
-                  //           itemCount: snapshot.data?.length ?? 0,
-                  //           itemBuilder: (_, index) {
-                  //             return _cardShopping(snapshot.data![index]);
-                  //           },
-                  //         );
-                  //       } else {
-                  //         return const NoDataWidget(text: 'No hay productos');
-                  //       }
-                  //     } else {
-                  //       return const NoDataWidget(text: 'No hay productos');
-                  //     }
-                  //   },
-                  // );
+                children: _con.status.map((String status) {
+                  return FutureBuilder(
+                    future: _con.getOrders(status),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<List<Order>> snapshot,
+                    ) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.isNotEmpty) {
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: (_, index) {
+                              return _cardOder(snapshot.data![index], index);
+                            },
+                          );
+                        } else {
+                          return const NoDataWidget(text: 'No hay ordenes');
+                        }
+                      } else {
+                        return const NoDataWidget(text: 'No hay ordenes');
+                      }
+                    },
+                  );
                 }).toList(),
               )
             : const Center(child: CircularProgressIndicator()),
@@ -105,7 +100,7 @@ class _RestaurantOrdersListScreenState
     );
   }
 
-  Widget _cardOder(Order? order) {
+  Widget _cardOder(Order? order, int pos) {
     return Container(
       height: 160,
       margin: const EdgeInsets.symmetric(
@@ -133,9 +128,9 @@ class _RestaurantOrdersListScreenState
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
-                  child: const Text(
-                    'Orden #0',
-                    style: TextStyle(
+                  child: Text(
+                    'Orden #$pos',
+                    style: const TextStyle(
                       fontSize: 15,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -156,18 +151,18 @@ class _RestaurantOrdersListScreenState
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 10, left: 20),
-                  child: const Text(
-                    'Cliente: Jonathan',
-                    style: TextStyle(fontSize: 13),
+                  child: Text(
+                    'Cliente: ${order!.client!.name} ${order.client!.lastname}',
+                    style: const TextStyle(fontSize: 13),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 10, left: 20),
-                  child: const Text(
-                    'Entregar en: Calle false Carrera falsa',
-                    style: TextStyle(fontSize: 13),
+                  child: Text(
+                    'Entregar en: ${order.address!.address}',
+                    style: const TextStyle(fontSize: 13),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

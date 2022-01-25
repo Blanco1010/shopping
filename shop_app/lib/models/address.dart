@@ -11,7 +11,7 @@ class Address {
   });
 
   String? id;
-  String idUser;
+  String? idUser;
   String address;
   String neightborhood;
   double lat;
@@ -22,10 +22,10 @@ class Address {
   String toJson() => json.encode(toMap());
 
   factory Address.fromMap(Map<String, dynamic> json) => Address(
-        id: json["id"] ?? 'null',
-        idUser: json["id_user"],
+        id: json["id"].toString(),
+        idUser: json["id_user"].toString(),
         address: json["address"],
-        neightborhood: json["neightborhood"],
+        neightborhood: json["neighborhood"],
         lat: json["lat"].toDouble(),
         lng: json["lng"].toDouble(),
       );
