@@ -7,6 +7,7 @@ import 'package:shop_app/screen/restaurant/restaurant_orders_create_screen.dart'
 
 class RestaurantOrdersListController {
   late BuildContext context;
+  late Function refresh;
   SecureStogare secureStogare = SecureStogare();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 
@@ -19,6 +20,7 @@ class RestaurantOrdersListController {
 
   Future init(BuildContext context, Function refresh) async {
     this.context = context;
+    this.refresh = refresh;
     user = User.fromJson(await _secureStogare.read('user'));
     _orderProvider.init(context, user!.sessionToken, user!.id!);
     refresh();
@@ -28,29 +30,35 @@ class RestaurantOrdersListController {
     return await _orderProvider.getByStatus(status);
   }
 
-  void goToPageOrders(Order order) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
-          return RestaurantOrderCreateScreen(order: order);
-        },
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          final curvedAnimation =
-              CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+  void goToPageOrders(Order order) async {
+    bool isUpdated = await Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return RestaurantOrderCreateScreen(order: order);
+            },
+            transitionDuration: const Duration(milliseconds: 500),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              final curvedAnimation =
+                  CurvedAnimation(parent: animation, curve: Curves.easeInOut);
 
-          return FadeTransition(
-            opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
-            child: FadeTransition(
-              opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
-              child: child,
-            ),
-          );
-        },
-      ),
-    );
+              return FadeTransition(
+                opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
+                child: FadeTransition(
+                  opacity:
+                      Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+                  child: child,
+                ),
+              );
+            },
+          ),
+        ) ??
+        false;
+    if (isUpdated) {
+      refresh();
+    }
   }
 
   void logout() {

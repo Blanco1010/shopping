@@ -78,8 +78,7 @@ class RegisterController {
   }
 
   Future selectImage(ImageSource imageSource) async {
-    final XFile? image =
-        await _picker.pickImage(source: imageSource, maxHeight: 150);
+    final XFile? image = await _picker.pickImage(source: imageSource);
 
     if (image != null) {
       imageFile = File(image.path);

@@ -19,10 +19,42 @@ class UsersProvider {
   String? token;
   String? id;
 
+  List<User> toList = [];
+
   Future init(BuildContext context, {String? token, String? id}) async {
     this.context = context;
     this.token = token;
     this.id = id;
+  }
+
+  Future<List<User>?>? getDeliveryMen() async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/findDeliveryMen');
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token!
+      };
+
+      final res = await http.get(url, headers: headers);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id!);
+      }
+
+      final data = json.decode(res.body);
+
+      if (data != null) {
+        data.forEach((element) {
+          User user = User.fromMap(element);
+          toList.add(user);
+        });
+      }
+
+      return toList;
+    } catch (error) {
+      return null;
+    }
   }
 
   Future<User?>? getById(String id) async {

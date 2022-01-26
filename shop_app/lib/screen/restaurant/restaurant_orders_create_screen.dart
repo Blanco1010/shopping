@@ -59,7 +59,8 @@ class _RestaurantOrderCreateScreenState
                       const SizedBox(height: 10),
                       _textDescription(),
                       const SizedBox(height: 5),
-                      _dropDown(MediaQuery.of(context).size, refresh, []),
+                      _dropDown(
+                          MediaQuery.of(context).size, refresh, _con.listUser!),
                       const SizedBox(height: 5),
                       _textData('Cliente: ',
                           '${_con.order!.client!.name} ${_con.order!.client!.lastname}'),
@@ -94,7 +95,9 @@ class _RestaurantOrderCreateScreenState
     return Container(
       margin: const EdgeInsets.all(10),
       child: ElevatedButton(
-        onPressed: () => null,
+        onPressed: () {
+          _con.updateOrder();
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -191,31 +194,31 @@ class _RestaurantOrderCreateScreenState
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: DropdownButton<String>(
-                alignment: Alignment.center,
-                icon: const Icon(Icons.arrow_drop_down_circle_sharp),
-                iconDisabledColor: Colors.grey,
-                iconEnabledColor: MyColors.colorPrimary,
-                elevation: 1,
-                isExpanded: true,
-                hint: const Text(
-                  'Repartidores',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  itemHeight: 50,
+                  alignment: Alignment.center,
+                  icon: const Icon(Icons.arrow_drop_down_circle_sharp),
+                  iconDisabledColor: Colors.grey,
+                  iconEnabledColor: MyColors.colorPrimary,
+                  elevation: 1,
+                  isExpanded: true,
+                  hint: const Text(
+                    'Repartidores',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
                   ),
+                  items: _dropDownItems(users),
+                  value: _con.idDelivery,
+                  onChanged: (option) {
+                    _con.idDelivery = option;
+
+                    refresh();
+                  },
                 ),
-                items: _dropDownItems(users),
-                // value: con.idCategory,
-                onChanged: (option) {
-                  // con.idCategory = option;
-                  print('Usuario');
-                  print(option);
-                  refresh();
-                },
               ),
             ),
           ],
@@ -228,7 +231,34 @@ class _RestaurantOrderCreateScreenState
     List<DropdownMenuItem<String>> list = [];
     for (var element in users) {
       list.add(DropdownMenuItem(
-        child: Text(element.name),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                ),
+              ),
+              height: 50,
+              width: 50,
+              child: element.image == null
+                  ? const FadeInImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/img/no-image.png'),
+                      placeholder: AssetImage('assets/gif/jar-loading.gif'),
+                    )
+                  : FadeInImage.assetNetwork(
+                      fit: BoxFit.cover,
+                      imageErrorBuilder: (context, url, error) =>
+                          const Icon(Icons.error),
+                      image: (element.image),
+                      placeholder: ('assets/gif/jar-loading.gif'),
+                    ),
+            ),
+            const SizedBox(width: 10),
+            Text('${element.name} ${element.lastname}'),
+          ],
+        ),
         value: element.id,
       ));
     }

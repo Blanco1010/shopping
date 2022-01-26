@@ -16,19 +16,20 @@ class User {
   DateTime? updateAt;
   List<Rol>? roles = [];
 
-  User(
-      {this.id,
-      this.email,
-      required this.name,
-      required this.lastname,
-      required this.phone,
-      this.image,
-      this.password,
-      this.isAvailabe,
-      this.sessionToken,
-      this.createdAt,
-      this.updateAt,
-      this.roles});
+  User({
+    this.id,
+    this.email,
+    required this.name,
+    required this.lastname,
+    required this.phone,
+    this.image,
+    this.password,
+    this.isAvailabe,
+    this.sessionToken,
+    this.createdAt,
+    this.updateAt,
+    this.roles,
+  });
 
   factory User.fromJson(String str) => User.fromMap(json.decode(str));
 

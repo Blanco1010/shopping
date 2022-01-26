@@ -9,6 +9,7 @@ class Order {
   String? id;
   String idClient;
   String idAddress;
+  String? idDelivery;
   double lat;
   double lng;
   String status;
@@ -23,6 +24,7 @@ class Order {
     this.id,
     required this.idClient,
     required this.idAddress,
+    this.idDelivery,
     required this.lat,
     required this.lng,
     required this.status,
