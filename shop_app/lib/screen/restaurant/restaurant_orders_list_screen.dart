@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/controllers/restaurant/restaurant_orders_list_controller.dart';
 import 'package:shop_app/models/order.dart';
+import 'package:shop_app/utils/relative_time_util.dart';
 
 import '../../widgets/no_data_widget.dart';
 
@@ -82,7 +83,7 @@ class _RestaurantOrdersListScreenState
                                 ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: snapshot.data?.length ?? 0,
                             itemBuilder: (_, index) {
-                              return _cardOder(snapshot.data![index], index);
+                              return _cardOder(snapshot.data![index]);
                             },
                           );
                         } else {
@@ -100,76 +101,79 @@ class _RestaurantOrdersListScreenState
     );
   }
 
-  Widget _cardOder(Order? order, int pos) {
-    return Container(
-      height: 160,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 5,
-      ),
-      child: Card(
-        elevation: 3.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+  Widget _cardOder(Order order) {
+    return GestureDetector(
+      onTap: () => _con.goToPageOrders(order),
+      child: Container(
+        height: 160,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 5,
         ),
-        child: Stack(
-          children: [
-            Positioned(
-              child: Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * 1,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
-                  color: MyColors.colorPrimary,
-                ),
+        child: Card(
+          elevation: 3.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
                 child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Orden #$pos',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  height: 30,
+                  width: MediaQuery.of(context).size.width * 1,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                    color: MyColors.colorPrimary,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Orden #${order.id}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 50, left: 20),
-                  child: const Text(
-                    'Pedido: 2015_05-23',
-                    style: TextStyle(fontSize: 13),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 50, left: 20),
+                    child: Text(
+                      'Fecha de pedido: ${RelativeTimeUtil.getRelativeTime(order.timestamp!)}',
+                      style: const TextStyle(fontSize: 13),
+                    ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 20),
-                  child: Text(
-                    'Cliente: ${order!.client!.name} ${order.client!.lastname}',
-                    style: const TextStyle(fontSize: 13),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, left: 20),
+                    child: Text(
+                      'Cliente: ${order.client!.name} ${order.client!.lastname}',
+                      style: const TextStyle(fontSize: 13),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 20),
-                  child: Text(
-                    'Entregar en: ${order.address!.address}',
-                    style: const TextStyle(fontSize: 13),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, left: 20),
+                    child: Text(
+                      'Entregar en: ${order.address!.address}',
+                      style: const TextStyle(fontSize: 13),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

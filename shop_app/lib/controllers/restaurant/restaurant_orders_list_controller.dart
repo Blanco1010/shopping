@@ -3,6 +3,7 @@ import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/order_provider.dart';
+import 'package:shop_app/screen/restaurant/restaurant_orders_create_screen.dart';
 
 class RestaurantOrdersListController {
   late BuildContext context;
@@ -25,6 +26,31 @@ class RestaurantOrdersListController {
 
   Future<List<Order>> getOrders(String status) async {
     return await _orderProvider.getByStatus(status);
+  }
+
+  void goToPageOrders(Order order) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return RestaurantOrderCreateScreen(order: order);
+        },
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curvedAnimation =
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+
+          return FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void logout() {
