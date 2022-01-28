@@ -212,13 +212,6 @@ class _RestaurantOrdersListScreenState
                           placeholder: ('assets/gif/jar-loading.gif'),
                         ),
                 ),
-                // CircleAvatar(
-                //   radius: 30,
-                //   backgroundColor: Colors.transparent,
-                //   backgroundImage: _con.user?.image == null
-                //       ? const AssetImage('assets/img/no-image.png')
-                //       : NetworkImage(_con.user!.image) as ImageProvider,
-                // ),
                 const SizedBox(height: 15),
                 Text(
                   '${_con.user?.name ?? ''} ${_con.user?.lastname ?? ''}',

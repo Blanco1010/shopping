@@ -37,7 +37,7 @@ class ClientAddressCreateController {
   void createAddress() async {
     if (formKey.currentState!.validate()) {
       String address = addressController.text.trim();
-      String neighborhood = neighborhoodController.text.trim();
+      String neightborhood = neighborhoodController.text.trim();
 
       double lat = refPointList!['lat'] ?? 0;
       double lng = refPointList!['lng'] ?? 0;
@@ -45,7 +45,7 @@ class ClientAddressCreateController {
       Address addressUser = Address(
         idUser: user!.id!,
         address: address,
-        neightborhood: neighborhood,
+        neightborhood: neightborhood,
         lat: lat,
         lng: lng,
       );

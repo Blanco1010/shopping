@@ -58,9 +58,11 @@ class _RestaurantOrderCreateScreenState
                     children: [
                       const SizedBox(height: 10),
                       _textDescription(),
-                      const SizedBox(height: 5),
-                      _dropDown(
-                          MediaQuery.of(context).size, refresh, _con.listUser!),
+                      const SizedBox(height: 10),
+                      _con.order!.status == 'PAGADO'
+                          ? _dropDown(MediaQuery.of(context).size, refresh,
+                              _con.listUser!)
+                          : _deliveryData(_con.order!.delivery!),
                       const SizedBox(height: 5),
                       _textData('Cliente: ',
                           '${_con.order!.client!.name} ${_con.order!.client!.lastname}'),
@@ -76,7 +78,9 @@ class _RestaurantOrderCreateScreenState
                       const SizedBox(height: 5),
                       _textTotalPrice(),
                       const SizedBox(height: 10),
-                      _buttonNext(),
+                      _con.order!.status == 'PAGADO'
+                          ? _buttonNext()
+                          : Container(),
                     ],
                   ),
                 ),
@@ -136,7 +140,9 @@ class _RestaurantOrderCreateScreenState
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(left: 15),
       child: Text(
-        'Asignar repartidor',
+        _con.order!.status == 'PAGADO'
+            ? 'Asignar repartidor'
+            : 'Repartidor asignado',
         style: TextStyle(
           fontStyle: FontStyle.italic,
           color: MyColors.colorPrimary,
@@ -263,6 +269,33 @@ class _RestaurantOrderCreateScreenState
       ));
     }
     return list;
+  }
+
+  Widget _deliveryData(User delivery) {
+    return Row(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+          height: 50,
+          width: 50,
+          child: delivery.image == null
+              ? const FadeInImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/img/no-image.png'),
+                  placeholder: AssetImage('assets/gif/jar-loading.gif'),
+                )
+              : FadeInImage.assetNetwork(
+                  fit: BoxFit.cover,
+                  imageErrorBuilder: (context, url, error) =>
+                      const Icon(Icons.error),
+                  image: (delivery.image),
+                  placeholder: ('assets/gif/jar-loading.gif'),
+                ),
+        ),
+        const SizedBox(width: 10),
+        Text('${_con.order!.delivery!.name} ${_con.order!.delivery!.lastname}'),
+      ],
+    );
   }
 
   Widget _textTotalPrice() {

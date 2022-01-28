@@ -169,7 +169,7 @@ class Routes {
       return PageRouteBuilder(
         pageBuilder: (BuildContext context, Animation<double> animation,
             Animation<double> secondaryAnimation) {
-          return const RestaurantOrdersListScreen();
+          return const DeliveryOrdersListScreen();
         },
         transitionDuration: const Duration(milliseconds: 500),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

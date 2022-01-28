@@ -18,6 +18,7 @@ class Order {
   List<Order>? orders = [];
   List<dynamic> toList = [];
   User? client;
+  User? delivery;
   Address? address;
 
   Order({
@@ -32,6 +33,7 @@ class Order {
     this.products,
     this.orders,
     this.client,
+    this.delivery,
     this.address,
   });
 
@@ -43,6 +45,7 @@ class Order {
         id: json["id"] ?? 'null',
         idClient: json["id_client"],
         idAddress: json["id_address"],
+        idDelivery: json["id_delivery"] ?? 'null',
         lat: json["lat"] != null ? json["lat"].toDouble() : 0,
         lng: json["lng"] != null ? json["lng"].toDouble() : 0,
         status: json["status"],
@@ -53,6 +56,8 @@ class Order {
               )
             : null,
         client: json["client"] != null ? User.fromMap(json["client"]) : null,
+        delivery:
+            json["delivery"] != null ? User.fromMap(json["delivery"]) : null,
         address:
             json['address'] != null ? Address.fromMap(json['address']) : null,
       );
@@ -61,12 +66,14 @@ class Order {
         "id": id,
         "id_client": idClient,
         "id_address": idAddress,
+        "id_delivery": idDelivery,
         "lat": lat,
         "lng": lng,
         "status": status,
         "timestamp": timestamp,
         "products": products ?? [],
         "client": client ?? [],
+        "delivery": delivery ?? [],
         "address": address ?? [],
       };
 }

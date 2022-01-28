@@ -36,7 +36,7 @@ class ClientUpdateController {
     user = User.fromJson(await _secureStogare.read('user'));
     firstNameController.text = user!.name;
     lastNameController.text = user!.lastname;
-    phoneNumberController.text = user!.phone;
+    phoneNumberController.text = user!.phone!;
     userProvider.init(context, token: user!.sessionToken);
     refresh();
   }

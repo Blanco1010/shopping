@@ -7,7 +7,7 @@ class User {
   String? email;
   String name;
   String lastname;
-  String phone;
+  String? phone;
   dynamic image;
   String? password;
   dynamic isAvailabe;
@@ -37,14 +37,14 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> json) => User(
         id: json["id"] is int ? json['id'].toString() : json['id'],
-        email: json["email"],
-        name: json["name"],
-        lastname: json["lastname"],
-        phone: json["phone"] ?? '0',
+        email: json["email"] ?? '',
+        name: json["name"] ?? '',
+        lastname: json["lastname"] ?? '',
+        phone: json["phone"] ?? '',
         image: json["image"],
-        password: json["password"] ?? 'null',
-        isAvailabe: json["is_availabe"],
-        sessionToken: json["session_token"],
+        password: json["password"] ?? '',
+        isAvailabe: json["is_availabe"] ?? '',
+        sessionToken: json["session_token"] ?? '',
         createdAt: json["created_at"],
         updateAt: json["update_at"],
         roles: json['roles'] == null

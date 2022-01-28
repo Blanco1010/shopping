@@ -23,7 +23,7 @@ class OrderProvider {
 
   Future<List<Order>> getByStatus(String status) async {
     try {
-      final Uri url = Uri.http(_url, '$_api/findByUser/$status');
+      final url = Uri.http(_url, '$_api/findByUser/$status');
 
       Map<String, String> headers = {
         'Content-Type': 'application/json',
@@ -50,9 +50,46 @@ class OrderProvider {
       }
       return list;
     } catch (error) {
+      // throw Exception(error);
       print(error);
       return [];
+    }
+  }
+
+  Future<List<Order>> getByDeliveryStatus(
+      String idDelivery, String status) async {
+    try {
+      final url =
+          Uri.http(_url, '$_api/findByDeliveryAndStatus/$idDelivery/$status');
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      };
+
+      final res = await http.get(url, headers: headers);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id);
+      }
+
+      final data = json.decode(res.body);
+
+      List<Order> list = [];
+      list.clear();
+
+      if (data != null) {
+        for (var element in data) {
+          Order category = Order.fromMap(element);
+          list.add(category);
+        }
+      }
+      return list;
+    } catch (error) {
       // throw Exception(error);
+      print(error);
+      return [];
     }
   }
 
@@ -80,6 +117,7 @@ class OrderProvider {
       return responseApi;
     } catch (error) {
       print(error);
+
       return ResponseApi(success: false, message: 'error al crear order');
     }
   }

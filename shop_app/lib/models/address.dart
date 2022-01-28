@@ -25,7 +25,7 @@ class Address {
         id: json["id"].toString(),
         idUser: json["id_user"].toString(),
         address: json["address"],
-        neightborhood: json["neighborhood"],
+        neightborhood: json["neightborhood"],
         lat: json["lat"].toDouble(),
         lng: json["lng"].toDouble(),
       );
