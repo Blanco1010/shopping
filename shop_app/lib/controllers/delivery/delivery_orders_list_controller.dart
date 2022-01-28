@@ -3,7 +3,8 @@ import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/order_provider.dart';
-import 'package:shop_app/screen/restaurant/restaurant_orders_create_screen.dart';
+
+import '../../screen/delivery/delivery_orders_create_screen.dart';
 
 class DeliveryOrdersListController {
   late BuildContext context;
@@ -40,7 +41,7 @@ class DeliveryOrdersListController {
           PageRouteBuilder(
             pageBuilder: (BuildContext context, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
-              return RestaurantOrderCreateScreen(order: order);
+              return DeliveryOrderCreateScreen(order: order);
             },
             transitionDuration: const Duration(milliseconds: 500),
             transitionsBuilder:

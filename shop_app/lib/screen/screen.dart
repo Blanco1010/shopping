@@ -12,3 +12,4 @@ export 'package:shop_app/screen/client/client_orders_create_screen.dart';
 export 'package:shop_app/screen/client/client_address_create_screen.dart';
 export 'package:shop_app/screen/client/client_address_list_screen.dart';
 export 'package:shop_app/screen/client/client_address_map_screen.dart';
+export 'package:shop_app/screen/delivery/delivery_map_screen.dart';
