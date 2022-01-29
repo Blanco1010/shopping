@@ -6,6 +6,7 @@ import 'package:shop_app/controllers/secure_storage.dart';
 
 import '../../models/order.dart';
 import '../../models/user.dart';
+import '../../screen/delivery/delivery_map_screen.dart';
 import '../../widgets/widgets.dart';
 
 class DeliveryOrderCreateController {
@@ -41,7 +42,29 @@ class DeliveryOrderCreateController {
     ResponseApi response = await _orderProvider.updateToOnTheWay(order!);
 
     if (response.success) {
-      Navigator.pushNamed(context, '/delivery/map', arguments: order);
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return DeliveryMapScreen(order: order);
+          },
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final curvedAnimation =
+                CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+
+            return FadeTransition(
+              opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
+              child: FadeTransition(
+                opacity:
+                    Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+                child: child,
+              ),
+            );
+          },
+        ),
+      );
     }
   }
 

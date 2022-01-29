@@ -78,6 +78,7 @@ flutter:
     - assets/img/user.png
     - assets/img/add-image.png
     - assets/img/no_items.png
+    - assets/img/icon_home.png
     - assets/img/icon_location.png
     - assets/gif/jar-loading.gif
   #   - images/a_dot_ham.jpeg

@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+// import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../models/order.dart';
 
 class DeliveryMapController {
   late BuildContext context;
@@ -23,13 +25,22 @@ class DeliveryMapController {
   final Completer<GoogleMapController> _mapController = Completer();
 
   late BitmapDescriptor deliveryMarker;
+  late BitmapDescriptor toMarker;
+
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
-  Future init(BuildContext context, Function refresh) async {
+  Order? order;
+
+  Future init(BuildContext context, Function refresh, Order? order) async {
     this.refresh = refresh;
     this.context = context;
+    this.order = order;
+
     deliveryMarker =
         await createMarkerFromAssets('assets/img/icon_location.png');
+
+    toMarker = await createMarkerFromAssets('assets/img/icon_home.png');
+
     checkGPS();
   }
 
@@ -64,23 +75,23 @@ class DeliveryMapController {
     Navigator.pop(context, data);
   }
 
-  Future<void> setLocationDraggableInfo() async {
-    double lat = initialPosition.target.latitude;
-    double lng = initialPosition.target.longitude;
+  // Future<void> setLocationDraggableInfo() async {
+  //   double lat = initialPosition.target.latitude;
+  //   double lng = initialPosition.target.longitude;
 
-    List<Placemark> address = await placemarkFromCoordinates(lat, lng);
+  //   List<Placemark> address = await placemarkFromCoordinates(lat, lng);
 
-    String? direction = address[0].thoroughfare;
-    String? street = address[0].subThoroughfare;
-    String? city = address[0].locality;
-    String? department = address[0].administrativeArea;
-    // String? country = address[0].country;
+  //   String? direction = address[0].thoroughfare;
+  //   String? street = address[0].subThoroughfare;
+  //   String? city = address[0].locality;
+  //   String? department = address[0].administrativeArea;
+  //   // String? country = address[0].country;
 
-    addressName = '$direction # $street, $city, $department';
-    addressLatLng = LatLng(lat, lng);
+  //   addressName = '$direction # $street, $city, $department';
+  //   addressLatLng = LatLng(lat, lng);
 
-    refresh();
-  }
+  //   refresh();
+  // }
 
   Future<BitmapDescriptor> createMarkerFromAssets(String path) async {
     ImageConfiguration configuration = const ImageConfiguration();
@@ -120,6 +131,15 @@ class DeliveryMapController {
         'position',
         '',
         deliveryMarker,
+      );
+
+      addMarker(
+        'home',
+        order!.address!.lat,
+        order!.address!.lng,
+        'lugar de entrega',
+        '',
+        toMarker,
       );
     } catch (error) {
       print(error);
