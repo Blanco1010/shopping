@@ -30,6 +30,12 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
   }
 
   @override
+  void dispose() {
+    _con.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -98,12 +104,12 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
       child: Column(
         children: [
           _listTileAddress(
-            _con.order!.address!.neightborhood,
+            _con.order?.address?.neightborhood,
             'Barrio',
             Icons.my_location,
           ),
           _listTileAddress(
-            _con.order!.address!.address,
+            _con.order?.address?.address,
             'Dirección',
             Icons.location_on,
           ),
@@ -126,7 +132,7 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
             width: 60,
             child: FadeInImage(
               fit: BoxFit.cover,
-              image: _con.order!.client!.image != null
+              image: _con.order?.client?.image != null
                   ? NetworkImage(_con.order!.client!.image!) as ImageProvider
                   : const AssetImage('assets/img/no-image.png'),
               placeholder: const AssetImage('assets/gif/jar-loading.gif'),
@@ -135,7 +141,7 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
           Container(
             margin: const EdgeInsets.only(left: 10),
             child: Text(
-              '${_con.order!.client!.name} ${_con.order!.client!.lastname}',
+              '${_con.order?.client!.name} ${_con.order?.client!.lastname}',
               style: const TextStyle(
                 fontSize: 22,
               ),
@@ -152,7 +158,10 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
               color: Colors.grey[300],
             ),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                print('object');
+                _con.call();
+              },
               icon: const Icon(
                 Icons.phone,
                 color: Colors.black,
@@ -164,12 +173,12 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
     );
   }
 
-  Widget _listTileAddress(String title, String subtitle, IconData iconData) {
+  Widget _listTileAddress(String? title, String subtitle, IconData iconData) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: ListTile(
         title: Text(
-          title,
+          title ?? '',
           style: const TextStyle(
             fontSize: 13,
           ),

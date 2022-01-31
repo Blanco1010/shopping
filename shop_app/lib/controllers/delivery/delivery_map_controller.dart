@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/order.dart';
 
@@ -13,6 +14,7 @@ class DeliveryMapController {
   late Function refresh;
 
   Position? _position;
+  StreamSubscription? _positionStream;
 
   String? addressName;
   LatLng? addressLatLng;
@@ -104,6 +106,10 @@ class DeliveryMapController {
     _mapController.complete(controller);
   }
 
+  void dispose() {
+    _positionStream?.cancel();
+  }
+
   void checkGPS() async {
     bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -141,9 +147,29 @@ class DeliveryMapController {
         '',
         toMarker,
       );
+
+      _positionStream = Geolocator.getPositionStream().listen((Position pos) {
+        _position = pos;
+
+        addMarker(
+          'delivery',
+          pos.latitude,
+          pos.longitude,
+          '',
+          '',
+          deliveryMarker,
+        );
+
+        animateCameraToPosition(_position!.latitude, _position!.longitude);
+        refresh();
+      });
     } catch (error) {
       print(error);
     }
+  }
+
+  void call() {
+    launch("tel:${order?.client?.phone}");
   }
 
   Future animateCameraToPosition(double lat, double lng) async {
