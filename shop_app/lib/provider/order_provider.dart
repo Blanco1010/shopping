@@ -118,7 +118,7 @@ class OrderProvider {
     } catch (error) {
       print(error);
 
-      return ResponseApi(success: false, message: 'error al crear order');
+      return ResponseApi(success: false, message: 'Error al crear order');
     }
   }
 
@@ -146,7 +146,7 @@ class OrderProvider {
       return responseApi;
     } catch (error) {
       print(error);
-      return ResponseApi(success: false, message: 'error al crear order');
+      return ResponseApi(success: false, message: 'Error al actualizar');
     }
   }
 
@@ -174,7 +174,35 @@ class OrderProvider {
       return responseApi;
     } catch (error) {
       print(error);
-      return ResponseApi(success: false, message: 'error al crear order');
+      return ResponseApi(success: false, message: 'Error al actualizar');
+    }
+  }
+
+  Future<ResponseApi> updateToDelivered(Order order) async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/updateToDelivered');
+      final bodyParams = order.toJson();
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      };
+
+      final res = await http.put(url, headers: headers, body: bodyParams);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id);
+      }
+
+      final data = json.decode(res.body);
+
+      ResponseApi responseApi = ResponseApi.fromMap(data);
+
+      return responseApi;
+    } catch (error) {
+      print(error);
+      return ResponseApi(success: false, message: 'Error al actualizar');
     }
   }
 }

@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shop_app/controllers/secure_storage.dart';
+import 'package:shop_app/models/response_model.dart';
+import 'package:shop_app/provider/order_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/order.dart';
+import '../../models/user.dart';
+import '../../widgets/snackbar.dart';
 
 class DeliveryMapController {
   late BuildContext context;
@@ -33,10 +38,17 @@ class DeliveryMapController {
 
   Order? order;
 
+  final OrderProvider _orderProvider = OrderProvider();
+  User? user;
+
   Future init(BuildContext context, Function refresh, Order? order) async {
     this.refresh = refresh;
     this.context = context;
     this.order = order;
+
+    user = User.fromJson(await SecureStogare().read('user'));
+
+    _orderProvider.init(context, user!.sessionToken, user!.id!);
 
     deliveryMarker =
         await createMarkerFromAssets('assets/img/icon_location.png');
@@ -44,6 +56,33 @@ class DeliveryMapController {
     toMarker = await createMarkerFromAssets('assets/img/icon_home.png');
 
     checkGPS();
+  }
+
+  distanceBetweenStartToEnd() {
+    final double _distanceBetween = Geolocator.distanceBetween(
+      _position!.latitude,
+      _position!.longitude,
+      order!.address!.lat,
+      order!.address!.lng,
+    );
+
+    return _distanceBetween;
+  }
+
+  void updateToDelivered() async {
+    if (distanceBetweenStartToEnd() <= 200) {
+      ResponseApi responseapi = await _orderProvider.updateToDelivered(order!);
+
+      if (responseapi.success) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/delivery/orders/list',
+          (route) => false,
+        );
+      }
+    } else {
+      Snackbar.show(context, 'Debes estar mas cerca a la posición de entrega');
+    }
   }
 
   void addMarker(
@@ -76,24 +115,6 @@ class DeliveryMapController {
     };
     Navigator.pop(context, data);
   }
-
-  // Future<void> setLocationDraggableInfo() async {
-  //   double lat = initialPosition.target.latitude;
-  //   double lng = initialPosition.target.longitude;
-
-  //   List<Placemark> address = await placemarkFromCoordinates(lat, lng);
-
-  //   String? direction = address[0].thoroughfare;
-  //   String? street = address[0].subThoroughfare;
-  //   String? city = address[0].locality;
-  //   String? department = address[0].administrativeArea;
-  //   // String? country = address[0].country;
-
-  //   addressName = '$direction # $street, $city, $department';
-  //   addressLatLng = LatLng(lat, lng);
-
-  //   refresh();
-  // }
 
   Future<BitmapDescriptor> createMarkerFromAssets(String path) async {
     ImageConfiguration configuration = const ImageConfiguration();
@@ -161,6 +182,7 @@ class DeliveryMapController {
         );
 
         animateCameraToPosition(_position!.latitude, _position!.longitude);
+
         refresh();
       });
     } catch (error) {

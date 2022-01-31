@@ -71,7 +71,9 @@ class _DeliveryOrderCreateScreenState extends State<DeliveryOrderCreateScreen> {
                       const SizedBox(height: 5),
                       _textTotalPrice(),
                       const SizedBox(height: 10),
-                      _buttonNext()
+                      _con.order!.status != 'ENTREGADO'
+                          ? _buttonNext()
+                          : Container()
                     ],
                   ),
                 ),
@@ -97,6 +99,9 @@ class _DeliveryOrderCreateScreenState extends State<DeliveryOrderCreateScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
+          primary: _con.order!.status == 'DESPACHADO'
+              ? MyColors.colorPrimary
+              : Colors.green,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -109,10 +114,12 @@ class _DeliveryOrderCreateScreenState extends State<DeliveryOrderCreateScreen> {
             Container(
               padding: const EdgeInsets.only(left: 10),
               height: 60,
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'INICIAR ENTREGA',
-                  style: TextStyle(
+                  _con.order!.status == 'DESPACHADO'
+                      ? 'INICIAR ENTREGA'
+                      : 'IR AL MAPA',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

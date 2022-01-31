@@ -70,7 +70,7 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
             borderRadius: BorderRadius.circular(12.0),
           ),
         ),
-        onPressed: () {},
+        onPressed: () => _con.updateToDelivered(),
         child: const Text(
           'ENTREGAR PRODUCTO',
           style: TextStyle(
