@@ -24,6 +24,8 @@ class DeliveryMapController {
   String? addressName;
   LatLng? addressLatLng;
 
+  bool isFollow = false;
+
   CameraPosition initialPosition = const CameraPosition(
     target: LatLng(4.801833, -75.739738),
     zoom: 16,
@@ -67,6 +69,38 @@ class DeliveryMapController {
     );
 
     return _distanceBetween;
+  }
+
+  void launchWaze() async {
+    var url =
+        'waze://?ll=${order!.address!.lat.toString()},${order!.address!.lng.toString()}';
+    var fallbackUrl =
+        'https://waze.com/ul?ll=${order!.address!.lat.toString()},${order!.address!.lng.toString()}&navigate=yes';
+    try {
+      bool launched =
+          await launch(url, forceSafariVC: false, forceWebView: false);
+      if (!launched) {
+        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+      }
+    } catch (e) {
+      await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+    }
+  }
+
+  void launchGoogleMaps() async {
+    var url =
+        'google.navigation:q=${order!.address!.lat.toString()},${order!.address!.lng.toString()}';
+    var fallbackUrl =
+        'https://www.google.com/maps/search/?api=1&query=${order!.address!.lat.toString()},${order!.address!.lng.toString()}';
+    try {
+      bool launched =
+          await launch(url, forceSafariVC: false, forceWebView: false);
+      if (!launched) {
+        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+      }
+    } catch (e) {
+      await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+    }
   }
 
   void updateToDelivered() async {
@@ -195,17 +229,18 @@ class DeliveryMapController {
   }
 
   Future animateCameraToPosition(double lat, double lng) async {
-    GoogleMapController controller = await _mapController.future;
-
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(lat, lng),
-          zoom: 16,
-          bearing: 0,
+    if (!isFollow) {
+      GoogleMapController controller = await _mapController.future;
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(lat, lng),
+            zoom: 16,
+            bearing: 0,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Future<Position> _determinePosition() async {

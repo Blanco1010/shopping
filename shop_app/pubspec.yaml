@@ -81,6 +81,8 @@ flutter:
     - assets/img/no_items.png
     - assets/img/icon_home.png
     - assets/img/icon_location.png
+    - assets/img/waze.png
+    - assets/img/google_maps.png
     - assets/gif/jar-loading.gif
   #   - images/a_dot_ham.jpeg
 

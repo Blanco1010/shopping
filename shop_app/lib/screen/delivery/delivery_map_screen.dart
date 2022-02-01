@@ -52,6 +52,26 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
                 _cardInfo(),
               ],
             ),
+          ),
+          Positioned(
+            child: SafeArea(
+              child: GestureDetector(
+                onTap: _con.launchGoogleMaps,
+                child: _iconGoogleMaps(),
+              ),
+            ),
+            top: 10,
+            left: 10,
+          ),
+          Positioned(
+            child: SafeArea(
+              child: GestureDetector(
+                onTap: _con.launchWaze,
+                child: _iconWaze(),
+              ),
+            ),
+            top: 60,
+            left: 10,
           )
         ],
       ),
@@ -159,7 +179,6 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
             ),
             child: IconButton(
               onPressed: () {
-                print('object');
                 _con.call();
               },
               icon: const Icon(
@@ -170,6 +189,22 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _iconGoogleMaps() {
+    return SizedBox(
+      child: Image.asset('assets/img/google_maps.png'),
+      height: 40,
+      width: 40,
+    );
+  }
+
+  Widget _iconWaze() {
+    return SizedBox(
+      child: Image.asset('assets/img/waze.png'),
+      height: 40,
+      width: 40,
     );
   }
 
@@ -191,7 +226,10 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
 
   Widget _buttonCenterPosition() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        _con.isFollow = !_con.isFollow;
+        refresh();
+      },
       child: Container(
         margin: const EdgeInsets.only(right: 10, top: 10),
         alignment: Alignment.topRight,
@@ -201,7 +239,7 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Icon(
-              Icons.location_searching,
+              !_con.isFollow ? Icons.follow_the_signs : Icons.map,
               color: Colors.grey[800],
               size: 30,
             ),
