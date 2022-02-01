@@ -93,6 +93,42 @@ class OrderProvider {
     }
   }
 
+  Future<List<Order>> getByClientStatus(String idClient, String status) async {
+    try {
+      final url =
+          Uri.http(_url, '$_api/findByClientAndStatus/$idClient/$status');
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      };
+
+      final res = await http.get(url, headers: headers);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id);
+      }
+
+      final data = json.decode(res.body);
+
+      List<Order> list = [];
+      list.clear();
+
+      if (data != null) {
+        for (var element in data) {
+          Order category = Order.fromMap(element);
+          list.add(category);
+        }
+      }
+      return list;
+    } catch (error) {
+      // throw Exception(error);
+      print(error);
+      return [];
+    }
+  }
+
   Future<ResponseApi> create(Order order) async {
     try {
       final Uri url = Uri.http(_url, '$_api/create');

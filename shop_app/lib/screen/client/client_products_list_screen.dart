@@ -265,9 +265,12 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
             ),
             onTap: _con.goToUpdate,
           ),
-          const ListTile(
-            title: Text('Mis pedidos'),
-            trailing: Icon(Icons.shopping_bag_outlined),
+          ListTile(
+            title: const Text('Mis Pedidos'),
+            trailing: const Icon(
+              Icons.shopping_bag,
+            ),
+            onTap: _con.goToOrdersList,
           ),
           _con.user != null && _con.user!.roles!.length > 1
               ? ListTile(
