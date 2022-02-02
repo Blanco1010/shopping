@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shop_app/api/environment.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/provider/order_provider.dart';
@@ -13,6 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/order.dart';
 import '../../models/user.dart';
 import '../../widgets/snackbar.dart';
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class DeliveryMapController {
   late BuildContext context;
@@ -43,10 +46,22 @@ class DeliveryMapController {
   final OrderProvider _orderProvider = OrderProvider();
   User? user;
 
+  late IO.Socket socket;
+
   Future init(BuildContext context, Function refresh, Order? order) async {
     this.refresh = refresh;
     this.context = context;
     this.order = order;
+
+    //SOCKET TO GET LOCATION OF DELIVERYMEN.
+    socket = IO.io(
+      'http://${Environment.apiDilevery}/orders/delivery',
+      <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+      },
+    );
+    socket.connect();
 
     user = User.fromJson(await SecureStogare().read('user'));
 
@@ -58,6 +73,14 @@ class DeliveryMapController {
     toMarker = await createMarkerFromAssets('assets/img/icon_home.png');
 
     checkGPS();
+  }
+
+  void emitPosition() {
+    socket.emit('position', {
+      'id_order': order!.id,
+      'lat': _position!.latitude,
+      'lng': _position!.longitude,
+    });
   }
 
   distanceBetweenStartToEnd() {
@@ -163,6 +186,7 @@ class DeliveryMapController {
 
   void dispose() {
     _positionStream?.cancel();
+    socket.disconnect();
   }
 
   void checkGPS() async {
@@ -205,6 +229,8 @@ class DeliveryMapController {
 
       _positionStream = Geolocator.getPositionStream().listen((Position pos) {
         _position = pos;
+
+        emitPosition();
 
         addMarker(
           'delivery',

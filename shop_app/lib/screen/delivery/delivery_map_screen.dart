@@ -161,7 +161,7 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
           Container(
             margin: const EdgeInsets.only(left: 10),
             child: Text(
-              '${_con.order?.client!.name} ${_con.order?.client!.lastname}',
+              '${_con.order?.client?.name ?? ''} ${_con.order?.client?.lastname ?? ''}',
               style: const TextStyle(
                 fontSize: 22,
               ),
