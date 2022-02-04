@@ -33,13 +33,16 @@ class _RolesScreenState extends State<RolesScreen> {
       body: SizedBox(
         height: double.infinity,
         width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ..._con.user?.roles != null
-                ? _con.user!.roles!.map((e) => cardRol(e)).toList()
-                : [],
-          ],
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ..._con.user?.roles != null
+                  ? _con.user!.roles!.map((e) => cardRol(e)).toList()
+                  : [],
+            ],
+          ),
         ),
       ),
     );

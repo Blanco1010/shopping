@@ -54,7 +54,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
                     ),
                     FadeInImage.assetNetwork(
                       image: _clientProductDetailController.product.imagen2!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                       placeholder: 'assets/gif/jar-loading.gif',
                       imageErrorBuilder: (context, error, stackTrace) =>
                           const Icon(
@@ -115,7 +115,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
 
   Widget _buttonShopping() {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(10),
       child: ElevatedButton(
         onPressed: () {
           _clientProductDetailController.addToBag();
@@ -127,7 +127,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
           ),
         ),
         child: const SizedBox(
-          height: 70,
+          height: 60,
           child: Center(
             child: Text(
               'AGREGAR A LA BOLSA',

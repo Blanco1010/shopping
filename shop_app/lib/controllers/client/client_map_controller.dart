@@ -6,20 +6,21 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
-import 'package:shop_app/models/response_model.dart';
+
 import 'package:shop_app/provider/order_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../api/environment.dart';
 import '../../models/order.dart';
 import '../../models/user.dart';
-import '../../widgets/snackbar.dart';
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ClientMapController {
   late BuildContext context;
   late Function refresh;
 
   Position? _position;
-  StreamSubscription? _positionStream;
 
   String? addressName;
   LatLng? addressLatLng;
@@ -42,7 +43,7 @@ class ClientMapController {
 
   final OrderProvider _orderProvider = OrderProvider();
   User? user;
-
+  late IO.Socket socket;
   Future init(BuildContext context, Function refresh, Order? order) async {
     this.refresh = refresh;
     this.context = context;
@@ -57,66 +58,29 @@ class ClientMapController {
 
     toMarker = await createMarkerFromAssets('assets/img/icon_home.png');
 
-    checkGPS();
-  }
-
-  distanceBetweenStartToEnd() {
-    final double _distanceBetween = Geolocator.distanceBetween(
-      _position!.latitude,
-      _position!.longitude,
-      order!.address!.lat,
-      order!.address!.lng,
+    socket = IO.io(
+      'http://${Environment.apiDilevery}/orders/delivery',
+      <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+      },
     );
+    socket.connect();
 
-    return _distanceBetween;
-  }
+    socket.on('position/${order!.id}', (data) {
+      print(data);
 
-  void launchWaze() async {
-    var url =
-        'waze://?ll=${order!.address!.lat.toString()},${order!.address!.lng.toString()}';
-    var fallbackUrl =
-        'https://waze.com/ul?ll=${order!.address!.lat.toString()},${order!.address!.lng.toString()}&navigate=yes';
-    try {
-      bool launched =
-          await launch(url, forceSafariVC: false, forceWebView: false);
-      if (!launched) {
-        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
-      }
-    } catch (e) {
-      await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
-    }
-  }
+      addMarker(
+        'delivery',
+        data['lat'],
+        data['lng'],
+        'position',
+        '',
+        deliveryMarker,
+      );
+    });
 
-  void launchGoogleMaps() async {
-    var url =
-        'google.navigation:q=${order!.address!.lat.toString()},${order!.address!.lng.toString()}';
-    var fallbackUrl =
-        'https://www.google.com/maps/search/?api=1&query=${order!.address!.lat.toString()},${order!.address!.lng.toString()}';
-    try {
-      bool launched =
-          await launch(url, forceSafariVC: false, forceWebView: false);
-      if (!launched) {
-        await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
-      }
-    } catch (e) {
-      await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
-    }
-  }
-
-  void updateToDelivered() async {
-    if (distanceBetweenStartToEnd() <= 200) {
-      ResponseApi responseapi = await _orderProvider.updateToDelivered(order!);
-
-      if (responseapi.success) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/delivery/orders/list',
-          (route) => false,
-        );
-      }
-    } else {
-      Snackbar.show(context, 'Debes estar mas cerca a la posición de entrega');
-    }
+    checkGPS();
   }
 
   void addMarker(
@@ -162,7 +126,7 @@ class ClientMapController {
   }
 
   void dispose() {
-    _positionStream?.cancel();
+    socket.disconnect();
   }
 
   void checkGPS() async {
@@ -202,23 +166,7 @@ class ClientMapController {
         '',
         toMarker,
       );
-
-      _positionStream = Geolocator.getPositionStream().listen((Position pos) {
-        _position = pos;
-
-        addMarker(
-          'delivery',
-          pos.latitude,
-          pos.longitude,
-          '',
-          '',
-          deliveryMarker,
-        );
-
-        animateCameraToPosition(_position!.latitude, _position!.longitude);
-
-        refresh();
-      });
+      refresh();
     } catch (error) {
       print(error);
     }

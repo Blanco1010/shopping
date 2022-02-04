@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../Theme/theme.dart';
 import '../../controllers/client/client_map_controller.dart';
 import '../../models/order.dart';
 
@@ -43,7 +42,7 @@ class _ClientMapScreenState extends State<ClientMapScreen> {
       body: Stack(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.65,
+            height: MediaQuery.of(context).size.height * 0.55,
             child: googleMaps(),
           ),
           SafeArea(
@@ -62,7 +61,7 @@ class _ClientMapScreenState extends State<ClientMapScreen> {
 
   Widget _cardInfo() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.45,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
