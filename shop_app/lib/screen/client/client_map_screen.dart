@@ -48,7 +48,7 @@ class _ClientMapScreenState extends State<ClientMapScreen> {
           SafeArea(
             child: Column(
               children: [
-                _buttonCenterPosition(),
+                //_buttonCenterPosition(),
                 const Spacer(),
                 _cardInfo(),
               ],
@@ -166,6 +166,7 @@ class _ClientMapScreenState extends State<ClientMapScreen> {
     );
   }
 
+  /*
   Widget _buttonCenterPosition() {
     return GestureDetector(
       onTap: () {
@@ -190,6 +191,8 @@ class _ClientMapScreenState extends State<ClientMapScreen> {
       ),
     );
   }
+
+   */
 
   Widget googleMaps() {
     return GoogleMap(

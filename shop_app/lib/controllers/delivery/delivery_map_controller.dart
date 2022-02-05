@@ -75,6 +75,13 @@ class DeliveryMapController {
     checkGPS();
   }
 
+  void saveLocation() async {
+    order!.lat = _position!.latitude;
+    order!.lng = _position!.longitude;
+    await _orderProvider.updateLatLng(order!);
+    print('guardando');
+  }
+
   void emitPosition() {
     socket.emit('position', {
       'id_order': order!.id,
@@ -208,6 +215,8 @@ class DeliveryMapController {
     try {
       await _determinePosition();
       _position = await Geolocator.getLastKnownPosition();
+      saveLocation();
+      print('object');
       animateCameraToPosition(_position!.latitude, _position!.longitude);
       addMarker(
         'delivery',

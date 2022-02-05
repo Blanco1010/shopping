@@ -123,19 +123,24 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
       ),
       child: Column(
         children: [
-          _listTileAddress(
+          Flexible(child:_listTileAddress(
             _con.order?.address?.neightborhood,
             'Barrio',
             Icons.my_location,
+            )
           ),
-          _listTileAddress(
+          Flexible(child:_listTileAddress(
             _con.order?.address?.address,
             'Dirección',
             Icons.location_on,
+            ),
           ),
+
           Divider(color: Colors.grey[400]),
-          _clintInfo(),
-          _buttonAccept(),
+          Flexible(child:_clintInfo()),
+          Flexible(child: _buttonAccept(),
+          )
+
         ],
       ),
     );

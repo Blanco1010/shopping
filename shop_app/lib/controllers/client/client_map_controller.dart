@@ -25,8 +25,6 @@ class ClientMapController {
   String? addressName;
   LatLng? addressLatLng;
 
-  bool isFollow = false;
-
   CameraPosition initialPosition = const CameraPosition(
     target: LatLng(4.801833, -75.739738),
     zoom: 16,
@@ -148,7 +146,8 @@ class ClientMapController {
     try {
       await _determinePosition();
       _position = await Geolocator.getLastKnownPosition();
-      animateCameraToPosition(_position!.latitude, _position!.longitude);
+      //animateCameraToPosition(_position!.latitude, _position!.longitude);
+
       addMarker(
         'delivery',
         _position!.latitude,
@@ -176,8 +175,9 @@ class ClientMapController {
     launch("tel:${order?.delivery?.phone}");
   }
 
+  /*
   Future animateCameraToPosition(double lat, double lng) async {
-    if (!isFollow) {
+
       GoogleMapController controller = await _mapController.future;
       controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -188,8 +188,10 @@ class ClientMapController {
           ),
         ),
       );
-    }
+
   }
+
+   */
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;

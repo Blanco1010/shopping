@@ -89,7 +89,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 0.6,
+                              childAspectRatio: 0.8,
                             ),
                             itemCount: snapshot.data?.length ?? 0,
                             itemBuilder: (_, index) {
@@ -126,8 +126,8 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(5),
-                  height: 170,
-                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: 150,
+                  width: MediaQuery.of(context).size.width * 0.40,
                   child: FadeInImage(
                     fit: BoxFit.fill,
                     image: product.imagen1 != null
@@ -139,7 +139,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                 Container(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 20,
-                    vertical: 10,
+                    vertical: 5,
                   ),
                   height: 40,
                   child: Text(

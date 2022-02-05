@@ -46,8 +46,8 @@ class Order {
         idClient: json["id_client"],
         idAddress: json["id_address"],
         idDelivery: json["id_delivery"] ?? 'null',
-        lat: json["lat"] != null ? json["lat"].toDouble() : 0,
-        lng: json["lng"] != null ? json["lng"].toDouble() : 0,
+        lat: double.parse(json["lat"] ?? '0'),
+        lng: double.parse(json["lng"] ?? '0'),
         status: json["status"],
         timestamp: int.parse(json["timestamp"]),
         products: json['products'] != null
