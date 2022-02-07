@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+// import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/models/address.dart';
 import 'package:shop_app/widgets/no_data_widget.dart';
@@ -19,9 +19,10 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      _con.init(context, refresh);
-    });
+    _con.init(context, refresh);
+    // SchedulerBinding.instance!.addPostFrameCallback((timeStamp)
+    //  {
+    // });
   }
 
   @override
@@ -169,7 +170,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
         ),
         onPressed: () {
           _con.createOrder();
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
         child: const Text(
           'ACEPTAR',

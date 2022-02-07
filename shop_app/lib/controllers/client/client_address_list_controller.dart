@@ -34,28 +34,32 @@ class ClientAddressListController {
   }
 
   void createOrder() async {
-    Address a = Address.fromJson(await _secureStogare.read('address'));
+    Navigator.pushNamed(context, '/client/payment/');
 
-    for (var item
-        in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
-      selectProducts.add(Product.fromJson(item));
-    }
+    // Address a = Address.fromJson(await _secureStogare.read('address'));
 
-    Order order = Order(
-      idAddress: a.id!,
-      idClient: user!.id!,
-      lat: a.lat,
-      lng: a.lng,
-      products: selectProducts,
-      status: '',
-      timestamp: null,
-    );
+    // for (var item
+    //     in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
+    //   selectProducts.add(
+    //     Product.fromJson(item),
+    //   );
+    // }
 
-    ResponseApi response = await _orderProvider.create(order);
+    // Order order = Order(
+    //   idAddress: a.id!,
+    //   idClient: user!.id!,
+    //   lat: a.lat,
+    //   lng: a.lng,
+    //   products: selectProducts,
+    //   status: '',
+    //   timestamp: null,
+    // );
 
-    selectProducts.clear();
+    // ResponseApi response = await _orderProvider.create(order);
 
-    print(response.message);
+    // selectProducts.clear();
+
+    // print(response.message);
   }
 
   void handleRadoiValueChange(int value) {
@@ -66,8 +70,13 @@ class ClientAddressListController {
 
   Future<List<Address>> getAddress() async {
     address = await _addressProvider.getByUser();
-    Address a = Address.fromJson(await _secureStogare.read('address'));
-    int index = address.indexWhere((element) => element.id == a.id);
+    Address a;
+    int index = 0;
+
+    if (await _secureStogare.read('address') != 'null') {
+      a = Address.fromJson(await _secureStogare.read('address'));
+      index = address.indexWhere((element) => element.id == a.id);
+    }
 
     if (index != -1) {
       radioValue = index;
