@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/credit_card_widget.dart';
+
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/controllers/client/client_payment_controller.dart';
 
-import '../../models/user.dart';
+import '../../models/mercado_pago_document_type.dart';
 
 class ClientPaymentScreen extends StatefulWidget {
   const ClientPaymentScreen({Key? key}) : super(key: key);
@@ -38,7 +38,6 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
         physics: const BouncingScrollPhysics(),
         children: [
           CreditCardWidget(
-            animationDuration: const Duration(milliseconds: 1000),
             cardNumber: _con.cardNumber,
             expiryDate: _con.expireDate,
             cardHolderName: _con.cardHolderName,
@@ -52,7 +51,7 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
           CreditCardForm(
             formKey: _con.keyFrom, // Required
             onCreditCardModelChange: _con.onCreditCardModelChange, // Required
-            themeColor: Colors.red,
+            themeColor: MyColors.colorPrimary,
             obscureCvv: true,
             obscureNumber: true,
             isHolderNameVisible: true,
@@ -90,40 +89,38 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
   }
 
   Widget _buttonNext() {
-    return Flexible(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.payment,
-                color: Colors.white,
-                size: 35,
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                height: 60,
-                child: const Center(
-                  child: Text(
-                    'CONTINUAR',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.payment,
+              color: Colors.white,
+              size: 35,
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 10),
+              height: 60,
+              child: const Center(
+                child: Text(
+                  'CONTINUAR',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -155,15 +152,16 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
                     elevation: 1,
                     isExpanded: true,
                     hint: const Text(
-                      'CC',
+                      'Tipo doc',
                       style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
-                    items: _dropDownItems([]),
-                    value: '',
+                    items: _dropDownItems(_con.documentTypeList),
+                    value: _con.typeDocument,
                     onChanged: (option) {
+                      _con.typeDocument = option!;
                       refresh();
                     },
                   ),
@@ -186,37 +184,14 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
     );
   }
 
-  List<DropdownMenuItem<String>> _dropDownItems(List<User> users) {
+  List<DropdownMenuItem<String>> _dropDownItems(
+      List<MercadoPagoDocumentType> documents) {
     List<DropdownMenuItem<String>> list = [];
-    for (var element in users) {
+    for (var element in documents) {
       list.add(DropdownMenuItem(
-        child: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                ),
-              ),
-              height: 50,
-              width: 50,
-              child: element.image == null
-                  ? const FadeInImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/img/no-image.png'),
-                      placeholder: AssetImage('assets/gif/jar-loading.gif'),
-                    )
-                  : FadeInImage.assetNetwork(
-                      fit: BoxFit.cover,
-                      imageErrorBuilder: (context, url, error) =>
-                          const Icon(Icons.error),
-                      image: (element.image),
-                      placeholder: ('assets/gif/jar-loading.gif'),
-                    ),
-            ),
-            const SizedBox(width: 10),
-            Text('${element.name} ${element.lastname}'),
-          ],
+        child: Container(
+          margin: const EdgeInsets.only(top: 7),
+          child: Text(element.id),
         ),
         value: element.id,
       ));
