@@ -92,7 +92,9 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
     return Container(
       margin: const EdgeInsets.all(10),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          _con.createCardToken();
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -169,11 +171,12 @@ class _ClientPaymentScreenState extends State<ClientPaymentScreen> {
               ),
             ),
           ),
-          const Flexible(
+          Flexible(
             flex: 4,
             child: TextField(
-              keyboardType: TextInputType.none,
-              decoration: InputDecoration(
+              controller: _con.documentNumberController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Número de documento',
               ),

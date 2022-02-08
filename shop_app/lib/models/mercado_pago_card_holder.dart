@@ -6,10 +6,10 @@ class MercadoPagoCardHolder {
   late int number;
 
   //SUBTIPO DE IDENTIFICACION
-  late String subtype;
+  late String? subtype;
 
   //TIPO DE IDENTIFICACION
-  late String type;
+  late String? type;
 
   late List<MercadoPagoCardHolder> cardHolderList = [];
 
@@ -26,15 +26,14 @@ class MercadoPagoCardHolder {
   }
 
   MercadoPagoCardHolder.fromJsonMap(Map<String, dynamic> json) {
-    name = json['name'];
+    name = json['name'] ?? '';
     number = json['identification'] != null
         ? (json['identification']['number'] != null)
             ? int.parse(json['identification']['number'].toString())
             : 0
         : 0;
-    subtype = json['identification'] != null
-        ? json['identification']['subtype']
-        : null;
+    subtype =
+        json['identification'] != null ? json['identification']['subtype'] : '';
     type =
         json['identification'] != null ? json['identification']['type'] : null;
   }

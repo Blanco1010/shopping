@@ -4,7 +4,7 @@ class MercadoPagoCardToken {
   late String id;
   late String publicKey;
   late String cardId;
-  late bool luhnValidation;
+  late String luhnValidation;
   late String status;
   DateTime? dateUsed;
   late int cardNumberLength;
@@ -34,10 +34,10 @@ class MercadoPagoCardToken {
 
   MercadoPagoCardToken.fromJsonMap(Map<String, dynamic> json) {
     id = json['id'];
-    publicKey = json['publick_key'];
-    cardId = json['card_id'];
-    luhnValidation = json['luhnValidation'];
-    status = json['status'];
+    publicKey = json['publick_key'] ?? '';
+    cardId = json['card_id'] ?? '';
+    luhnValidation = json['luhnValidation'] ?? '';
+    status = json['status'] ?? '';
     dateUsed =
         (json['date_used'] != null) ? DateTime.parse(json['date_used']) : null;
     cardNumberLength = json['card_number_length'];
