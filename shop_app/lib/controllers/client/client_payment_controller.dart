@@ -9,6 +9,7 @@ import 'package:shop_app/models/mercado_pago_document_type.dart';
 import 'package:shop_app/provider/mercado_pago_provider.dart';
 
 import '../../models/user.dart';
+import '../../screen/client/installments/client_payment_installments_screen.dart';
 import '../../widgets/snackbar.dart';
 
 class ClientPaymentController {
@@ -118,6 +119,32 @@ class ClientPaymentController {
       if (response.statusCode == 201) {
         cardToken = MercadoPagoCardToken.fromJsonMap(data);
         print('CARD TOKEN: ${cardToken.toJson()}');
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return ClientPaymentInstallmentsScreen(
+                mercadoPagoCardToken: cardToken,
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 500),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              final curvedAnimation =
+                  CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+
+              return FadeTransition(
+                opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
+                child: FadeTransition(
+                  opacity:
+                      Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+                  child: child,
+                ),
+              );
+            },
+          ),
+        );
       } else {
         print('HUBO UN ERROR AL GENERAR EL TOKEN DE LA TARJETA');
         int? status = int.tryParse(data['cause'][0]['code'] ?? data['status']);

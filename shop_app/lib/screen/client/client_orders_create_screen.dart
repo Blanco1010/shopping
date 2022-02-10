@@ -44,19 +44,21 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
                 text: 'Ningún producto agregado',
               ),
             ),
-      bottomNavigationBar: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.25,
-          child: Column(
-            children: [
-              Divider(
-                color: Colors.grey[400],
-                endIndent: 30,
-                indent: 30,
-              ),
-              _textTotalPrice(),
-              _buttonNext(),
-            ],
-          )),
+      bottomNavigationBar: _con.selectProducts.isNotEmpty
+          ? SizedBox(
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: Column(
+                children: [
+                  Divider(
+                    color: Colors.grey[400],
+                    endIndent: 30,
+                    indent: 30,
+                  ),
+                  _textTotalPrice(),
+                  _buttonNext(),
+                ],
+              ))
+          : const SizedBox(height: 0, width: 0),
     );
   }
 

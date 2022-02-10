@@ -44,8 +44,8 @@ class MercadoPagoCardToken {
     dateCreated = json['date_created'] is DateTime
         ? json['date_created']
         : DateTime.parse(json['date_created']);
-    firstSixDigits = json['first_six_digits'];
-    lastFourDigits = json['last_four_digits'];
+    firstSixDigits = json['first_six_digits'] ?? '';
+    lastFourDigits = json['last_four_digits'] ?? '';
     securityCodeLength = json['security_code_length'];
     expirationMonth = (json['expiration_month'] != null)
         ? int.parse(json['expiration_month'].toString())
