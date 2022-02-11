@@ -21,10 +21,10 @@ class MercadoPagoInstallment {
     if (jsonList == null) {
       return;
     }
-    jsonList.forEach((item) {
+    for (var item in jsonList) {
       final chat = MercadoPagoInstallment.fromJsonMap(item);
       installmentList.add(chat);
-    });
+    }
   }
 
   MercadoPagoInstallment.fromJsonMap(Map<String, dynamic> json) {

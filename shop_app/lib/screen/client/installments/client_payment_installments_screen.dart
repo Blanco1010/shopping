@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_app/Theme/theme.dart';
+import 'package:shop_app/models/mercado_pago_installment.dart';
 import 'package:shop_app/screen/client/installments/client_payment_installments.dart';
 
 import '../../../models/mercado_pago_card_token.dart';
@@ -160,9 +161,10 @@ class _ClientPaymentInstallmentsScreenState
                   fontSize: 16,
                 ),
               ),
-              items: _dropDownItems([]),
-              value: '',
+              items: _dropDownItems(_con.installmentsList),
+              value: _con.selectedInstallment,
               onChanged: (option) {
+                _con.selectedInstallment = option!;
                 refresh();
               },
             ),
@@ -173,15 +175,15 @@ class _ClientPaymentInstallmentsScreenState
   }
 
   List<DropdownMenuItem<String>> _dropDownItems(
-      List<MercadoPagoDocumentType> documents) {
+      List<MercadoPagoInstallment>? installmentsList) {
     List<DropdownMenuItem<String>> list = [];
-    for (var element in documents) {
+    for (var element in installmentsList!) {
       list.add(DropdownMenuItem(
         child: Container(
           margin: const EdgeInsets.only(top: 7),
-          child: Text(element.id),
+          child: Text('${element.installments}'),
         ),
-        value: element.id,
+        value: '${element.installments}',
       ));
     }
     return list;

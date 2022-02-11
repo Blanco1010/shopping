@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shop_app/api/environment.dart';
 import 'package:shop_app/models/mercado_pago_document_type.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/models/mercado_pago_payment_method_installments.dart';
 
 import '../models/user.dart';
 
@@ -41,6 +42,35 @@ class MercadoPagoProvider {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  Future<MercadoPagoPaymentMethodInstallments?> getInstallments(
+    String bin,
+    int amount,
+  ) async {
+    try {
+      final url = Uri.https(
+        _urlMercadoPago,
+        '/v1/payment_methods/installments',
+        {
+          'access_token': _mercadoPageCredentials.accessToken,
+          'bin': bin,
+          'amount': '${amount}',
+        },
+      );
+
+      final res = await http.get(url);
+
+      final data = json.decode(res.body);
+
+      final result = MercadoPagoPaymentMethodInstallments.fromJsonList(data);
+
+      return result.installmentList.first;
+    } catch (e) {
+      print('PRUEBA');
+      print(e);
+      return null;
     }
   }
 

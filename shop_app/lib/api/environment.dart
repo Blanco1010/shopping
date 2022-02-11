@@ -4,8 +4,8 @@ class Environment {
   static const String apiDilevery = "192.168.68.110:3000";
 
   static MercadoPagoCredentials mercadoPagoCredentials = MercadoPagoCredentials(
-    publicKey: 'TEST-287ac894-02b0-4ff2-a2b3-c09cd33f7e29',
+    publicKey: 'TEST-6c844655-0bf1-419b-a544-b87e2d1cf627',
     accessToken:
-        'TEST-1057111017086158-090515-af624e8e9e128f87b66ec915dcfc7610-236807276',
+        'TEST-6880975183688953-020719-180685036245d485e099dc023058cb12-236807276',
   );
 }
