@@ -62,7 +62,7 @@ class ClientPaymentInstallmentsController {
 
     installmentsList = installments!.payerCosts;
     issuer = installments!.issuer;
-
+    selectedInstallment = installmentsList![0].installments.toString();
     refresh();
   }
 

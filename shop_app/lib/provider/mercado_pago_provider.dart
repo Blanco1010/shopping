@@ -7,10 +7,13 @@ import 'package:shop_app/models/mercado_pago_document_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/mercado_pago_payment_method_installments.dart';
 
+import '../controllers/secure_storage.dart';
+import '../models/order.dart';
 import '../models/user.dart';
 
 class MercadoPagoProvider {
   final String _urlMercadoPago = 'api.mercadopago.com';
+  final String _url = Environment.apiDilevery;
 
   final _mercadoPageCredentials = Environment.mercadoPagoCredentials;
 
@@ -42,6 +45,63 @@ class MercadoPagoProvider {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  Future<http.Response?>? createPayment({
+    required String cardId,
+    required double transactionAmount,
+    required int installments,
+    required String paymentMethodId,
+    required String paymentTypeId,
+    required String issuerId,
+    required String emailCustomer,
+    required String cardToken,
+    required String identificationType,
+    required String identificationNumber,
+    required Order order,
+  }) async {
+    try {
+      Uri url = Uri.https(
+        _url,
+        '/api/payments/createPay',
+        {
+          '/api/payments/createPay': _mercadoPageCredentials.publicKey,
+        },
+      );
+
+      Map<String, dynamic> body = {
+        'description': 'Flutter Delivery Blanco',
+        'transaction_amount': transactionAmount,
+        'installments': installments,
+        'payment_method_id': paymentTypeId,
+        'token': cardToken,
+        'payer': {
+          'email': emailCustomer,
+          'identification': {
+            'type': identificationType,
+            'number': identificationNumber
+          },
+        }
+      };
+
+      String bodyParams = json.encode(body);
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': user.sessionToken,
+      };
+
+      final res = await http.post(url, headers: headers, body: bodyParams);
+
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, user.id!);
+      }
+
+      return res;
+    } catch (error) {
+      print(error);
+      return null;
     }
   }
 
