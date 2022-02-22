@@ -10,9 +10,9 @@ class Order {
   String idClient;
   String idAddress;
   String? idDelivery;
-  double lat;
-  double lng;
-  String status;
+  double? lat;
+  double? lng;
+  String? status;
   int? timestamp;
   List<Product>? products = [];
   List<Order>? orders = [];
@@ -26,9 +26,9 @@ class Order {
     required this.idClient,
     required this.idAddress,
     this.idDelivery,
-    required this.lat,
-    required this.lng,
-    required this.status,
+    this.lat,
+    this.lng,
+    this.status,
     this.timestamp,
     this.products,
     this.orders,

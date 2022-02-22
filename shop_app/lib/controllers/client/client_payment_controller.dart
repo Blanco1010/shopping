@@ -126,6 +126,8 @@ class ClientPaymentController {
                 Animation<double> secondaryAnimation) {
               return ClientPaymentInstallmentsScreen(
                 mercadoPagoCardToken: cardToken,
+                documentNumber: documentNumber,
+                typeDocument: typeDocument,
               );
             },
             transitionDuration: const Duration(milliseconds: 500),

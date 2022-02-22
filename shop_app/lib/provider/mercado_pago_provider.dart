@@ -27,7 +27,7 @@ class MercadoPagoProvider {
 
   Future<List<MercadoPagoDocumentType>> getIdentificationTypes() async {
     try {
-      final url = Uri.https(
+      final url = Uri.http(
         _urlMercadoPago,
         '/v1/identification_types',
         {
@@ -62,20 +62,24 @@ class MercadoPagoProvider {
     required Order order,
   }) async {
     try {
-      Uri url = Uri.https(
+      Uri url = Uri.http(
         _url,
         '/api/payments/createPay',
         {
-          '/api/payments/createPay': _mercadoPageCredentials.publicKey,
+          'public_key': _mercadoPageCredentials.publicKey,
         },
       );
 
       Map<String, dynamic> body = {
+        'order': order,
+        'card_id': cardId,
         'description': 'Flutter Delivery Blanco',
         'transaction_amount': transactionAmount,
         'installments': installments,
-        'payment_method_id': paymentTypeId,
+        'payment_method_id': paymentMethodId,
+        'payment_type:id': paymentTypeId,
         'token': cardToken,
+        'issuer_id': issuerId,
         'payer': {
           'email': emailCustomer,
           'identification': {

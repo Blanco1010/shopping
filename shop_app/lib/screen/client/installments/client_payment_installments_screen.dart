@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/models/mercado_pago_installment.dart';
-import 'package:shop_app/screen/client/installments/client_payment_installments.dart';
+import 'package:shop_app/screen/client/installments/client_payment_installments_controller.dart';
 
 import '../../../models/mercado_pago_card_token.dart';
-import '../../../models/mercado_pago_document_type.dart';
 
 class ClientPaymentInstallmentsScreen extends StatefulWidget {
   const ClientPaymentInstallmentsScreen({
     Key? key,
     required this.mercadoPagoCardToken,
+    required this.documentNumber,
+    required this.typeDocument,
   }) : super(key: key);
 
   final MercadoPagoCardToken mercadoPagoCardToken;
+  final String documentNumber;
+  final String typeDocument;
 
   @override
   State<ClientPaymentInstallmentsScreen> createState() =>
@@ -28,7 +31,13 @@ class _ClientPaymentInstallmentsScreenState
   @override
   void initState() {
     super.initState();
-    _con.init(context, refresh, widget.mercadoPagoCardToken);
+    _con.init(
+      context,
+      refresh,
+      widget.mercadoPagoCardToken,
+      widget.documentNumber,
+      widget.typeDocument,
+    );
   }
 
   @override
@@ -100,7 +109,9 @@ class _ClientPaymentInstallmentsScreenState
       height: MediaQuery.of(context).size.height * 0.1,
       margin: const EdgeInsets.all(10),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          _con.createPay();
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
