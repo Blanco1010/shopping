@@ -15,3 +15,4 @@ export 'package:shop_app/screen/client/client_address_map_screen.dart';
 export 'package:shop_app/screen/delivery/delivery_map_screen.dart';
 export '../screen/client/client_orders_list_screen.dart';
 export 'package:shop_app/screen/client/client_payment_screen.dart';
+export 'package:shop_app/screen/client/status/client_payment_status_screen.dart';
