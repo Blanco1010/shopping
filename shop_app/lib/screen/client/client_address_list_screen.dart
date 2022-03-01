@@ -173,7 +173,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
           // Navigator.pop(context);
         },
         child: const Text(
-          'ACEPTAR',
+          'PAGAR',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
