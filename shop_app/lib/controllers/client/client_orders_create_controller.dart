@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 
 import '../../models/product.dart';
+import '../../screen/client/client_address_list_screen.dart';
 
 class ClientOrderCreateController {
   late BuildContext context;
@@ -51,7 +52,30 @@ class ClientOrderCreateController {
   }
 
   void goToAddress() {
-    Navigator.pushNamed(context, '/client/address/list');
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: ((BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return ClientAddressListScreen(
+            total: total,
+          );
+        }),
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curvedAnimation =
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+
+          return FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(curvedAnimation),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void deleteItem(Product product) {

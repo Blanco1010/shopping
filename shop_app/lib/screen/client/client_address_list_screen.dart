@@ -6,7 +6,11 @@ import 'package:shop_app/widgets/no_data_widget.dart';
 import '../../controllers/client/client_address_list_controller.dart';
 
 class ClientAddressListScreen extends StatefulWidget {
-  const ClientAddressListScreen({Key? key}) : super(key: key);
+  const ClientAddressListScreen({
+    Key? key,
+    required this.total,
+  }) : super(key: key);
+  final int total;
 
   @override
   _ClientAddressListScreenState createState() =>
@@ -19,7 +23,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
   @override
   void initState() {
     super.initState();
-    _con.init(context, refresh);
+    _con.init(context, refresh, widget.total);
     // SchedulerBinding.instance!.addPostFrameCallback((timeStamp)
     //  {
     // });

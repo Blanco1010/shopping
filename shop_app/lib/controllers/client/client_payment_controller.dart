@@ -1,38 +1,26 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_credit_card/credit_card_model.dart';
-import 'package:http/http.dart';
-import 'package:shop_app/controllers/secure_storage.dart';
-// import 'package:shop_app/models/mercado_pago_card_token.dart';
-// import 'package:shop_app/models/mercado_pago_document_type.dart';
-// import 'package:shop_app/provider/mercado_pago_provider.dart';
 
-import '../../models/user.dart';
-// import '../../screen/client/installments/client_payment_installments_screen.dart';
-import '../../widgets/snackbar.dart';
-
-class ClientPaymentController {
+class ClientPaymentStatusController {
   late BuildContext context;
   late Function refresh;
-  GlobalKey<FormState> keyFrom = GlobalKey<FormState>();
+  // GlobalKey<FormState> keyFrom = GlobalKey<FormState>();
 
-  TextEditingController documentNumberController = TextEditingController();
+  // TextEditingController documentNumberController = TextEditingController();
 
-  String cardNumber = '';
-  String expireDate = '';
-  String cardHolderName = '';
-  String cvvCode = '';
-  bool isCvvFocused = false;
+  // String cardNumber = '';
+  // String expireDate = '';
+  // String cardHolderName = '';
+  // String cvvCode = '';
+  // bool isCvvFocused = false;
 
   // List<MercadoPagoDocumentType> documentTypeList = [];
   // final MercadoPagoProvider _mercadoPagoProvider = MercadoPagoProvider();
-  User? user;
+  // User? user;
 
-  String typeDocument = 'CC';
+  // String typeDocument = 'CC';
 
-  String expirationYear = '';
-  int expirationMonth = 0;
+  // String expirationYear = '';
+  // int expirationMonth = 0;
 
   // late MercadoPagoCardToken cardToken;
 
@@ -40,68 +28,67 @@ class ClientPaymentController {
     this.context = context;
     this.refresh = refresh;
 
-    user = User.fromJson(await SecureStogare().read('user'));
+    // user = User.fromJson(await SecureStogare().read('user'));
 
     // _mercadoPagoProvider.init(context, user!);
-    getIdentificationTypes();
+    // getIdentificationTypes();
   }
 
-  void getIdentificationTypes() async {
-    // documentTypeList = await _mercadoPagoProvider.getIdentificationTypes();
-    refresh();
+  void finishShopping() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/client/products/list',
+      (route) => false,
+    );
   }
 
-  createCardToken() async {
-    String documentNumber = documentNumberController.text;
+  // void getIdentificationTypes() async {
+  // documentTypeList = await _mercadoPagoProvider.getIdentificationTypes();
+  // refresh();
+}
 
-    if (cardNumber.isEmpty) {
-      Snackbar.show(context, 'Ingresa el número de la tarjeta');
-      return;
-    }
-    if (expireDate.isEmpty) {
-      Snackbar.show(context, 'Ingresa la fecha de expiración');
-      return;
-    }
-    if (cvvCode.isEmpty) {
-      Snackbar.show(context, 'Ingresa el código de seguridad');
-      return;
-    }
-    if (cardHolderName.isEmpty) {
-      Snackbar.show(context, 'Ingresa el titular de la tarjeta');
-      return;
-    }
+  // createCardToken() async {
+  //   String documentNumber = documentNumberController.text;
 
-    if (documentNumber.isEmpty) {
-      Snackbar.show(context, 'Ingresa el número de la tarjeta');
-      return;
-    }
+  //   if (cardNumber.isEmpty) {
+  //     Snackbar.show(context, 'Ingresa el número de la tarjeta');
+  //     return;
+  //   }
+  //   if (expireDate.isEmpty) {
+  //     Snackbar.show(context, 'Ingresa la fecha de expiración');
+  //     return;
+  //   }
+  //   if (cvvCode.isEmpty) {
+  //     Snackbar.show(context, 'Ingresa el código de seguridad');
+  //     return;
+  //   }
+  //   if (cardHolderName.isEmpty) {
+  //     Snackbar.show(context, 'Ingresa el titular de la tarjeta');
+  //     return;
+  //   }
 
-    if (expireDate != '') {
-      List<String> list = expireDate.split('/');
-      if (list.length == 2) {
-        expirationMonth = int.parse(list[0]);
-        expirationYear = '20${list[1]}';
-      } else {
-        Snackbar.show(
-          context,
-          'Inserta el mes y el año de expiración de la tarjeta',
-        );
-        return;
-      }
-    }
+  //   if (documentNumber.isEmpty) {
+  //     Snackbar.show(context, 'Ingresa el número de la tarjeta');
+  //     return;
+  //   }
 
-    if (cardNumber != '') {
-      cardNumber = cardNumber.replaceAll(RegExp(' '), '');
-    }
+  //   if (expireDate != '') {
+  //     List<String> list = expireDate.split('/');
+  //     if (list.length == 2) {
+  //       expirationMonth = int.parse(list[0]);
+  //       expirationYear = '20${list[1]}';
+  //     } else {
+  //       Snackbar.show(
+  //         context,
+  //         'Inserta el mes y el año de expiración de la tarjeta',
+  //       );
+  //       return;
+  //     }
+  //   }
 
-    print(cardNumber);
-
-    print(cardHolderName);
-    print(typeDocument);
-    print(documentNumber);
-    print(cardHolderName);
-    print(expirationYear);
-    print(expirationMonth);
+  //   if (cardNumber != '') {
+  //     cardNumber = cardNumber.replaceAll(RegExp(' '), '');
+  //   }
 
     // Response? response = await _mercadoPagoProvider.createCardToken(
     //   cvv: cvvCode,
@@ -156,13 +143,12 @@ class ClientPaymentController {
     //   }
     // }
 
-    void onCreditCardModelChange(CreditCardModel creditCardModel) {
-      cardNumber = creditCardModel.cardNumber;
-      expireDate = creditCardModel.expiryDate;
-      cardHolderName = creditCardModel.cardHolderName;
-      cvvCode = creditCardModel.cvvCode;
-      isCvvFocused = creditCardModel.isCvvFocused;
-      refresh();
-    }
-  }
-}
+    // void onCreditCardModelChange(CreditCardModel creditCardModel) {
+    //   cardNumber = creditCardModel.cardNumber;
+    //   expireDate = creditCardModel.expiryDate;
+    //   cardHolderName = creditCardModel.cardHolderName;
+    //   cvvCode = creditCardModel.cvvCode;
+    //   isCvvFocused = creditCardModel.isCvvFocused;
+    //   refresh();
+    // }
+

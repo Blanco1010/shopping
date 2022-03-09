@@ -31,7 +31,8 @@ class ClientAddressListController {
 
   final SecureStogare _secureStogare = SecureStogare();
 
-  Future init(BuildContext context, Function refresh) async {
+  Future init(BuildContext context, Function refresh, int total) async {
+    this.total = total;
     this.refresh = refresh;
     this.context = context;
     user = User.fromJson(await SecureStogare().read('user'));
@@ -44,7 +45,7 @@ class ClientAddressListController {
   void createOrder() async {
     _showLoadingIndicator(context);
     var responseStripe =
-        await _stripeProvider.payWithCard('${150 * 100}', 'USD');
+        await _stripeProvider.payWithCard('${total * 100}', 'USD');
     Navigator.pop(context);
 
     if (responseStripe.success) {
@@ -68,10 +69,17 @@ class ClientAddressListController {
       );
 
       ResponseApi responseApi = await _orderProvider.create(order);
-
       selectProducts.clear();
 
-      print(responseApi.message);
+      if (responseApi.success) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/client/payment/status',
+          (route) => false,
+        );
+      }
+
+      // print(responseApi.message);
     } else {
       Snackbar.show(context, responseStripe.message);
     }

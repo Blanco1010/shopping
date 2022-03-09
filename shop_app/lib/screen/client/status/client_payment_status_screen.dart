@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 import 'package:shop_app/Theme/theme.dart';
+import 'package:shop_app/controllers/client/client_payment_controller.dart';
 
 class ClientPaymentStatusScreen extends StatefulWidget {
   const ClientPaymentStatusScreen({Key? key}) : super(key: key);
@@ -12,9 +14,15 @@ class ClientPaymentStatusScreen extends StatefulWidget {
 }
 
 class _ClientPaymentStatusScreenState extends State<ClientPaymentStatusScreen> {
+  final ClientPaymentStatusController _con = ClientPaymentStatusController();
+
   @override
   void initState() {
     super.initState();
+
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
   }
 
   @override
@@ -29,7 +37,7 @@ class _ClientPaymentStatusScreenState extends State<ClientPaymentStatusScreen> {
         ],
       ),
       bottomNavigationBar: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.25,
+        height: MediaQuery.of(context).size.height * 0.15,
         child: _buttonNext(),
       ),
     );
@@ -37,7 +45,7 @@ class _ClientPaymentStatusScreenState extends State<ClientPaymentStatusScreen> {
 
   Widget _textDetail() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
       child: const Text(
         'Tu orden fue procesada exitosamente',
         style: TextStyle(
@@ -63,7 +71,7 @@ class _ClientPaymentStatusScreenState extends State<ClientPaymentStatusScreen> {
     return ClipPath(
       clipper: OvalBottomBorderClipper(),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.1,
+        height: MediaQuery.of(context).size.height * 0.45,
         width: double.infinity,
         color: MyColors.colorPrimary,
         child: SafeArea(
@@ -72,14 +80,14 @@ class _ClientPaymentStatusScreenState extends State<ClientPaymentStatusScreen> {
               Icon(
                 Icons.check_circle,
                 color: Colors.green,
-                size: 150,
+                size: 160,
               ),
               Text(
                 'Gracias por su compra',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 25,
                 ),
               )
             ],
@@ -94,7 +102,7 @@ class _ClientPaymentStatusScreenState extends State<ClientPaymentStatusScreen> {
       height: MediaQuery.of(context).size.height * 0.1,
       margin: const EdgeInsets.all(10),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => _con.finishShopping(),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
