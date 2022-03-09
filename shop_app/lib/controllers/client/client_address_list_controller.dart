@@ -6,11 +6,14 @@ import 'package:shop_app/models/address.dart';
 
 import 'package:shop_app/provider/address_provider.dart';
 import 'package:shop_app/provider/order_provider.dart';
+import 'package:shop_app/provider/stripeProvider.dart';
+import 'package:shop_app/widgets/snackbar.dart';
 
 import '../../models/order.dart';
 import '../../models/product.dart';
 import '../../models/response_model.dart';
 import '../../models/user.dart';
+import '../../widgets/loading_indicator.dart';
 
 class ClientAddressListController {
   late BuildContext context;
@@ -20,8 +23,11 @@ class ClientAddressListController {
   User? user;
   List<Product> selectProducts = [];
   int radioValue = 0;
+  int total = 0;
 
   final OrderProvider _orderProvider = OrderProvider();
+
+  final StripeProvider _stripeProvider = StripeProvider();
 
   final SecureStogare _secureStogare = SecureStogare();
 
@@ -31,36 +37,45 @@ class ClientAddressListController {
     user = User.fromJson(await SecureStogare().read('user'));
     _addressProvider.init(context, user!.sessionToken!, user!.id!);
     _orderProvider.init(context, user!.sessionToken!, user!.id!);
+    _stripeProvider.init();
     refresh();
   }
 
   void createOrder() async {
-    Navigator.pushNamed(context, '/client/payment/');
+    _showLoadingIndicator(context);
+    var responseStripe =
+        await _stripeProvider.payWithCard('${150 * 100}', 'USD');
+    Navigator.pop(context);
 
-    Address a = Address.fromJson(await _secureStogare.read('address'));
+    if (responseStripe.success) {
+      Address a = Address.fromJson(await _secureStogare.read('address'));
 
-    for (var item
-        in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
-      selectProducts.add(
-        Product.fromJson(item),
+      for (var item
+          in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
+        selectProducts.add(
+          Product.fromJson(item),
+        );
+      }
+
+      Order order = Order(
+        idAddress: a.id!,
+        idClient: user!.id!,
+        lat: a.lat,
+        lng: a.lng,
+        products: selectProducts,
+        status: '',
+        timestamp: null,
       );
+
+      ResponseApi responseApi = await _orderProvider.create(order);
+
+      selectProducts.clear();
+
+      print(responseApi.message);
+    } else {
+      Snackbar.show(context, responseStripe.message);
     }
-
-    Order order = Order(
-      idAddress: a.id!,
-      idClient: user!.id!,
-      lat: a.lat,
-      lng: a.lng,
-      products: selectProducts,
-      status: '',
-      timestamp: null,
-    );
-
-    ResponseApi response = await _orderProvider.create(order);
-
-    selectProducts.clear();
-
-    print(response.message);
+    // Navigator.pushNamed(context, '/client/payment/');
   }
 
   void handleRadoiValueChange(int value) {
@@ -95,4 +110,23 @@ class ClientAddressListController {
       }
     }
   }
+}
+
+Future<dynamic> _showLoadingIndicator(BuildContext context) {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return WillPopScope(
+        onWillPop: () async => false,
+        child: const AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+          ),
+          backgroundColor: Colors.black,
+          content: LoadingIndicator(text: 'Espere un momento'),
+        ),
+      );
+    },
+  );
 }
