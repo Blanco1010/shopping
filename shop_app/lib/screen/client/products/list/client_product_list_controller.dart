@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/category.dart';
@@ -6,7 +8,7 @@ import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/category_provider.dart';
 import 'package:shop_app/provider/product_provider.dart';
 
-import '../../screen/client/client_product_detail_screen.dart';
+import '../../client_product_detail_screen.dart';
 
 class ClientProductsListController {
   late BuildContext context;
@@ -22,6 +24,9 @@ class ClientProductsListController {
 
   List<Category> categorys = [];
 
+  Timer? searchOnStoppedTyping;
+  String productName = '';
+
   Future init(BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
@@ -35,8 +40,32 @@ class ClientProductsListController {
     refresh();
   }
 
-  Future<List<Product>> getProducts(String idCategory) async {
-    return await _productsProvider.getByCategory(idCategory);
+  void onChangeText(String text) {
+    Duration duration = const Duration(milliseconds: 800);
+
+    if (searchOnStoppedTyping != null) {
+      searchOnStoppedTyping!.cancel();
+      refresh();
+    }
+    searchOnStoppedTyping = Timer(duration, () {
+      productName = text;
+      refresh();
+      print(productName);
+    });
+  }
+
+  Future<List<Product>> getProducts(
+    String idCategory,
+    String productName,
+  ) async {
+    if (productName.isEmpty) {
+      return await _productsProvider.getByCategory(idCategory);
+    } else {
+      return await _productsProvider.getByCategoryAndProductName(
+        idCategory,
+        productName,
+      );
+    }
   }
 
   void getCategories() async {

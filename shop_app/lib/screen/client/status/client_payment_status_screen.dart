@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/client/client_payment_controller.dart';
+import 'package:shop_app/screen/client/status/client_payment_controller.dart';
 
 class ClientPaymentStatusScreen extends StatefulWidget {
   const ClientPaymentStatusScreen({Key? key}) : super(key: key);

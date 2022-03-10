@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/client/client_product_list_controller.dart';
+import 'package:shop_app/screen/client/products/list/client_product_list_controller.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/widgets/no_data_widget.dart';
 
-import '../../models/category.dart';
+import '../../../../models/category.dart';
 
 class ClientProductsListScreen extends StatefulWidget {
   const ClientProductsListScreen({Key? key}) : super(key: key);
@@ -75,7 +75,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                 physics: const BouncingScrollPhysics(),
                 children: _con.categorys.map((Category e) {
                   return FutureBuilder(
-                    future: _con.getProducts(e.id!),
+                    future: _con.getProducts(e.id!, _con.productName),
                     builder: (
                       BuildContext context,
                       AsyncSnapshot<List<Product>> snapshot,
@@ -326,6 +326,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
+        onChanged: _con.onChangeText,
         decoration: InputDecoration(
             hintText: 'Buscar',
             suffixIcon: Icon(
