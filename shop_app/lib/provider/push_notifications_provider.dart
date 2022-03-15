@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shop_app/provider/user_provider.dart';
 
 class PushNotificationsProvider {
   /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -68,5 +69,16 @@ class PushNotificationsProvider {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
     });
+  }
+
+  void saveToken(
+    String idUser,
+    BuildContext context,
+    String sessionToken,
+  ) async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    UsersProvider usersProvider = UsersProvider();
+    usersProvider.init(context, token: sessionToken);
+    usersProvider.updateNotificationToken(idUser, token!);
   }
 }

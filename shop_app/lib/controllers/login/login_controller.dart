@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/user.dart';
+import 'package:shop_app/provider/push_notifications_provider.dart';
 import 'package:shop_app/provider/user_provider.dart';
 
 import '../../widgets/widgets.dart';
@@ -20,6 +21,9 @@ class LoginController {
 
   SecureStogare secureStogare = SecureStogare();
 
+  PushNotificationsProvider pushNotificationsProvider =
+      PushNotificationsProvider();
+
   Future init(BuildContext context) async {
     this.context = context;
     await usersProvider.init(context);
@@ -30,6 +34,12 @@ class LoginController {
       User? user = User.fromMap(jsonDecode(userJson));
 
       if (user.sessionToken != null) {
+        pushNotificationsProvider.saveToken(
+          user.id!,
+          context,
+          user.sessionToken,
+        );
+
         if (user.roles!.length > 1) {
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -51,7 +61,7 @@ class LoginController {
     Navigator.pushNamed(context!, '/register');
   }
 
-  void login() async {
+  void login(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       String email = emailController.text.trim();
       String password = passwordController.text.trim();
@@ -60,18 +70,23 @@ class LoginController {
 
       if (responseApi.success) {
         User user = User.fromMap(responseApi.data);
+        pushNotificationsProvider.saveToken(
+          user.id!,
+          context,
+          user.sessionToken,
+        );
 
         secureStogare.save('user', user.toJson());
 
         if (user.roles!.length > 1) {
           Navigator.pushNamedAndRemoveUntil(
-            context!,
+            context,
             '/roles',
             (route) => false,
           );
         } else {
           Navigator.pushNamedAndRemoveUntil(
-            context!,
+            context,
             user.roles![0].route,
             (route) => false,
           );

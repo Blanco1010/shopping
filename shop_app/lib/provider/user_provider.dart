@@ -206,4 +206,38 @@ class UsersProvider {
       );
     }
   }
+
+  Future<ResponseApi> updateNotificationToken(
+      String idUser, String tokenNotification) async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/updateNotificationToken');
+      final bodyParams = json.encode({
+        'id': idUser,
+        'notification_token': tokenNotification,
+      });
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token!
+      };
+
+      final res = await http.put(url, headers: headers, body: bodyParams);
+
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id!);
+      }
+
+      final data = json.decode(res.body);
+
+      ResponseApi responseApi = ResponseApi.fromMap(data);
+
+      return responseApi;
+    } catch (error) {
+      return ResponseApi(
+        success: false,
+        message: 'error al crear token',
+        error: '',
+      );
+    }
+  }
 }
