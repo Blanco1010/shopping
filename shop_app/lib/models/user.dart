@@ -12,6 +12,7 @@ class User {
   String? password;
   dynamic isAvailabe;
   dynamic sessionToken;
+  dynamic notificationToken;
   DateTime? createdAt;
   DateTime? updateAt;
   List<Rol>? roles = [];
@@ -26,6 +27,7 @@ class User {
     this.password,
     this.isAvailabe,
     this.sessionToken,
+    this.notificationToken,
     this.createdAt,
     this.updateAt,
     this.roles,
@@ -45,6 +47,7 @@ class User {
         password: json["password"] ?? '',
         isAvailabe: json["is_availabe"] ?? '',
         sessionToken: json["session_token"] ?? '',
+        notificationToken: json["notification_token"] ?? '',
         createdAt: json["created_at"],
         updateAt: json["update_at"],
         roles: json['roles'] == null
@@ -71,6 +74,7 @@ class User {
         "password": password,
         "is_availabe": isAvailabe,
         "session_token": sessionToken,
+        "notification_token": notificationToken,
         "created_at": createdAt?.toIso8601String(),
         "update_at": updateAt?.toIso8601String(),
         "roles": roles,

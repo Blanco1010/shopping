@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/provider/order_provider.dart';
+import 'package:shop_app/provider/push_notifications_provider.dart';
 import 'package:shop_app/provider/user_provider.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 
@@ -23,6 +24,9 @@ class RestaurantOrderCreateController {
   User? user;
   String? idDelivery;
 
+  PushNotificationsProvider pushNotificationsProvider =
+      PushNotificationsProvider();
+
   Future init(BuildContext context, Function refresh, Order order) async {
     this.context = context;
     this.refresh = refresh;
@@ -38,10 +42,26 @@ class RestaurantOrderCreateController {
     refresh();
   }
 
+  void sendNotification(String tokenDelivery) {
+    Map<String, dynamic> data = {'click_action': 'FLUTTER_NOTIFICATION_CLICK'};
+
+    pushNotificationsProvider.sendMessage(
+      tokenDelivery,
+      data,
+      'PEDIDO ASIGNADO',
+      'Te han asignado un pedido',
+    );
+  }
+
   void updateOrder() async {
     if (idDelivery != null) {
       order!.idDelivery = idDelivery;
       ResponseApi response = await _orderProvider.updateToDispached(order!);
+
+      User? deliveryUser = await _userProvider.getById(order!.idDelivery!);
+
+      sendNotification(deliveryUser!.notificationToken);
+
       Snackbar.show(context, response.message);
 
       Navigator.pop(context, true);

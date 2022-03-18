@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shop_app/provider/user_provider.dart';
+import 'package:http/http.dart' as http;
 
 class PushNotificationsProvider {
   /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -80,5 +83,33 @@ class PushNotificationsProvider {
     UsersProvider usersProvider = UsersProvider();
     usersProvider.init(context, token: sessionToken);
     usersProvider.updateNotificationToken(idUser, token!);
+  }
+
+  Future<void> sendMessage(
+    String to,
+    Map<String, dynamic> data,
+    String title,
+    String body,
+  ) async {
+    Uri uri = Uri.https('fcm.googleapis.com', '/fcm/send');
+
+    await http.post(uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAQO_e4Uo:APA91bFxLo86MoRujOyKDr4kk18hT1v-TeTWFffXDDmB2qrxO8V657gWz7V6VSBKRJK9P1aHwWgQvGr7ZJGqGHWxR2PPQkA__DNlorHZj5_CH8Y_GMUd45PyEGds92-rsionfzghPBCx'
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': body,
+              'title': title,
+            },
+            'priority': 'high',
+            'ttl': '4500s',
+            'data': data,
+            'to': to,
+          },
+        ));
   }
 }
