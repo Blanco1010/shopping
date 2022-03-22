@@ -1,4 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shop_app/provider/user_provider.dart';
+
+import '../../../controllers/secure_storage.dart';
+import '../../../models/user.dart';
+import '../../../provider/push_notifications_provider.dart';
 
 class ClientPaymentStatusController {
   late BuildContext context;
@@ -23,10 +28,23 @@ class ClientPaymentStatusController {
   // int expirationMonth = 0;
 
   // late MercadoPagoCardToken cardToken;
+  PushNotificationsProvider pushNotificationsProvider =
+      PushNotificationsProvider();
+
+  final UsersProvider _usersProvider = UsersProvider();
+
+  List<String>? tokens = [];
+
+  late User user;
 
   Future init(BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
+
+    user = User.fromJson(await SecureStogare().read('user'));
+    _usersProvider.init(context, token: user.sessionToken, id: user.id);
+    tokens = await _usersProvider.getAdminsNotificationsTokens();
+    sendNotification();
 
     // user = User.fromJson(await SecureStogare().read('user'));
 
@@ -34,7 +52,26 @@ class ClientPaymentStatusController {
     // getIdentificationTypes();
   }
 
-  void finishShopping() {
+  void sendNotification() {
+    List<String> registrationIds = [];
+
+    for (String? token in tokens!) {
+      if (token != null) {
+        registrationIds.add(token);
+      }
+    }
+
+    Map<String, dynamic> data = {'click_action': 'FLUTTER_NOTIFICATION_CLICK'};
+
+    pushNotificationsProvider.sendMessageMultiple(
+      registrationIds,
+      data,
+      'COMPRA EXITOSA',
+      'Un cliente ha realizado un pedido',
+    );
+  }
+
+  void finishShopping() async {
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/client/products/list',

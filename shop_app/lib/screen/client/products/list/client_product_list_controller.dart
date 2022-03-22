@@ -7,6 +7,8 @@ import 'package:shop_app/models/product.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/category_provider.dart';
 import 'package:shop_app/provider/product_provider.dart';
+import 'package:shop_app/provider/push_notifications_provider.dart';
+import 'package:shop_app/provider/user_provider.dart';
 
 import '../../client_product_detail_screen.dart';
 
@@ -27,6 +29,13 @@ class ClientProductsListController {
   Timer? searchOnStoppedTyping;
   String productName = '';
 
+  // PushNotificationsProvider pushNotificationsProvider =
+  //     PushNotificationsProvider();
+
+  // final UsersProvider _usersProvider = UsersProvider();
+
+  // List<String>? tokens = [];
+
   Future init(BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
@@ -36,9 +45,33 @@ class ClientProductsListController {
     _categoryProvider.init(context, user!.sessionToken, user!.id!);
     _productsProvider.init(context, user!.sessionToken, user!.id!);
 
+    // _usersProvider.init(context, token: user!.sessionToken, id: user!.id);
+
+    // tokens = await _usersProvider.getAdminsNotificationsTokens();
+    // sendNotification();
+
     getCategories();
     refresh();
   }
+
+  // void sendNotification() {
+  //   List<String> registrationIds = [];
+
+  //   for (String? token in tokens!) {
+  //     if (token != null) {
+  //       registrationIds.add(token);
+  //     }
+  //   }
+
+  //   Map<String, dynamic> data = {'click_action': 'FLUTTER_NOTIFICATION_CLICK'};
+
+  //   pushNotificationsProvider.sendMessageMultiple(
+  //     registrationIds,
+  //     data,
+  //     'COMPRA EXITOSA',
+  //     'Un cliente ha realizado un pedido',
+  //   );
+  // }
 
   void onChangeText(String text) {
     Duration duration = const Duration(milliseconds: 800);

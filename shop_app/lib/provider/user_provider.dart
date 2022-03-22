@@ -57,6 +57,30 @@ class UsersProvider {
     }
   }
 
+  Future<List<String>?>? getAdminsNotificationsTokens() async {
+    try {
+      final Uri url = Uri.http(_url, '$_api/getAdminsNotificationTokens');
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token!
+      };
+
+      final res = await http.get(url, headers: headers);
+
+      //NO AUTORIZADO
+      if (res.statusCode == 401) {
+        SecureStogare().logout(context, id!);
+      }
+
+      final data = json.decode(res.body);
+      final tokens = List<String>.from(data);
+
+      return tokens;
+    } catch (error) {
+      return null;
+    }
+  }
+
   Future<User?>? getById(String id) async {
     try {
       final Uri url = Uri.http(_url, '$_api/findById/$id');

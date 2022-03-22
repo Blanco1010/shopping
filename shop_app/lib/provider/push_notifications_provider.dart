@@ -93,23 +93,55 @@ class PushNotificationsProvider {
   ) async {
     Uri uri = Uri.https('fcm.googleapis.com', '/fcm/send');
 
-    await http.post(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization':
-              'key=AAAAQO_e4Uo:APA91bFxLo86MoRujOyKDr4kk18hT1v-TeTWFffXDDmB2qrxO8V657gWz7V6VSBKRJK9P1aHwWgQvGr7ZJGqGHWxR2PPQkA__DNlorHZj5_CH8Y_GMUd45PyEGds92-rsionfzghPBCx'
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            'notification': <String, dynamic>{
-              'body': body,
-              'title': title,
-            },
-            'priority': 'high',
-            'ttl': '4500s',
-            'data': data,
-            'to': to,
+    await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization':
+            'key=AAAAQO_e4Uo:APA91bFxLo86MoRujOyKDr4kk18hT1v-TeTWFffXDDmB2qrxO8V657gWz7V6VSBKRJK9P1aHwWgQvGr7ZJGqGHWxR2PPQkA__DNlorHZj5_CH8Y_GMUd45PyEGds92-rsionfzghPBCx'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': body,
+            'title': title,
           },
-        ));
+          'priority': 'high',
+          'ttl': '4500s',
+          'data': data,
+          'to': to,
+        },
+      ),
+    );
+  }
+
+  Future<void> sendMessageMultiple(
+    List<String>? toList,
+    Map<String, dynamic> data,
+    String title,
+    String body,
+  ) async {
+    Uri uri = Uri.https('fcm.googleapis.com', '/fcm/send');
+
+    await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization':
+            'key=AAAAQO_e4Uo:APA91bFxLo86MoRujOyKDr4kk18hT1v-TeTWFffXDDmB2qrxO8V657gWz7V6VSBKRJK9P1aHwWgQvGr7ZJGqGHWxR2PPQkA__DNlorHZj5_CH8Y_GMUd45PyEGds92-rsionfzghPBCx'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': body,
+            'title': title,
+          },
+          'priority': 'high',
+          'ttl': '4500s',
+          'data': data,
+          'registration_ids': toList,
+        },
+      ),
+    );
   }
 }
