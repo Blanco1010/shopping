@@ -49,6 +49,7 @@ class _RolesScreenState extends State<RolesScreen> {
   }
 
   Widget cardRol(Rol rol) {
+    final size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -60,8 +61,8 @@ class _RolesScreenState extends State<RolesScreen> {
               borderRadius: const BorderRadius.all(Radius.circular(25.0)),
               border: Border.all(color: MyColors.colorPrimary),
             ),
-            height: 150,
-            width: 150,
+            height: size.height * 0.2,
+            width: size.width * 0.35,
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(25.0)),
               child: FadeInImage(

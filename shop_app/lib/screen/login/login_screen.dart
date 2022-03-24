@@ -164,7 +164,9 @@ class _LoginFormState extends State<_LoginForm> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: CustomInputField(
+        max: 1,
         expand: false,
+        obscureText: false,
         validator: (value) {
           RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
