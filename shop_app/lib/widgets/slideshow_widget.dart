@@ -29,7 +29,7 @@ class _SlideshowState extends State<Slideshow> {
   @override
   void initState() {
     pageController.addListener(() {
-      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
         _slideshowModel.init(context, refresh);
         // print('Página actual: ${pageController.page}');
         _slideshowModel.currentpage = pageController.page!;

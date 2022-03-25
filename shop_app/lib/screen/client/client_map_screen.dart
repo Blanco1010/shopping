@@ -19,7 +19,7 @@ class _ClientMapScreenState extends State<ClientMapScreen> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback(
+    SchedulerBinding.instance?.addPostFrameCallback(
       (timeStamp) {
         _con.init(
           context,

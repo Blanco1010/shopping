@@ -18,7 +18,7 @@ class _ClientAddressMapScreenState extends State<ClientAddressMapScreen> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
     });
   }
@@ -84,11 +84,13 @@ class _ClientAddressMapScreenState extends State<ClientAddressMapScreen> {
         onPressed: () {
           _con.selectRefPoint();
         },
-        child: const Text(
-          'SELECCIONAR ESTE PUNTO',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        child: const FittedBox(
+          child: Text(
+            'SELECCIONAR ESTE PUNTO',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

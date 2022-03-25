@@ -108,6 +108,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
@@ -115,6 +116,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -162,25 +164,28 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
 
   Widget _buttonAccept() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: MyColors.colorPrimary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-        ),
-        onPressed: () {
+      margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(25.0),
+        onTap: () {
           _con.createOrder();
-          // Navigator.pop(context);
         },
-        child: const Text(
-          'PAGAR',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25.0),
+            color: MyColors.colorPrimary,
+          ),
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: const Center(
+            child: Text(
+              'PAGAR',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

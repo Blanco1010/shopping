@@ -20,7 +20,7 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
     });
   }
@@ -35,9 +35,12 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
       body: _con.selectProducts.isNotEmpty
           ? ListView(
               physics: const BouncingScrollPhysics(),
-              children: _con.selectProducts.map((Product product) {
-                return _cardProduct(product);
-              }).toList())
+              children: _con.selectProducts.map(
+                (Product product) {
+                  return _cardProduct(product);
+                },
+              ).toList(),
+            )
           : Container(
               alignment: Alignment.center,
               child: const NoDataWidget(
@@ -46,7 +49,7 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
             ),
       bottomNavigationBar: _con.selectProducts.isNotEmpty
           ? SizedBox(
-              height: MediaQuery.of(context).size.height * 0.25,
+              height: MediaQuery.of(context).size.height * 0.3,
               child: Column(
                 children: [
                   Divider(
@@ -55,9 +58,11 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
                     indent: 30,
                   ),
                   _textTotalPrice(),
+                  const Spacer(),
                   _buttonNext(),
                 ],
-              ))
+              ),
+            )
           : const SizedBox(height: 0, width: 0),
     );
   }

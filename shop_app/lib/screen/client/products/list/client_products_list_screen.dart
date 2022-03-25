@@ -21,7 +21,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
     });
   }
@@ -89,7 +89,7 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 0.8,
+                              childAspectRatio: 0.75,
                             ),
                             itemCount: snapshot.data?.length ?? 0,
                             itemBuilder: (_, index) {
@@ -126,8 +126,8 @@ class _ClientProductsListScreenState extends State<ClientProductsListScreen> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(5),
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * 0.40,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.50,
                   child: FadeInImage(
                     fit: BoxFit.fill,
                     image: product.imagen1 != null

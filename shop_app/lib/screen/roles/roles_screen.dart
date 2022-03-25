@@ -16,7 +16,7 @@ class _RolesScreenState extends State<RolesScreen> {
 
   @override
   void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
     });
     super.initState();

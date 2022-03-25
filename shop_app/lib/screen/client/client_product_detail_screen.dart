@@ -24,7 +24,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
     super.initState();
 
     _clientProductDetailController.init(context, refresh, widget.product);
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {});
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {});
   }
 
   @override

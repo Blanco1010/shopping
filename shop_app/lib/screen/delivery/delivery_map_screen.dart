@@ -20,7 +20,7 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       _con.init(
         context,
         refresh,
@@ -123,24 +123,24 @@ class _DeliveryMapScreenState extends State<DeliveryMapScreen> {
       ),
       child: Column(
         children: [
-          Flexible(child:_listTileAddress(
+          Flexible(
+              child: _listTileAddress(
             _con.order?.address?.neightborhood,
             'Barrio',
             Icons.my_location,
-            )
-          ),
-          Flexible(child:_listTileAddress(
-            _con.order?.address?.address,
-            'Dirección',
-            Icons.location_on,
+          )),
+          Flexible(
+            child: _listTileAddress(
+              _con.order?.address?.address,
+              'Dirección',
+              Icons.location_on,
             ),
           ),
-
           Divider(color: Colors.grey[400]),
-          Flexible(child:_clintInfo()),
-          Flexible(child: _buttonAccept(),
+          Flexible(child: _clintInfo()),
+          Flexible(
+            child: _buttonAccept(),
           )
-
         ],
       ),
     );

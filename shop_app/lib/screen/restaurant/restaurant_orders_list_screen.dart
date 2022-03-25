@@ -23,7 +23,7 @@ class _RestaurantOrdersListScreenState
   void initState() {
     super.initState();
     _con.init(context, refresh);
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {});
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {});
   }
 
   @override

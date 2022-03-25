@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:stripe_payment/stripe_payment.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../models/stripe_transaction_response.dart';
 
@@ -17,40 +18,70 @@ class StripeProvider {
     'Authorization': 'Bearer $secretAPI',
     'Content-Type': 'application/x-www-form-urlencoded'
   };
+  late Map<String, dynamic> paymentIntentData;
 
-  void init() {
-    StripePayment.setOptions(
-      StripeOptions(
-        publishableKey: publicSecret,
-        merchantId: 'test',
-        androidPayMode: 'test',
-      ),
-    );
-  }
+  // void init() {
+  //   StripePayment.setOptions(
+  //     StripeOptions(
+  //       publishableKey: publicSecret,
+  //       merchantId: 'test',
+  //       androidPayMode: 'test',
+  //     ),
+  //   );
+  // }
 
-  Future<StripeTransactionResponse> payWithCard(
+  Future<StripeTransactionResponse?> payWithCard(
       String amount, String currency) async {
     try {
-      var paymentMethod = await StripePayment.paymentRequestWithCardForm(
-        CardFormPaymentRequest(),
-      );
+      // var paymentMethod = await StripePayment.paymentRequestWithCardForm(
+      //   CardFormPaymentRequest(),
+      // );
 
-      var paymentIntent = await createPaymentIntent(amount, currency);
-
-      var response = await StripePayment.confirmPaymentIntent(
-        PaymentIntent(
-          clientSecret: paymentIntent['client_secret'],
-          paymentMethodId: paymentMethod.id,
+      paymentIntentData = await createPaymentIntent(amount, currency);
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: paymentIntentData['client_secret'],
+          googlePay: true,
+          applePay: true,
+          style: ThemeMode.system,
+          merchantCountryCode: 'CO',
+          merchantDisplayName: 'ASIF',
         ),
       );
 
-      if (response.status == 'succeeded') {
-        return StripeTransactionResponse('Transacción exitosa', true);
-      } else {
-        return StripeTransactionResponse('Transacción fallo', false);
-      }
+      StripeTransactionResponse responseStripe = await displayPaymentSheet();
+
+      return responseStripe;
+
+      // var response = await StripePayment.confirmPaymentIntent(
+      //   PaymentIntent(
+      //     clientSecret: paymentIntent['client_secret'],
+      //     paymentMethodId: paymentMethod.id,
+      //   ),
+      // );
+
+      // if (response.status == 'succeeded') {
+      //   return StripeTransactionResponse('Transacción exitosa', true);
+      // } else {
+      //   return StripeTransactionResponse('Transacción fallo', false);
+      // }
     } catch (error) {
       rethrow;
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet(
+        parameters: PresentPaymentSheetParameters(
+          clientSecret: paymentIntentData['client_secret'],
+          confirmPayment: true,
+        ),
+      );
+
+      return StripeTransactionResponse('Transacción exitosa', true);
+    } on StripeException catch (error) {
+      return StripeTransactionResponse(error.toString(), false);
     }
   }
 
@@ -58,7 +89,7 @@ class StripeProvider {
       String amount, String currency) async {
     try {
       Map<String, dynamic> body = {
-        'amount': amount,
+        'amount': calculateAmount(amount),
         'currency': currency,
         'payment_method_types[]': 'card',
       };
@@ -67,9 +98,14 @@ class StripeProvider {
 
       var response = await http.post(uri, body: body, headers: headers);
 
-      return jsonDecode(response.body);
+      return jsonDecode(response.body.toString());
     } catch (e) {
       rethrow;
     }
+  }
+
+  calculateAmount(String amount) {
+    final price = int.parse(amount) * 100;
+    return price.toString();
   }
 }

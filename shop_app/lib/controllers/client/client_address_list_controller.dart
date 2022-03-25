@@ -38,51 +38,50 @@ class ClientAddressListController {
     user = User.fromJson(await SecureStogare().read('user'));
     _addressProvider.init(context, user!.sessionToken!, user!.id!);
     _orderProvider.init(context, user!.sessionToken!, user!.id!);
-    _stripeProvider.init();
+    // _stripeProvider.init();
     refresh();
   }
 
   void createOrder() async {
-    _showLoadingIndicator(context);
+    // _showLoadingIndicator(context);
     var responseStripe =
-        await _stripeProvider.payWithCard('${total * 100}', 'USD');
-    Navigator.pop(context);
+        await _stripeProvider.payWithCard(total.toString(), 'COP');
+    // Navigator.pop(context);
+    print(responseStripe);
+    // if (responseStripe.success) {
+    //   Address a = Address.fromJson(await _secureStogare.read('address'));
 
-    if (responseStripe.success) {
-      Address a = Address.fromJson(await _secureStogare.read('address'));
+    //   for (var item
+    //       in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
+    //     selectProducts.add(
+    //       Product.fromJson(item),
+    //     );
+    //   }
 
-      for (var item
-          in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
-        selectProducts.add(
-          Product.fromJson(item),
-        );
-      }
+    //   Order order = Order(
+    //     idAddress: a.id!,
+    //     idClient: user!.id!,
+    //     lat: a.lat,
+    //     lng: a.lng,
+    //     products: selectProducts,
+    //     status: '',
+    //     timestamp: null,
+    //   );
 
-      Order order = Order(
-        idAddress: a.id!,
-        idClient: user!.id!,
-        lat: a.lat,
-        lng: a.lng,
-        products: selectProducts,
-        status: '',
-        timestamp: null,
-      );
+    //   ResponseApi responseApi = await _orderProvider.create(order);
+    //   selectProducts.clear();
 
-      ResponseApi responseApi = await _orderProvider.create(order);
-      selectProducts.clear();
+    //   if (responseApi.success) {
+    //     Navigator.pushNamedAndRemoveUntil(
+    //       context,
+    //       '/client/payment/status',
+    //       (route) => false,
+    //     );
+    //   }
 
-      if (responseApi.success) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/client/payment/status',
-          (route) => false,
-        );
-      }
-
-      // print(responseApi.message);
-    } else {
-      Snackbar.show(context, responseStripe.message);
-    }
+    // } else {
+    //   Snackbar.show(context, responseStripe.message);
+    // }
     // Navigator.pushNamed(context, '/client/payment/');
   }
 
