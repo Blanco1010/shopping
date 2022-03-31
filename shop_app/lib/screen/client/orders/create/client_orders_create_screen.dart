@@ -112,12 +112,16 @@ class _ClientOrderCreateScreenState extends State<ClientOrderCreateScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            Container(
+              width: MediaQuery.of(context).size.width * 0.35,
+              child: Text(
               product.name,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )
+              ,),
+
             const SizedBox(height: 10),
             _addOrRemove(product),
           ],
