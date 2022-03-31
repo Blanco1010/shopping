@@ -131,6 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (value.toString().length <= 8) {
             return 'Mínimo ocho caracteres';
           }
+          return null;
         },
         icon: Icons.lock,
         textController: textController,
@@ -159,6 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (textController2.value != textController.value) {
             return 'Las contraseñas no coinciden';
           }
+          return null;
         },
         icon: Icons.lock,
         textController: textController,
@@ -179,13 +181,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
-        max:1,
+        max: 1,
         validator: (value) {
           RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
           if (exp.hasMatch(value.toString()) != true) {
             return 'Tienes que darnos un email válido';
           }
+          return null;
         },
         icon: Icons.email,
         textController: textController,
@@ -205,11 +208,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
-        max:1,
+        max: 1,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         icon: Icons.person_pin_circle_rounded,
         textController: textController,
@@ -229,11 +233,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
-        max:1,
+        max: 1,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         icon: Icons.person_pin_circle_outlined,
         textController: textController,
@@ -253,7 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
-        max:1,
+        max: 1,
         validator: null,
         icon: Icons.phone,
         textController: textController,

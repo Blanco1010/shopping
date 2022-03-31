@@ -124,7 +124,7 @@ class _ClientAddressListScreenState extends State<ClientAddressListScreen> {
           const Spacer(),
           GestureDetector(
             onTap: () {
-              print(_con.address[index].id);
+              debugPrint(_con.address[index].id);
             },
             child: Container(
               margin: const EdgeInsets.only(right: 10),

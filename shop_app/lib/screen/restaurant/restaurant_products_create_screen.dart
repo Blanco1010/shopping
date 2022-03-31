@@ -103,6 +103,7 @@ _textFieldTitle(Size size, TextEditingController textController) {
         if (value.toString().isEmpty == true) {
           return 'Debes llenar el campo';
         }
+        return null;
       },
       icon: Icons.local_pizza_rounded,
       textController: textController,
@@ -128,6 +129,7 @@ _textFieldDescription(Size size, TextEditingController textController) {
         if (value.toString().isEmpty == true) {
           return 'Debes llenar el campo';
         }
+        return null;
       },
       icon: Icons.description,
       textController: textController,
@@ -155,6 +157,7 @@ _textFieldPrice(Size size, TextEditingController textController) {
         if (RegExp(r'^[0-9]+([0-9]+)?$').hasMatch(value!) == false) {
           return 'Debes introducir solo los números';
         }
+        return null;
       },
       icon: Icons.monetization_on,
       textController: textController,
@@ -177,7 +180,7 @@ _cardImage(File? imageFile, int numberFile, BuildContext context,
               height: 100,
               child: Image.file(
                 imageFile,
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
               ),
             ),
           )

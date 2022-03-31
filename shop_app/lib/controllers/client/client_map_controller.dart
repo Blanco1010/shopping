@@ -14,6 +14,7 @@ import '../../api/environment.dart';
 import '../../models/order.dart';
 import '../../models/user.dart';
 
+// ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ClientMapController {
@@ -66,8 +67,6 @@ class ClientMapController {
     socket.connect();
 
     socket.on('position/${order!.id}', (data) {
-      print(data);
-
       addMarker(
         'delivery',
         data['lat'],
@@ -167,7 +166,7 @@ class ClientMapController {
       );
       refresh();
     } catch (error) {
-      print(error);
+      debugPrint('$error');
     }
   }
 

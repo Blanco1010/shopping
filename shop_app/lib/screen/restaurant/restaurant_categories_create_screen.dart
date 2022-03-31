@@ -79,6 +79,7 @@ _textFieldTitle(Size size, TextEditingController textController) {
         if (value.toString().isEmpty == true) {
           return 'Debes llenar el campo';
         }
+        return null;
       },
       icon: Icons.info_outline,
       textController: textController,
@@ -104,6 +105,7 @@ _textFieldDescription(Size size, TextEditingController textController) {
         if (value.toString().isEmpty == true) {
           return 'Debes llenar el campo';
         }
+        return null;
       },
       icon: Icons.description,
       textController: textController,

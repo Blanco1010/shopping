@@ -27,10 +27,10 @@ class RegisterController {
   TextEditingController passwordController = TextEditingController(text: '');
   TextEditingController confirmPassword = TextEditingController(text: '');
 
-  Future? init(BuildContext context, Function refresh) {
+  Future init(BuildContext context, Function refresh) async {
     this.context = context;
     this.refresh = refresh;
-    userProvider.init(context);
+    await userProvider.init(context);
   }
 
   void goToRegisterPage() {

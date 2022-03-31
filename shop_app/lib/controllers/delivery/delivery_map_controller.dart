@@ -15,6 +15,7 @@ import '../../models/order.dart';
 import '../../models/user.dart';
 import '../../widgets/snackbar.dart';
 
+// ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class DeliveryMapController {
@@ -79,7 +80,7 @@ class DeliveryMapController {
     order!.lat = _position!.latitude;
     order!.lng = _position!.longitude;
     await _orderProvider.updateLatLng(order!);
-    print('guardando');
+    debugPrint('guardando');
   }
 
   void emitPosition() {
@@ -216,7 +217,7 @@ class DeliveryMapController {
       await _determinePosition();
       _position = await Geolocator.getLastKnownPosition();
       saveLocation();
-      print('object');
+
       animateCameraToPosition(_position!.latitude, _position!.longitude);
       addMarker(
         'delivery',
@@ -255,7 +256,7 @@ class DeliveryMapController {
         refresh();
       });
     } catch (error) {
-      print(error);
+      debugPrint('$error');
     }
   }
 

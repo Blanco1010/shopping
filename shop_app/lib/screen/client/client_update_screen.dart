@@ -124,6 +124,7 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         icon: Icons.person_pin_circle_rounded,
         textController: textController,
@@ -147,6 +148,7 @@ class _ClientUpdateScreenState extends State<ClientUpdateScreen> {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         icon: Icons.person_pin_circle_outlined,
         textController: textController,

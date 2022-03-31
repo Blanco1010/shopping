@@ -7,8 +7,6 @@ import 'package:shop_app/models/product.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/category_provider.dart';
 import 'package:shop_app/provider/product_provider.dart';
-import 'package:shop_app/provider/push_notifications_provider.dart';
-import 'package:shop_app/provider/user_provider.dart';
 
 import '../detail/client_product_detail_screen.dart';
 
@@ -83,7 +81,7 @@ class ClientProductsListController {
     searchOnStoppedTyping = Timer(duration, () {
       productName = text;
       refresh();
-      print(productName);
+      debugPrint(productName);
     });
   }
 

@@ -145,6 +145,7 @@ class _LoginFormState extends State<_LoginForm> {
           if (value.toString().length <= 8) {
             return 'Mínimo ocho caracteres';
           }
+          return null;
         },
         icon: Icons.lock,
         labelText: 'Contraseña',
@@ -173,6 +174,7 @@ class _LoginFormState extends State<_LoginForm> {
           if (exp.hasMatch(value.toString()) != true) {
             return 'Tienes que darnos un email válido';
           }
+          return null;
         },
         icon: Icons.email,
         labelText: 'Correo eletrónico',

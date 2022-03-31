@@ -54,7 +54,7 @@ class _ClientProductDetailState extends State<ClientProductDetailScreen> {
                     ),
                     FadeInImage.assetNetwork(
                       image: _clientProductDetailController.product.imagen2!,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.fill,
                       placeholder: 'assets/gif/jar-loading.gif',
                       imageErrorBuilder: (context, error, stackTrace) =>
                           const Icon(

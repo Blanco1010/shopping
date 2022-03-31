@@ -100,6 +100,7 @@ class _ClientAddressCreateScreenState extends State<ClientAddressCreateScreen> {
           if (value.toString().isEmpty) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         icon: Icons.location_on,
         textController: textController,
@@ -124,6 +125,7 @@ class _ClientAddressCreateScreenState extends State<ClientAddressCreateScreen> {
           if (value.toString().isEmpty) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         icon: Icons.location_city,
         textController: textController,
@@ -152,6 +154,7 @@ class _ClientAddressCreateScreenState extends State<ClientAddressCreateScreen> {
           if (value.toString().isEmpty) {
             return 'Debes llenar el campo';
           }
+          return null;
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: const InputDecoration(

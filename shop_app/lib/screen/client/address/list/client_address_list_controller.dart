@@ -12,7 +12,6 @@ import '../../../../models/order.dart';
 import '../../../../models/product.dart';
 import '../../../../models/response_model.dart';
 import '../../../../models/user.dart';
-import '../../../../widgets/loading_indicator.dart';
 
 class ClientAddressListController {
   late BuildContext context;
@@ -46,7 +45,7 @@ class ClientAddressListController {
     var responseStripe =
         await _stripeProvider.payWithCard(total.toString(), 'COP');
     // Navigator.pop(context);
-    print(responseStripe);
+    debugPrint('$responseStripe');
     if (responseStripe!.success) {
       Address a = Address.fromJson(await _secureStogare.read('address'));
 
@@ -99,7 +98,7 @@ class ClientAddressListController {
     if (index != -1) {
       radioValue = index;
     }
-    print(index);
+    debugPrint('$index');
     return address;
   }
 
@@ -114,21 +113,21 @@ class ClientAddressListController {
   }
 }
 
-Future<dynamic> _showLoadingIndicator(BuildContext context) {
-  return showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) {
-      return WillPopScope(
-        onWillPop: () async => false,
-        child: const AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
-          ),
-          backgroundColor: Colors.black,
-          content: LoadingIndicator(text: 'Espere un momento'),
-        ),
-      );
-    },
-  );
-}
+// Future<dynamic> showLoadingIndicator(BuildContext context) {
+//   return showDialog(
+//     barrierDismissible: false,
+//     context: context,
+//     builder: (BuildContext context) {
+//       return WillPopScope(
+//         onWillPop: () async => false,
+//         child: const AlertDialog(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.all(Radius.circular(25.0)),
+//           ),
+//           backgroundColor: Colors.black,
+//           content: LoadingIndicator(text: 'Espere un momento'),
+//         ),
+//       );
+//     },
+//   );
+// }

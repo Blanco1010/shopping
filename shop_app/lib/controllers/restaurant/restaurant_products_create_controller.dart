@@ -149,8 +149,8 @@ class RestaurantProductsCreateController {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black, width: 3),
         ),
-        height: 100,
-        width: 100,
+        height: 90,
+        width: 90,
         child: Icon(
           Icons.image,
           size: MediaQuery.of(context!).size.height * 0.1,
@@ -167,8 +167,8 @@ class RestaurantProductsCreateController {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black, width: 3),
         ),
-        height: 100,
-        width: 100,
+        height: 90,
+        width: 90,
         child: Icon(
           Icons.camera_alt_outlined,
           size: MediaQuery.of(context!).size.height * 0.1,

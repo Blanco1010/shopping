@@ -40,7 +40,7 @@ class PushNotificationsProvider {
     FirebaseMessaging.instance.getInitialMessage().then(
       (RemoteMessage? message) {
         if (message != null) {
-          print('NEW NOTIFICATIONS: $message');
+          debugPrint('NEW NOTIFICATIONS: $message');
         }
       },
     );
@@ -59,7 +59,7 @@ class PushNotificationsProvider {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                // TODO add a proper drawable resource to android, for now using
+                //  add a proper drawable resource to android, for now using
                 //      one that already exists in example app.
                 icon: 'launch_background',
               ),
@@ -70,7 +70,7 @@ class PushNotificationsProvider {
     );
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
+      debugPrint('A new onMessageOpenedApp event was published!');
     });
   }
 

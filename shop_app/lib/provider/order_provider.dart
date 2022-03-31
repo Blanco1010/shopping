@@ -51,7 +51,7 @@ class OrderProvider {
       return list;
     } catch (error) {
       // throw Exception(error);
-      print(error);
+      debugPrint('$error');
       return [];
     }
   }
@@ -88,7 +88,7 @@ class OrderProvider {
       return list;
     } catch (error) {
       // throw Exception(error);
-      print(error);
+      debugPrint('$error');
       return [];
     }
   }
@@ -124,7 +124,7 @@ class OrderProvider {
       return list;
     } catch (error) {
       // throw Exception(error);
-      print(error);
+      debugPrint('$error');
       return [];
     }
   }
@@ -152,7 +152,7 @@ class OrderProvider {
 
       return responseApi;
     } catch (error) {
-      print(error);
+      debugPrint('$error');
 
       return ResponseApi(success: false, message: 'Error al crear order');
     }
@@ -181,7 +181,7 @@ class OrderProvider {
 
       return responseApi;
     } catch (error) {
-      print(error);
+      debugPrint('$error');
       return ResponseApi(success: false, message: 'Error al actualizar');
     }
   }
@@ -209,7 +209,7 @@ class OrderProvider {
 
       return responseApi;
     } catch (error) {
-      print(error);
+      debugPrint('$error');
       return ResponseApi(success: false, message: 'Error al actualizar');
     }
   }
@@ -237,7 +237,7 @@ class OrderProvider {
 
       return responseApi;
     } catch (error) {
-      print(error);
+      debugPrint('$error');
       return ResponseApi(success: false, message: 'Error al actualizar');
     }
   }
@@ -265,7 +265,7 @@ class OrderProvider {
 
       return responseApi;
     } catch (error) {
-      print(error);
+      debugPrint('$error');
       return ResponseApi(success: false, message: 'Error al actualizar');
     }
   }
