@@ -40,12 +40,15 @@ class StripeProvider {
       paymentIntentData = await createPaymentIntent(amount, currency);
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
+          customerId: paymentIntentData['customer'],
           paymentIntentClientSecret: paymentIntentData['client_secret'],
+          customerEphemeralKeySecret: paymentIntentData['ephemeralKey'],
           googlePay: true,
           applePay: true,
+          testEnv: true,
           style: ThemeMode.system,
           merchantCountryCode: 'CO',
-          merchantDisplayName: 'ASIF',
+          merchantDisplayName: 'Flutter Stripe Store Demo',
         ),
       );
 
@@ -72,12 +75,7 @@ class StripeProvider {
 
   displayPaymentSheet() async {
     try {
-      await Stripe.instance.presentPaymentSheet(
-        parameters: PresentPaymentSheetParameters(
-          clientSecret: paymentIntentData['client_secret'],
-          confirmPayment: true,
-        ),
-      );
+      await Stripe.instance.presentPaymentSheet();
 
       return StripeTransactionResponse('Transacción exitosa', true);
     } on StripeException catch (error) {

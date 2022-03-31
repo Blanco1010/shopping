@@ -3,9 +3,9 @@ import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/address.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/provider/address_provider.dart';
-import 'package:shop_app/screen/client/client_address_map_screen.dart';
+import 'package:shop_app/screen/client/address/map/client_address_map_screen.dart';
 
-import '../../models/user.dart';
+import '../../../../models/user.dart';
 
 class ClientAddressCreateController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();

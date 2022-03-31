@@ -10,7 +10,7 @@ class NoDataWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('assets/img/no_items.png'),
+        Image.asset('assets/img/no_items.png',scale: 1,height: MediaQuery.of(context).size.height * 0.3,),
         Text(text),
       ],
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/client/client_orders_list_controller.dart';
+import 'package:shop_app/screen/client/orders/list/client_orders_list_controller.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/utils/relative_time_util.dart';
-import '../../widgets/no_data_widget.dart';
+import '../../../../widgets/no_data_widget.dart';
 
 class ClientOrdersListScreen extends StatefulWidget {
   const ClientOrdersListScreen({Key? key}) : super(key: key);

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/client/client_order_detail_controller.dart';
+import 'package:shop_app/screen/client/orders/detail/client_order_detail_controller.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/utils/relative_time_util.dart';
 import 'package:shop_app/widgets/no_data_widget.dart';
-import '../../models/order.dart';
+import '../../../../models/order.dart';
 
 class ClientOrderDetailScreen extends StatefulWidget {
   final Order order;

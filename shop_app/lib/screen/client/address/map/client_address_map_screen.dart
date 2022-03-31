@@ -2,8 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../Theme/theme.dart';
-import '../../controllers/client/client_address_map_controller.dart';
+import '../../../../Theme/theme.dart';
+import 'client_address_map_controller.dart';
 
 class ClientAddressMapScreen extends StatefulWidget {
   const ClientAddressMapScreen({Key? key}) : super(key: key);

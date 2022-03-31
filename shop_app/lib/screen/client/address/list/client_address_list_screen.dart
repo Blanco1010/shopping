@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/Theme/theme.dart';
 import 'package:shop_app/models/address.dart';
 import 'package:shop_app/widgets/no_data_widget.dart';
-import '../../controllers/client/client_address_list_controller.dart';
+import 'client_address_list_controller.dart';
 
 class ClientAddressListScreen extends StatefulWidget {
   const ClientAddressListScreen({

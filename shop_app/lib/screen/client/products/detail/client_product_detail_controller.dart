@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/product.dart';
 
-import '../../widgets/snackbar.dart';
+import '../../../../widgets/snackbar.dart';
 
 class ClientProductDetailController {
   late BuildContext context;

@@ -10,7 +10,7 @@ import 'package:shop_app/provider/product_provider.dart';
 import 'package:shop_app/provider/push_notifications_provider.dart';
 import 'package:shop_app/provider/user_provider.dart';
 
-import '../../client_product_detail_screen.dart';
+import '../detail/client_product_detail_screen.dart';
 
 class ClientProductsListController {
   late BuildContext context;

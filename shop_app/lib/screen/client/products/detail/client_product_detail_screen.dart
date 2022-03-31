@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shop_app/Theme/theme.dart';
-import 'package:shop_app/controllers/client/client_product_detail_controller.dart';
+import 'package:shop_app/screen/client/products/detail/client_product_detail_controller.dart';
 
-import '../../models/product.dart';
-import '../../widgets/slideshow_widget.dart';
+import '../../../../models/product.dart';
+import '../../../../widgets/slideshow_widget.dart';
 
 class ClientProductDetailScreen extends StatefulWidget {
   final Product product;

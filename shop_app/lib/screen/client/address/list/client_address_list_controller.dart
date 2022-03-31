@@ -7,13 +7,12 @@ import 'package:shop_app/models/address.dart';
 import 'package:shop_app/provider/address_provider.dart';
 import 'package:shop_app/provider/order_provider.dart';
 import 'package:shop_app/provider/stripeProvider.dart';
-import 'package:shop_app/widgets/snackbar.dart';
 
-import '../../models/order.dart';
-import '../../models/product.dart';
-import '../../models/response_model.dart';
-import '../../models/user.dart';
-import '../../widgets/loading_indicator.dart';
+import '../../../../models/order.dart';
+import '../../../../models/product.dart';
+import '../../../../models/response_model.dart';
+import '../../../../models/user.dart';
+import '../../../../widgets/loading_indicator.dart';
 
 class ClientAddressListController {
   late BuildContext context;
@@ -48,41 +47,37 @@ class ClientAddressListController {
         await _stripeProvider.payWithCard(total.toString(), 'COP');
     // Navigator.pop(context);
     print(responseStripe);
-    // if (responseStripe.success) {
-    //   Address a = Address.fromJson(await _secureStogare.read('address'));
+    if (responseStripe!.success) {
+      Address a = Address.fromJson(await _secureStogare.read('address'));
 
-    //   for (var item
-    //       in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
-    //     selectProducts.add(
-    //       Product.fromJson(item),
-    //     );
-    //   }
+      for (var item
+          in json.decode(await _secureStogare.read('order'))?.toList() ?? []) {
+        selectProducts.add(
+          Product.fromJson(item),
+        );
+      }
 
-    //   Order order = Order(
-    //     idAddress: a.id!,
-    //     idClient: user!.id!,
-    //     lat: a.lat,
-    //     lng: a.lng,
-    //     products: selectProducts,
-    //     status: '',
-    //     timestamp: null,
-    //   );
+      Order order = Order(
+        idAddress: a.id!,
+        idClient: user!.id!,
+        lat: a.lat,
+        lng: a.lng,
+        products: selectProducts,
+        status: '',
+        timestamp: null,
+      );
 
-    //   ResponseApi responseApi = await _orderProvider.create(order);
-    //   selectProducts.clear();
+      ResponseApi responseApi = await _orderProvider.create(order);
+      selectProducts.clear();
 
-    //   if (responseApi.success) {
-    //     Navigator.pushNamedAndRemoveUntil(
-    //       context,
-    //       '/client/payment/status',
-    //       (route) => false,
-    //     );
-    //   }
-
-    // } else {
-    //   Snackbar.show(context, responseStripe.message);
-    // }
-    // Navigator.pushNamed(context, '/client/payment/');
+      if (responseApi.success) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/client/payment/status',
+          (route) => false,
+        );
+      }
+    }
   }
 
   void handleRadoiValueChange(int value) {

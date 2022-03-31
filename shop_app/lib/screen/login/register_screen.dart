@@ -179,6 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
+        max:1,
         validator: (value) {
           RegExp exp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
@@ -204,6 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
+        max:1,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
@@ -227,6 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
+        max:1,
         validator: (value) {
           if (value.toString().isEmpty == true) {
             return 'Debes llenar el campo';
@@ -250,6 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: CustomInputField(
         expand: false,
+        max:1,
         validator: null,
         icon: Icons.phone,
         textController: textController,

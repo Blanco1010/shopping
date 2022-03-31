@@ -3,9 +3,9 @@ import 'package:shop_app/provider/order_provider.dart';
 import 'package:shop_app/provider/user_provider.dart';
 import 'package:shop_app/controllers/secure_storage.dart';
 
-import '../../models/order.dart';
-import '../../models/user.dart';
-import '../../screen/client/client_map_screen.dart';
+import '../../../../models/order.dart';
+import '../../../../models/user.dart';
+import '../../client_map_screen.dart';
 
 class ClientOrderDetailCreateController {
   late BuildContext context;

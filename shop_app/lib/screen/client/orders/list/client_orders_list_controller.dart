@@ -3,7 +3,7 @@ import 'package:shop_app/controllers/secure_storage.dart';
 import 'package:shop_app/models/order.dart';
 import 'package:shop_app/models/user.dart';
 import 'package:shop_app/provider/order_provider.dart';
-import 'package:shop_app/screen/client/client_order_detail_screen.dart';
+import 'package:shop_app/screen/client/orders/detail/client_order_detail_screen.dart';
 
 class ClientOrdersListController {
   late BuildContext context;
